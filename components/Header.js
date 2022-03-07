@@ -2,13 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import styles from '../styles/Header.module.css'
 
-import Amplify from 'aws-amplify'
-import config from '../src/aws-exports'
-Amplify.configure({
-  ...config,
-  ssr: true
-})
-
 function Header () {
   return (
     <div>
