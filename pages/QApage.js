@@ -1,16 +1,22 @@
 import React, { useState } from "react";
- 
+
+import { useSelector, useDispatch } from "react-redux";
+import { incrementByAmount,increment, decrement } from "../store/reducers/counterSlice";
 import { connectToDatabase } from "../util/mongodb";
 
 export default function Questions({ questions }) {
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  const [score, setScore] = useState(0);
-
+   
+  const dispatch = useDispatch();
+   const counter = useSelector((state) => state.counter);
+const score = Object.values(counter)
+   console.log(
+      counter.value.toString())
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect) {
-      setScore(score + 1);
+       
+      dispatch(increment())
     }
 
     const nextQuestion = currentQuestion + 1;

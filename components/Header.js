@@ -13,12 +13,10 @@ function Header () {
           <Link href='/profile'>
             <a className={styles.link}>Login</a>
           </Link>
-          <Link href='/protected' className={styles.link}>
-            <a className={styles.link}>Protected route</a>
+          <Link href='/QApage' className={styles.link}>
+            <a className={styles.link}>QA</a>
           </Link>
-          <Link href='/protected-client-route'>
-            <a className={styles.link}>Protected client route</a>
-          </Link>
+         
         </div>
       </nav>
     </div>

@@ -1,5 +1,4 @@
-import Head from 'next/head'
- 
+import Head from "next/head";
 
 export default function Home({ isConnected }) {
   return (
@@ -13,8 +12,6 @@ export default function Home({ isConnected }) {
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">Next.js with MongoDB!</a>
         </h1>
-
-     
 
         <p className="description">
           Get started by editing <code>pages/index.js</code>
@@ -57,14 +54,10 @@ export default function Home({ isConnected }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
-
-     
     </div>
-  )
+  );
 }
-
- 

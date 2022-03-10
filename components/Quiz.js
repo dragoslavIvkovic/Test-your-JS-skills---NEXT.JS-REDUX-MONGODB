@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { questions } from "./data";
 
 export default function App() {
- 
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
@@ -21,14 +19,16 @@ export default function App() {
     }
   };
 
-
-
   function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        var r = (Math.random() * 16) | 0,
+          v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
+  }
 
   return (
     <div>
@@ -50,7 +50,8 @@ export default function App() {
             </div>
             <div className="answer-section">
               {questions[currentQuestion].answerOptions.map((answerOption) => (
-                <button key={uuidv4()}
+                <button
+                  key={uuidv4()}
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect)
                   }
