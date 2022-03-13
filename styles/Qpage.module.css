@@ -1,0 +1,16 @@
+.container{
+display: flex;
+align-items: center;justify-content: center;
+}
+
+.answer_section{
+    display: inline;
+    background-color:red;
+}
+
+.answer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    
+}

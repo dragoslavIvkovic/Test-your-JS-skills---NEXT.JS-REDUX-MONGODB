@@ -7,6 +7,7 @@ import {
   reset
 } from '../store/reducers/counterSlice'
 import { connectToDatabase } from '../util/mongodb'
+import { CopyBlock, dracula } from "react-code-blocks";
 
 export default function Questions ({ questions }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -45,7 +46,9 @@ export default function Questions ({ questions }) {
   // dispatch(reset())
    
   // }
+ 
 
+  console.log(currentQuestion)
   return (
     <div>
       <div></div>
@@ -65,6 +68,15 @@ export default function Questions ({ questions }) {
                 {questions[currentQuestion].questionText}
               </div>
             </div>
+             <CopyBlock
+          language='javascript'
+          text={JSON.stringify(questions[currentQuestion].code).replace(/(^"|"$)/g, '')}
+           
+          theme={dracula}
+          wrapLines={true}
+            highlight="1"
+          codeBlock
+        />
             <div className='answer-section'>
               {questions[currentQuestion].answerOptions.map(answerOption => (
                 <button
