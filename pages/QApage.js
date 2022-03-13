@@ -8,6 +8,7 @@ import {
 } from '../store/reducers/counterSlice'
 import { connectToDatabase } from '../util/mongodb'
 import { CopyBlock, dracula } from "react-code-blocks";
+import styles from '../styles/Qpage.module.css'
 
 export default function Questions ({ questions }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -50,7 +51,7 @@ export default function Questions ({ questions }) {
 
   console.log(currentQuestion)
   return (
-    <div>
+    <div className={styles.container}>
       <div></div>
       {/* <button onClick={handleStartTest}>Start test</button> */}
       <div className='app'>
@@ -60,7 +61,7 @@ export default function Questions ({ questions }) {
           </div>
         ) : (
           <>
-            <div className='question-section'>
+            <div >
               <div className='question-count'>
                 <span>Question {currentQuestion + 1}</span>/{questions.length}
               </div>
@@ -77,9 +78,9 @@ export default function Questions ({ questions }) {
             highlight="1"
           codeBlock
         />
-            <div className='answer-section'>
+            <div className={styles.answer_section}>
               {questions[currentQuestion].answerOptions.map(answerOption => (
-                <button
+                <button className={styles.answer}
                   key={uuidv4()}
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect)
