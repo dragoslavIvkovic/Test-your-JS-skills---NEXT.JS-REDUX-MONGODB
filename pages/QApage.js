@@ -9,6 +9,8 @@ import {
 import { connectToDatabase } from '../util/mongodb'
 import { CopyBlock, dracula } from "react-code-blocks";
 import styles from '../styles/Qpage.module.css'
+import {shuffle} from '../util/shuffle'
+import uuidv from "../util/uuidv"
 
 export default function Questions ({ questions }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -22,8 +24,13 @@ export default function Questions ({ questions }) {
     if (isCorrect) {
       dispatch(increment())
     }
+ 
+ 
+ 
 
-    const nextQuestion = currentQuestion + 1
+
+  
+    const nextQuestion = currentQuestion + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
     } else {
@@ -31,30 +38,13 @@ export default function Questions ({ questions }) {
     }
   }
 
-
-  console.log(score)
-  function uuidv4 () {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (
-      c
-    ) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8
-      return v.toString(16)
-    })
-  }
-
-  // const handleStartTest = () => {
-  // dispatch(reset())
-   
-  // }
+ const shuffle = () => 0.5 - Math.random();
  
-
-  console.log(currentQuestion)
+ 
   return (
     <div className={styles.container}>
       <div></div>
-      {/* <button onClick={handleStartTest}>Start test</button> */}
-      <div className='app'>
+       <div className='app'>
         {showScore ? (
           <div className='score-section'>
             You scored {score} out of {questions.length}
@@ -67,6 +57,7 @@ export default function Questions ({ questions }) {
               </div>
               <div className='question-text'>
                 {questions[currentQuestion].questionText}
+               
               </div>
             </div>
              <CopyBlock
@@ -77,11 +68,12 @@ export default function Questions ({ questions }) {
           wrapLines={true}
             highlight="1"
           codeBlock
-        />
+        />  {console.log(JSON.stringify(questions[currentQuestion].code).replace(/(^"|"$)/g, ''))}
+ 
             <div className={styles.answer_section}>
-              {questions[currentQuestion].answerOptions.map(answerOption => (
+              {questions[currentQuestion].answerOptions.sort(shuffle).map(answerOption => (
                 <button className={styles.answer}
-                  key={uuidv4()}
+                  key={uuidv()}
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect)
                   }
@@ -107,9 +99,26 @@ export async function getStaticProps () {
     .limit(20)
     .toArray()
 
+
+
+function shuffleArray(d) {
+  for (var c = d.length - 1; c > 0; c--) {
+    var b = Math.floor(Math.random() * (c + 1));
+    var a = d[c];
+    d[c] = d[b];
+    d[b] = a;
+  }
+  return d
+};
+   
+ 
+
+
+
+
   return {
     props: {
-      questions: JSON.parse(JSON.stringify(questions))
+      questions: JSON.parse(JSON.stringify(shuffleArray(questions)))
     }
   }
 }
