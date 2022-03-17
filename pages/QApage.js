@@ -10,6 +10,7 @@ import { connectToDatabase } from '../util/mongodb'
 import { CopyBlock, dracula } from "react-code-blocks";
 import styles from '../styles/Qpage.module.css'
 import {shuffle} from '../util/shuffle'
+import uuidv from "../util/uuidv"
 
 export default function Questions ({ questions }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -39,30 +40,14 @@ export default function Questions ({ questions }) {
     }
   }
 
-
-  console.log(score)
-  function uuidv4 () {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (
-      c
-    ) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8
-      return v.toString(16)
-    })
-  }
-
-  // const handleStartTest = () => {
-  // dispatch(reset())
-   
-  // }
+ 
  
 
   console.log(currentQuestion)
   return (
     <div className={styles.container}>
       <div></div>
-      {/* <button onClick={handleStartTest}>Start test</button> */}
-      <div className='app'>
+       <div className='app'>
         {showScore ? (
           <div className='score-section'>
             You scored {score} out of {questions.length}
@@ -89,7 +74,7 @@ export default function Questions ({ questions }) {
             <div className={styles.answer_section}>
               {questions[currentQuestion].answerOptions.map(answerOption => (
                 <button className={styles.answer}
-                  key={uuidv4()}
+                  key={uuidv()}
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect)
                   }

@@ -1,13 +1,10 @@
-export const shuffle = arr => {
-  let currIdx = arr.length;
-  let tempVal, randomIdx;
-
-  while (0 !== currIdx) {
-    randomIdx = Math.floor(Math.random() * currIdx);
-    currIdx -= 1;
-    tempVal = arr[currIdx];
-    arr[currIdx] = arr[randomIdx];
-    arr[randomIdx] = tempVal;
+export default function shuffle(a) {
+  var j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
   }
-  return arr;
-};
+  return a;
+}
