@@ -1,10 +1,10 @@
-export default function shuffle(a) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
+export default function shuffleArray(d) {
+  for (var c = d.length - 1; c > 0; c--) {
+    var b = Math.floor(Math.random() * (c + 1));
+    var a = d[c];
+    d[c] = d[b];
+    d[b] = a;
   }
-  return a;
-}
+  return d
+};
+   
