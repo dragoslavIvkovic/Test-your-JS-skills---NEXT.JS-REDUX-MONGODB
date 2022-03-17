@@ -24,15 +24,13 @@ export default function Questions ({ questions }) {
     if (isCorrect) {
       dispatch(increment())
     }
-
-   
-
-
-
+ 
+ 
+ 
 
 
   
-    const nextQuestion = currentQuestion + 1
+    const nextQuestion = currentQuestion + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
     } else {
@@ -40,10 +38,9 @@ export default function Questions ({ questions }) {
     }
   }
 
+ const shuffle = () => 0.5 - Math.random();
  
  
-
-  console.log(currentQuestion)
   return (
     <div className={styles.container}>
       <div></div>
@@ -60,6 +57,7 @@ export default function Questions ({ questions }) {
               </div>
               <div className='question-text'>
                 {questions[currentQuestion].questionText}
+               
               </div>
             </div>
              <CopyBlock
@@ -70,9 +68,10 @@ export default function Questions ({ questions }) {
           wrapLines={true}
             highlight="1"
           codeBlock
-        />
+        />  {console.log(JSON.stringify(questions[currentQuestion].code).replace(/(^"|"$)/g, ''))}
+ 
             <div className={styles.answer_section}>
-              {questions[currentQuestion].answerOptions.map(answerOption => (
+              {questions[currentQuestion].answerOptions.sort(shuffle).map(answerOption => (
                 <button className={styles.answer}
                   key={uuidv()}
                   onClick={() =>
@@ -100,9 +99,26 @@ export async function getStaticProps () {
     .limit(20)
     .toArray()
 
+
+
+function shuffleArray(d) {
+  for (var c = d.length - 1; c > 0; c--) {
+    var b = Math.floor(Math.random() * (c + 1));
+    var a = d[c];
+    d[c] = d[b];
+    d[b] = a;
+  }
+  return d
+};
+   
+ 
+
+
+
+
   return {
     props: {
-      questions: JSON.parse(JSON.stringify(questions))
+      questions: JSON.parse(JSON.stringify(shuffleArray(questions)))
     }
   }
 }
