@@ -13,9 +13,7 @@ function Header () {
           <Link href='/profile'>
             <a className={styles.link}>Login</a>
           </Link>
-          <Link href='/QApage' className={styles.link}>
-            <a className={styles.link}>QA</a>
-          </Link>
+         
          
         </div>
       </nav>

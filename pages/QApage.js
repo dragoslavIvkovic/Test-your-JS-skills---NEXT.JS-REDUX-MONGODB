@@ -9,6 +9,7 @@ import {
 import { connectToDatabase } from '../util/mongodb'
 import { CopyBlock, dracula } from "react-code-blocks";
 import styles from '../styles/Qpage.module.css'
+import {shuffle} from '../util/shuffle'
 
 export default function Questions ({ questions }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -23,6 +24,13 @@ export default function Questions ({ questions }) {
       dispatch(increment())
     }
 
+   
+
+
+
+
+
+  
     const nextQuestion = currentQuestion + 1
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
