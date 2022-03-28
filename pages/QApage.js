@@ -16,6 +16,7 @@ export default function Questions () {
   const [showScore, setShowScore] = useState(false)
 
   const [questions, setQuestions] = useState({});
+  const [collection, setCollection] = useState();
   const [loading,setLoading] = useState(true)
 
   const [open, setOpen] = useState(true)
@@ -37,7 +38,7 @@ export default function Questions () {
   
 
   const fetchQuestions = async () => {
-    const response = await fetch('/api/QApages')
+    const response = await fetch(`/api/QApages?collection=${collection}`)
     const data = await response.json()
     setQuestions(shuffleArray(data));
     setLoading(false)
@@ -45,6 +46,7 @@ export default function Questions () {
 
   console.log('questions',   questions)
   console.log('loading',   loading)
+  console.log('collection',   collection)
 
   const dispatch = useDispatch()
   const counter = useSelector(state => state.counter)
@@ -84,6 +86,9 @@ export default function Questions () {
   return (
     <>
     <button onClick={fetchQuestions}>fdsf</button>
+    <button onClick={() => setCollection("questions")}>questions</button>
+    <button onClick={() => setCollection("middle")}>middle</button>
+    <button onClick={() => setCollection("XXX")}>xxx</button>
     <div> {loading ? <div>Loading...</div> : 
     
       <div className={styles.container}>
