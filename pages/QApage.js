@@ -21,6 +21,8 @@ export default function Questions () {
   const [questions, setQuestions] = useState({})
   const [collection, setCollection] = useState()
   const [loading, setLoading] = useState(false)
+  const [timer, setTimer] = useState(5);
+  const [timerStared, setTimerStared] = useState(false)
 
   const [open, setOpen] = useState(true)
   const handleOpen = () => setOpen(true)
@@ -29,30 +31,18 @@ export default function Questions () {
     setOpen(false)
   }
 
-  //   useEffect(() => {
-  //   const fetchQuestions = async () => {
-  //     const response = await fetch('/api/QApages')
-
-  //     const data = await response.json()
-  // fetchQuestions()
-  //     setQuestions(data)}
-  // }, []);
-
   const fetchQuestions = async () => {
     const response = await fetch(`/api/QApages?collection=${collection}`)
     const data = await response.json()
     setQuestions(shuffleArray(data))
     setLoading(true)
+    setTimerStared(true)
   }
-
-  console.log('questions', questions)
-  console.log('loading', loading)
-  console.log('collection', collection === undefined)
 
   const dispatch = useDispatch()
   const counter = useSelector(state => state.counter)
   const score = Object.values(counter)
-  console.log(counter)
+
   const handleAnswerOptionClick = isCorrect => {
     if (isCorrect) {
       dispatch(increment())
@@ -67,24 +57,23 @@ export default function Questions () {
     }
   }
 
-  const shuffle = () => 0.5 - Math.random()
+  // const shuffle = () => 0.5 - Math.random()
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 1000,
-    height: 800,
-    bgcolor: 'red',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4
-  }
+
+
+    useEffect(() => {
+      const nextQuestion = currentQuestion + 1
+    if (timer > 0 && timerStared) {
+      setTimeout(() => setTimer(timer - 1), 1000);
+    } else if( timer === 0) {
+       setCurrentQuestion(nextQuestion)
+    }
+  }, [timer,timerStared]);
 
   return (
     <>
-      <div>
+    <p>{timer}</p>
+      <div className={styles.container}>
         {collection === undefined ? (
           <div>
             {' '}
@@ -95,53 +84,49 @@ export default function Questions () {
             <button onClick={() => setCollection('XXX')}>xxx</button>
           </div>
         ) : (
-          <div> {loading ? (
-            <div className='app'>
-              {showScore ? (
-                <div className='score-section'>
-                  You scored {score} out of {questions.length}
-                </div>
-              ) : (
-                <>
-                  <div>
-                    <div className='question-count'>
-                      <span>Question {currentQuestion + 1}</span>/
-                      {questions.length}
-                    </div>
-                    <div className='question-text'>
-                      {questions[currentQuestion].questionText}
-                    </div>
+          <div>
+            {' '}
+            {loading ? (
+              <div className='app'>
+                {showScore ? (
+                  <div className='score-section'>
+                    You scored {score} out of {questions.length}
                   </div>
-                  <SyntaxHighlighter language="javascript" style={dracula}>{
-                   
-                 
-                      questions[currentQuestion].code
-                    .replace(/(^"|"$)/g, '')}
-                   </SyntaxHighlighter>
-                  <div className={styles.answer_section}>
-                    {questions[currentQuestion].answerOptions
-                      .sort(shuffle)
-                      .map(answerOption => (
-                        <button
-                          className={styles.answer}
-                          key={questions._id}
-                          onClick={() =>
-                            handleAnswerOptionClick(answerOption.isCorrect)
-                          }
-                        >
-                          {answerOption.answerText}
-                        </button>
-                      ))}
-                  </div>
-                </>
-              )}
-            </div>
-          ) :
-          
-          
-          
-            <button onClick={fetchQuestions}>START</button>
-          }
+                ) : (
+                  <>
+                    <div>
+                      <div className='question-count'>
+                        <span>Question {currentQuestion + 1}</span>/
+                        {questions.length}
+                      </div>
+                      <div className='question-text'>
+                        {questions[currentQuestion].questionText}
+                      </div>
+                    </div>
+                    <SyntaxHighlighter language='javascript' style={dracula}>
+                      {questions[currentQuestion].code.replace(/(^"|"$)/g, '')}
+                    </SyntaxHighlighter>
+                    <div className={styles.answer_section}>
+                      {questions[currentQuestion].answerOptions
+                        
+                        .map(answerOption => (
+                          <button
+                            className={styles.answer}
+                            key={questions._id}
+                            onClick={() =>
+                              handleAnswerOptionClick(answerOption.isCorrect)
+                            }
+                          >
+                            {answerOption.answerText}
+                          </button>
+                        ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <button onClick={fetchQuestions}>START</button>
+            )}
           </div>
         )}
 
