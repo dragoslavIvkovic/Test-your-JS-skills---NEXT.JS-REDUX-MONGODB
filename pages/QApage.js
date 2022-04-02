@@ -21,7 +21,7 @@ export default function Questions () {
   const [questions, setQuestions] = useState({})
   const [collection, setCollection] = useState()
   const [loading, setLoading] = useState(false)
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(6)
   const [timerStared, setTimerStared] = useState(false)
 
   const [open, setOpen] = useState(true)
@@ -30,6 +30,8 @@ export default function Questions () {
     dispatch(reset())
     setOpen(false)
   }
+
+
 
   const fetchQuestions = async () => {
     const response = await fetch(`/api/QApages?collection=${collection}`)
@@ -44,36 +46,63 @@ export default function Questions () {
   const score = Object.values(counter)
 
   const handleAnswerOptionClick = isCorrect => {
-    if (isCorrect) {
-      dispatch(increment())
-    } else {
-    }
-
     const nextQuestion = currentQuestion + 1
-    if (nextQuestion < questions.length) {
+    if (isCorrect) {
+     
+      dispatch(increment())
+     setCurrentQuestion(nextQuestion)
+      // setTimerStared(true)
+      setTimer(6)
+    } else if (nextQuestion < questions.length) {
+      
       setCurrentQuestion(nextQuestion)
+      // setTimerStared(true)
+      setTimer(6)
     } else {
       setShowScore(true)
+      setTimerStared(false)
+       setTimer(0)
     }
   }
 
-  // const shuffle = () => 0.5 - Math.random()
+  //   const nextQuestion = currentQuestion + 1
+  //   if (nextQuestion < questions.length) {
+  //     setCurrentQuestion(nextQuestion)
+  //       setTimerStared(true)
+  //       setTimer(6)
+  //   } else {
+  //     setShowScore(true)
+  //      setTimerStared(false)
+  //   }
+  // }
 
+  // const shuffle = () => 0.20 - Math.random()
 
+  console.log(timer)
 
-    useEffect(() => {
-      const nextQuestion = currentQuestion + 1
+  useEffect(() => {
+    const nextQuestion = currentQuestion + 1
     if (timer > 0 && timerStared) {
-      setTimeout(() => setTimer(timer - 1), 1000);
-    } else if( timer === 0) {
-       setCurrentQuestion(nextQuestion)
+      setTimeout(() => setTimer(timer - 1), 1000)
+    } else if (timer === 0 && nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion)
+      setTimerStared(true)
+      setTimer(6)
+    } else if (nextQuestion < questions.length) {
+       setTimerStared(true)
+        setTimer(6)
+      setCurrentQuestion(nextQuestion)
+    } else if (nextQuestion == questions.length) {
+      setShowScore(true)
+      setTimerStared(false)
+       setTimer(0)
     }
-  }, [timer,timerStared]);
+  }, [timer, timerStared, currentQuestion ])
 
   return (
     <>
-    <p>{timer}</p>
       <div className={styles.container}>
+        <p>{timer}</p>
         {collection === undefined ? (
           <div>
             {' '}
@@ -107,9 +136,8 @@ export default function Questions () {
                       {questions[currentQuestion].code.replace(/(^"|"$)/g, '')}
                     </SyntaxHighlighter>
                     <div className={styles.answer_section}>
-                      {questions[currentQuestion].answerOptions
-                        
-                        .map(answerOption => (
+                      {questions[currentQuestion].answerOptions.map(
+                        answerOption => (
                           <button
                             className={styles.answer}
                             key={questions._id}
@@ -119,7 +147,8 @@ export default function Questions () {
                           >
                             {answerOption.answerText}
                           </button>
-                        ))}
+                        )
+                      )}
                     </div>
                   </>
                 )}
