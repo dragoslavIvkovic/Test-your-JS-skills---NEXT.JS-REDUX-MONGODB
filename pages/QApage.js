@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { increment, reset } from '../store/reducers/counterSlice'
+import { addWrongQuestions,selectWrongQuestions,wrongQuestions } from '../store/reducers/wrongQuestionsCounter'
 
 // import { CopyBlock, dracula } from 'react-code-blocks';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -10,9 +11,7 @@ import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import styles from '../styles/Qpage.module.css'
 
 import shuffleArray from '../util/shuffle'
-// import uuidv from '../util/uuidv'
-import { Modal, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+ 
 
 export default function Questions () {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -44,18 +43,24 @@ export default function Questions () {
 
   const dispatch = useDispatch()
   const counter = useSelector(state => state.counter)
+  const wrongQuestion = useSelector(state => state.wrongQuestions )
   const score = Object.values(counter)
+
 
   const nextQuestion = currentQuestion + 1
 
-  const handleAnswerOptionClick = isCorrect => {
+  const handleAnswerOptionClick = (isCorrect,questions,currentQuestion) => {
     if (isCorrect) {
+      
       dispatch(increment())
+      
       setCurrentQuestion(nextQuestion)
       startFn()
+      
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
       startFn()
+      dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
     } else {
       setIsActive(false)
       setShowScore(true)
@@ -100,7 +105,7 @@ export default function Questions () {
     return () => clearInterval(interval)
   }, [isActive, totalCount]) // try with and without totalCount.
 
-  console.log(totalCount)
+ console.log("wrongQuestion" ,wrongQuestion)
 
   return (
     <>
@@ -145,7 +150,8 @@ export default function Questions () {
                             className={styles.answer}
                             key={questions._id}
                             onClick={() =>
-                              handleAnswerOptionClick(answerOption.isCorrect)
+                handleAnswerOptionClick(answerOption.isCorrect,questions,currentQuestion)
+
                             }
                           >
                             {answerOption.answerText}
