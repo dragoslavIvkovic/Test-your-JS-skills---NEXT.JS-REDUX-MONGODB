@@ -50,7 +50,7 @@ export default function Questions () {
   const nextQuestion = currentQuestion + 1
 
   const handleAnswerOptionClick = (isCorrect,questions,currentQuestion) => {
-    if (isCorrect) {
+    if (isCorrect && nextQuestion < questions.length ) {
       
       dispatch(increment())
       
@@ -62,6 +62,7 @@ export default function Questions () {
       startFn()
       dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
     } else {
+       
       setIsActive(false)
       setShowScore(true)
     }
@@ -76,9 +77,19 @@ export default function Questions () {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
       setTotalCount(5)
+      dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+    } else if (nextQuestion < questions.length   ) {
+     dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+    
+     
     } else if (nextQuestion === questions.length) {
+       dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
       startFn()
-    }
+    
+    } 
+    // else if (totalCount === 0 && nextQuestion <= questions.length) {
+    //   dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+    // }
   }
 
   useEffect(() => {
