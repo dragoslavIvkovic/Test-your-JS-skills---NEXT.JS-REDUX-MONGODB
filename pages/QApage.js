@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { increment, reset } from '../store/reducers/counterSlice'
-import { addWrongQuestions,selectWrongQuestions,wrongQuestions } from '../store/reducers/wrongQuestionsCounter'
+import { addWrongQuestions,selectWrongQuestions,wrongQuestions,resetWrongQuestions } from '../store/reducers/wrongQuestionsCounter'
 
 // import { CopyBlock, dracula } from 'react-code-blocks';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -11,20 +11,24 @@ import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import styles from '../styles/Qpage.module.css'
 
 import shuffleArray from '../util/shuffle'
- 
+
+ import useSWR from 'swr'
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Questions () {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [showScore, setShowScore] = useState(false)
+   
 
   const [questions, setQuestions] = useState({})
   const [collection, setCollection] = useState()
   const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(false)
+  const [wrongQ, setWrongQ] = useState([])
 
   // total count accumulated
   const [totalCount, setTotalCount] = useState(5)
-
+  const { data, error,  } = useSWR(`/api/QApages?collection=${collection}`, fetcher)
   // const [open, setOpen] = useState(true)
   // const handleOpen = () => setOpen(true)
   // const handleClose = () => {
@@ -32,13 +36,13 @@ export default function Questions () {
   //   setOpen(false)
   // }
 
-  const fetchQuestions = async () => {
-    const response = await fetch(`/api/QApages?collection=${collection}`)
-    const data = await response.json()
+  const fetchQuestions =  () => {
+     
     setQuestions(shuffleArray(data))
     setLoading(true)
     startFn()
     dispatch(reset())
+    dispatch(resetWrongQuestions())
   }
 
   const dispatch = useDispatch()
@@ -60,11 +64,13 @@ export default function Questions () {
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
       startFn()
-      dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+   
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
     } else {
        
       setIsActive(false)
       setShowScore(true)
+       console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
     }
   }
 
@@ -77,18 +83,17 @@ export default function Questions () {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
       setTotalCount(5)
-      dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
     } else if (nextQuestion < questions.length   ) {
-     dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
-    
-     
+     setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
+         
     } else if (nextQuestion === questions.length) {
-       dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+       setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
       startFn()
     
     } 
-    // else if (totalCount === 0 && nextQuestion <= questions.length) {
-    //   dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+    // else   {
+    //   console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
     // }
   }
 
@@ -105,6 +110,8 @@ export default function Questions () {
     } else if (nextQuestion === questions.length) {
       setIsActive(false)
       setShowScore(true)
+      dispatch(addWrongQuestions(data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))))
+      //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
 
       // } else {
       //   setIsActive(false)
@@ -117,6 +124,11 @@ export default function Questions () {
   }, [isActive, totalCount]) // try with and without totalCount.
 
  console.log("wrongQuestion" ,wrongQuestion)
+ console.log("wrongQ" ,wrongQ)
+//  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
+
+
+//  dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
 
   return (
     <>
@@ -134,7 +146,7 @@ export default function Questions () {
         ) : (
           <div>
             {' '}
-            {loading ? (
+            { loading ? (
               <div className='app'>
                 {showScore ? (
                   <div className='score-section'>
