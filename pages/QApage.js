@@ -50,6 +50,8 @@ export default function Questions () {
   const wrongQuestion = useSelector(state => state.wrongQuestions )
   const score = Object.values(counter)
 
+  console.log("score" , score)
+
 
   const nextQuestion = currentQuestion + 1
 
