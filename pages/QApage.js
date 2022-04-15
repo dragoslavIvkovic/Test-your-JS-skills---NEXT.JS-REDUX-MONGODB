@@ -27,14 +27,11 @@ export default function Questions () {
   const [wrongQ, setWrongQ] = useState([])
 
   // total count accumulated
-  const [totalCount, setTotalCount] = useState(5)
+  const [totalCount, setTotalCount] = useState(20)
   const { data, error,  } = useSWR(`/api/QApages?collection=${collection}`, fetcher)
-  // const [open, setOpen] = useState(true)
-  // const handleOpen = () => setOpen(true)
-  // const handleClose = () => {
-  //   dispatch(reset())
-  //   setOpen(false)
-  // }
+  
+  const [width, setWidth] = useState(100);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchQuestions =  () => {
      
@@ -49,8 +46,7 @@ export default function Questions () {
   const counter = useSelector(state => state.counter)
   const wrongQuestion = useSelector(state => state.wrongQuestions )
   const score = Object.values(counter)
-
-  console.log("score" , score)
+ 
 
 
   const nextQuestion = currentQuestion + 1
@@ -84,7 +80,7 @@ export default function Questions () {
   function clear () {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
-      setTotalCount(5)
+      setTotalCount(20)
       setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
     } else if (nextQuestion < questions.length   ) {
      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
@@ -99,19 +95,30 @@ export default function Questions () {
     // }
   }
 
+
+  const styles = {
+    backgroundColor: "#00cb78",
+    width: totalCount * 20
+  };
+
   useEffect(() => {
     let interval = null
 
     // on initial render, the effect fn is called, but isActive is false so nothing happens
     // when i click "Start", isActive changes so the effect fn fires and the if statement kicks off an interval to increment the count.
     // each time the totalCount changes, we want the interval to run again so we need the effect fn to call again. add totalCount to the dependency array so the effect fn will fire on totalCount change.
-    if (isActive) {
+    if (isActive  ) {
       interval = setInterval(() => {
-        totalCount === 0 ? clear() : setTotalCount(totalCount - 1)
+        totalCount === 0 ? clear() : setTotalCount(totalCount - 1) ;
+        setWidth(width - 20);
       }, 1000)
+
+
+      
     } else if (nextQuestion === questions.length) {
       setIsActive(false)
       setShowScore(true)
+      setWidth(100)
       dispatch(addWrongQuestions(data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))))
       //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
 
@@ -130,7 +137,8 @@ export default function Questions () {
 //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
 
 
-//  dispatch(addWrongQuestions(questions[currentQuestion]._id  ))
+
+
 
   return (
     <>
@@ -161,8 +169,11 @@ export default function Questions () {
                         <span>Question {currentQuestion + 1}</span>/
                         {questions.length}
                       </div>
+                       <div style={styles}>
+          <span>{totalCount.toFixed(0)}%</span>
+        </div>
                       <div className='question-text'>
-                        {questions[currentQuestion].questionText}
+                       <p>What is the output?</p> 
                       </div>
                     </div>
                     <SyntaxHighlighter language='javascript' style={dracula}>

@@ -1,0 +1,15 @@
+.container{
+display: flex;
+align-items: center;justify-content: center;
+padding:2rem;
+margin:2rem;
+ 
+}
+
+.code{
+    width: 40vw;
+    height:40vh;
+ /* align-items: center;justify-content: center;
+ text-align: center; */
+ 
+}
