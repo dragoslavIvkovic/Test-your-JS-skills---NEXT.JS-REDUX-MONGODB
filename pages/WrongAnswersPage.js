@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../styles/WrongAnswersPage.module.css'
+import styles from '../styles/Qpage.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { CopyBlock, dracula } from 'react-code-blocks'
 
@@ -8,14 +8,7 @@ function WrongAnswersPage () {
   const wrongQuestion = useSelector(state => state.wrongQuestions)
   const x = Object.values(wrongQuestion)
   const wrongQ = x.flat(2)
-  console.log(
-    'r',
-    wrongQ[currentQuestions].answerOptions.filter(x => x.isCorrect)
-  )
-  console.log(
-    't',
-    wrongQ[currentQuestions].answerOptions.filter(x => x)
-  )
+ 
 
   const nextQ = () => {
     const nextQuestion = currentQuestions + 1
@@ -25,16 +18,17 @@ function WrongAnswersPage () {
     }
   }
 
-  console.log([0].answerOptions)
+ 
 
   return (
-    <div>
-      <div className={styles.container}>
+    <div  className={styles.container}>
+      <div className={styles.block}>
         <div className={styles.code}>
           {!wrongQ.length ? (
             'you answered everting'
           ) : (
             <div>
+           <p>What is the output?</p> 
               <CopyBlock
                 language='javascript'
                 text={wrongQ[currentQuestions]?.code}

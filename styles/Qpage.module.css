@@ -1,9 +1,30 @@
-.container{
-display: flex;
-align-items: center;justify-content: center;
-padding:2rem;
-margin:2rem;
+.container {
+ display: grid;
+  justify-content: center;
+  
+  
+  
 
+}
+
+.block {
+
+border-radius: 25px;
+background: #483ab6;
+box-shadow:  20px 20px 60px #3d319b,
+             -20px -20px 60px #5343d1;
+ width: 40vw;
+ padding: 2rem;
+  margin: 2rem; 
+  /* border-radius: 50px;  */
+
+}
+
+.code {
+  /* width: 20vw;
+    height:0vh; */
+  /* align-items: center;justify-content: center;
+ text-align: center; */
 }
 
 .answer_section{
@@ -16,4 +37,11 @@ margin:2rem;
     flex-direction: column;
     flex-wrap: wrap;
     
+}
+
+.code {
+  /* width: 20vw;
+    height:0vh; */
+  /* align-items: center;justify-content: center;
+ text-align: center; */
 }

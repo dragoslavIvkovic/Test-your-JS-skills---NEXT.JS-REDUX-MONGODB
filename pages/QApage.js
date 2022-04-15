@@ -96,7 +96,7 @@ export default function Questions () {
   }
 
 
-  const styles = {
+  const barWidth = {
     backgroundColor: "#00cb78",
     width: totalCount * 20
   };
@@ -143,6 +143,7 @@ export default function Questions () {
   return (
     <>
       <div className={styles.container}>
+      <div className={styles.block}>
         <p>{totalCount} </p>
         {collection === undefined ? (
           <div>
@@ -169,16 +170,17 @@ export default function Questions () {
                         <span>Question {currentQuestion + 1}</span>/
                         {questions.length}
                       </div>
-                       <div style={styles}>
-          <span>{totalCount.toFixed(0)}%</span>
+                       <div style={barWidth}>
+          <span>{totalCount.toFixed(0)}sec</span>
         </div>
                       <div className='question-text'>
                        <p>What is the output?</p> 
                       </div>
                     </div>
-                    <SyntaxHighlighter language='javascript' style={dracula}>
+                    <div className={styles.code}><SyntaxHighlighter language='javascript' style={dracula}>
                       {questions[currentQuestion].code.replace(/(^"|"$)/g, '')}
-                    </SyntaxHighlighter>
+                    </SyntaxHighlighter></div>
+                    
                     <div className={styles.answer_section}>
                       {questions[currentQuestion].answerOptions.map(
                         answerOption => (
@@ -205,7 +207,7 @@ export default function Questions () {
         )}
 
         <div></div>
-      </div>
+      </div></div>
     </>
   )
 }
