@@ -1,47 +1,110 @@
 .container {
- display: grid;
+  display: grid;
   justify-content: center;
-  
-  
-  
-
 }
 
 .block {
-
-border-radius: 25px;
-background: #483ab6;
-box-shadow:  20px 20px 60px #3d319b,
-             -20px -20px 60px #5343d1;
- width: 40vw;
- padding: 2rem;
-  margin: 2rem; 
+  border-radius: 25px;
+  background: #483ab6;
+  box-shadow: 2px 2px 60px #3d319b, -2px -2px 60px #5343d1;
+  width: max-content;
+    height:max-content; 
+  padding: 2rem;
+  margin: 2rem;
   /* border-radius: 50px;  */
-
 }
 
 .code {
-  /* width: 20vw;
-    height:0vh; */
-  /* align-items: center;justify-content: center;
- text-align: center; */
+  width: 30rem;
+    height:max-content; 
+  align-items: center;justify-content: center;
+ 
 }
 
-.answer_section{
+/* .answer_section{
     display: inline;
     background-color:red;
+} */
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0.3rem 0;
+  padding: 0.3em 0.7em;
+
+  border-radius: 0.5em;
+  color: #e8e8e8;
+  border: 1px solid #483ab6;
+  transition: all 0.3s;
+  background: #483ab6;
+  box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #473ba2;
 }
 
-.answer{
+.answer:hover {
+ border: 1px solid #3d319b;background: #392d93;
+}
+
+.answer:active { background: #5343d1;
+ box-shadow: 2px 2px 6px #5343d1, -2px -2px 6px #3d319b;
+}
+.bar {
+  border-radius: 0.5em;
+  margin-top: 1 rem;
+  color: #e8e8e8;
+  border: 1px solid #483ab6;
+  transition: all 0.3s;
+  background: #282a36;
+  height: 3vh;
+  padding: 0.2rem;
+  box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
+}
+
+.questionText {
+  text-align: start;
+  /* margin-bottom: 2rem; */
+  font-weight: 600;
+  font-size: 1rem;
+  color: #282a36;
+}
+
+
+.button {
+ color: #090909;
+ padding: 0.5em 0.7em;
+  
+ 
+ margin:0.5rem;
+ background: #e8e8e8;
+
+
+  border: none;
+ color: #090909;
+ padding: 0.7em 1.7em;
+ 
+ border-radius: 0.5em;
+ background: #e8e8e8;
+ border: 1px solid #e8e8e8;
+ transition: all .3s;
+ border: 1px solid #5343d1;
+ transition: all .3s;
+ box-shadow: 1px 1px 2px #3d319b,
+             -1px -1px 2px #5343d1;
+}
+
+.button:hover {
+ border: 1px solid white;
+}
+
+.button:active {
+   border: 1px solid #3d319b;
+ box-shadow: 1px 1px 2px #5343d1,
+             -1px -1px 2px #3d319b;
+}
+
+
+.questionCount{
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    
-}
-
-.code {
-  /* width: 20vw;
-    height:0vh; */
-  /* align-items: center;justify-content: center;
- text-align: center; */
+  justify-content: space-between;
+ 
 }

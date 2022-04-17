@@ -7,7 +7,7 @@ function Header () {
     <div>
       <nav className={styles.topnav}>
         <Link href='/'>
-          <a className={styles.link}>Home</a>
+          <butto className={styles.link}>Home</butto>
         </Link>
          <Link href='/QApage'>
              <a className={styles.link}>QA</a>
