@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { increment, reset } from '../store/reducers/counterSlice'
+import {
+  addWrongQuestions,
+  selectWrongQuestions,
+  wrongQuestions,
+  resetWrongQuestions
+} from '../store/reducers/wrongQuestionsCounter'
 
 // import { CopyBlock, dracula } from 'react-code-blocks';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -10,9 +16,9 @@ import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import styles from '../styles/Qpage.module.css'
 
 import shuffleArray from '../util/shuffle'
-// import uuidv from '../util/uuidv'
-import { Modal, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+
+import useSWR from 'swr'
+const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 export default function Questions () {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -22,43 +28,51 @@ export default function Questions () {
   const [collection, setCollection] = useState()
   const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(false)
+  const [wrongQ, setWrongQ] = useState([])
 
   // total count accumulated
-  const [totalCount, setTotalCount] = useState(5)
+  const [totalCount, setTotalCount] = useState(20)
+  const { data, error } = useSWR(
+    `/api/QApages?collection=${collection}`,
+    fetcher
+  )
 
-  // const [open, setOpen] = useState(true)
-  // const handleOpen = () => setOpen(true)
-  // const handleClose = () => {
-  //   dispatch(reset())
-  //   setOpen(false)
-  // }
+  const [width, setWidth] = useState(100)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const fetchQuestions = async () => {
-    const response = await fetch(`/api/QApages?collection=${collection}`)
-    const data = await response.json()
+  const fetchQuestions = () => {
     setQuestions(shuffleArray(data))
     setLoading(true)
     startFn()
     dispatch(reset())
+    dispatch(resetWrongQuestions())
   }
 
   const dispatch = useDispatch()
   const counter = useSelector(state => state.counter)
+  const wrongQuestion = useSelector(state => state.wrongQuestions)
   const score = Object.values(counter)
 
   const nextQuestion = currentQuestion + 1
 
-  const handleAnswerOptionClick = isCorrect => {
-    if (isCorrect) {
+  const handleAnswerOptionClick = (isCorrect, questions, currentQuestion) => {
+    if (isCorrect && nextQuestion < questions.length) {
       dispatch(increment())
+
       setCurrentQuestion(nextQuestion)
       startFn()
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
       startFn()
+
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
     } else {
       setIsActive(false)
       setShowScore(true)
+      console.log(
+        'xx',
+        data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
+      )
     }
   }
 
@@ -70,10 +84,18 @@ export default function Questions () {
   function clear () {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion)
-      setTotalCount(5)
+      setTotalCount(20)
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
+    } else if (nextQuestion < questions.length) {
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
     } else if (nextQuestion === questions.length) {
+      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
       startFn()
     }
+  }
+
+  const barWidth = {
+    width: totalCount * 20
   }
 
   useEffect(() => {
@@ -85,10 +107,18 @@ export default function Questions () {
     if (isActive) {
       interval = setInterval(() => {
         totalCount === 0 ? clear() : setTotalCount(totalCount - 1)
+        setWidth(width - 20)
       }, 1000)
     } else if (nextQuestion === questions.length) {
       setIsActive(false)
       setShowScore(true)
+      setWidth(100)
+      dispatch(
+        addWrongQuestions(
+          data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
+        )
+      )
+      //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
 
       // } else {
       //   setIsActive(false)
@@ -100,69 +130,107 @@ export default function Questions () {
     return () => clearInterval(interval)
   }, [isActive, totalCount]) // try with and without totalCount.
 
-  console.log(totalCount)
+  console.log('wrongQuestion', wrongQuestion)
+  console.log('wrongQ', wrongQ)
+  //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
 
   return (
     <>
       <div className={styles.container}>
-        <p>{totalCount} </p>
-        {collection === undefined ? (
-          <div>
-            {' '}
-            <button onClick={() => setCollection('questions')}>
-              questions
-            </button>
-            <button onClick={() => setCollection('middle')}>middle</button>
-            <button onClick={() => setCollection('XXX')}>xxx</button>
-          </div>
-        ) : (
-          <div>
-            {' '}
-            {loading ? (
-              <div className='app'>
-                {showScore ? (
-                  <div className='score-section'>
-                    You scored {score} out of {questions.length}
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <div className='question-count'>
-                        <span>Question {currentQuestion + 1}</span>/
-                        {questions.length}
-                      </div>
-                      <div className='question-text'>
-                        {questions[currentQuestion].questionText}
-                      </div>
+        <div className={styles.block}>
+          {collection === undefined ? (
+            <div>
+              {' '}
+              <button
+                className={styles.button}
+                onClick={() => setCollection('questions')}
+              >
+                questions
+              </button>
+              <button
+                onClick={() => setCollection('middle')}
+                className={styles.button}
+              >
+                middle
+              </button>
+              <button
+                onClick={() => setCollection('XXX')}
+                className={styles.button}
+              >
+                xxx
+              </button>
+            </div>
+          ) : (
+            <div>
+              {' '}
+              {loading ? (
+                <div className='app'>
+                  {showScore ? (
+                    <div className='score-section'>
+                      You scored {score} out of {questions.length}
                     </div>
-                    <SyntaxHighlighter language='javascript' style={dracula}>
-                      {questions[currentQuestion].code.replace(/(^"|"$)/g, '')}
-                    </SyntaxHighlighter>
-                    <div className={styles.answer_section}>
-                      {questions[currentQuestion].answerOptions.map(
-                        answerOption => (
-                          <button
-                            className={styles.answer}
-                            key={questions._id}
-                            onClick={() =>
-                              handleAnswerOptionClick(answerOption.isCorrect)
-                            }
-                          >
-                            {answerOption.answerText}
-                          </button>
-                        )
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <button onClick={fetchQuestions}>START</button>
-            )}
-          </div>
-        )}
+                  ) : (
+                    <>
+                      <div>
+                        <div className={styles.questionCount}>
+                          <span className={styles.questionText}>
+                            <p>What is the output?</p>
+                          </span>
 
-        <div></div>
+                          <span className={styles.questionText}>
+                            <p>
+                              Question {currentQuestion + 1}/{questions.length}
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                      <div className={styles.code}>
+                        <SyntaxHighlighter
+                          language='javascript'
+                          style={dracula}
+                        >
+                          {questions[currentQuestion].code.replace(
+                            /(^"|"$)/g,
+                            ''
+                          )}
+                        </SyntaxHighlighter>
+                      </div>
+
+                      <div className={styles.answer_section}>
+                        {questions[currentQuestion].answerOptions.map(
+                          answerOption => (
+                            <button
+                              className={styles.answer}
+                              key={questions._id}
+                              onClick={() =>
+                                handleAnswerOptionClick(
+                                  answerOption.isCorrect,
+                                  questions,
+                                  currentQuestion
+                                )
+                              }
+                            >
+                              {answerOption.answerText}
+                            </button>
+                          )
+                        )}
+                      </div>
+                      <div style={barWidth} className={styles.bar}>
+                        <span>{totalCount.toFixed(0)}sec</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <button onClick={fetchQuestions} className={styles.button}>
+                  START
+                </button>
+              )}
+            </div>
+          )}
+
+          <div></div>
+        </div>
       </div>
     </>
   )

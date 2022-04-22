@@ -3,7 +3,9 @@ body {
   padding: 0;
   margin: 0;
  font-family: monospace;
- 
+  background: #483ab6;
+
+       font-size:1rem;       
    
 }
 
