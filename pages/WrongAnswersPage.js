@@ -20,7 +20,7 @@ function WrongAnswersPage () {
     }
   }
 
-  console.log(remainingQuestions)
+ 
 
   return (
     <div className={styles.container}>

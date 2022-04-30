@@ -8,7 +8,7 @@ import {
   wrongQuestions,
   resetWrongQuestions
 } from '../store/reducers/wrongQuestionsCounter'
-
+import clientPromise from "../lib/mongodb";
 // import { CopyBlock, dracula } from 'react-code-blocks';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -17,25 +17,23 @@ import styles from '../styles/Qpage.module.css'
 
 import shuffleArray from '../util/shuffle'
 
-import useSWR from 'swr'
-const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-export default function Questions () {
+ 
+
+export default function Questions ({data}) {
+  console.log(data)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [showScore, setShowScore] = useState(false)
 
   const [questions, setQuestions] = useState({})
-  const [collection, setCollection] = useState()
+  const [collection, setCollection] = useState("XXX" )
   const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(false)
   const [wrongQ, setWrongQ] = useState([])
 
   // total count accumulated
   const [totalCount, setTotalCount] = useState(20)
-  const { data, error } = useSWR(
-    `/api/QApages?collection=${collection}`,
-    fetcher
-  )
+ 
 
   const [width, setWidth] = useState(100)
   const [isLoading, setIsLoading] = useState(true)
@@ -69,10 +67,7 @@ export default function Questions () {
     } else {
       setIsActive(false)
       setShowScore(true)
-      console.log(
-        'xx',
-        data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
-      )
+      
     }
   }
 
@@ -130,9 +125,7 @@ export default function Questions () {
     return () => clearInterval(interval)
   }, [isActive, totalCount]) // try with and without totalCount.
 
-  console.log('wrongQuestion', wrongQuestion)
-  console.log('wrongQ', wrongQ)
-  //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
+ console.log(data)
 
   return (
     <>
@@ -167,7 +160,8 @@ export default function Questions () {
                 <div className='app'>
                   {showScore ? (
                     <div className='score-section'>
-                      You scored {score} out of {questions.length}
+                     <p>You scored {score} out of {questions.length}</p> 
+                     <button onClick ={clickHandler}>Do you wan to save</button>
                     </div>
                   ) : (
                     <>
@@ -219,6 +213,8 @@ export default function Questions () {
                         <span>{totalCount.toFixed(0)}sec</span>
                       </div>
                     </>
+
+                  
                   )}
                 </div>
               ) : (
@@ -234,4 +230,21 @@ export default function Questions () {
       </div>
     </>
   )
+}
+
+
+export async function getServerSideProps({ query: { collection } }){
+    console.log(typeof collection, collection);
+
+  
+  const client = await clientPromise;
+ 
+  const db = client.db("javascript_questions");
+ 
+  let data = await db.collection(collection).find({}).toArray();
+  data = JSON.parse(JSON.stringify(data));
+
+  return {
+    props: { data },
+  };
 }
