@@ -3,13 +3,20 @@ import Link from 'next/link'
 import QApage from './QApage'
 import styles from '../styles/Qpage.module.css'
 import {useSession} from 'next-auth/react'
+  import useSWR from 'swr'
+
+export default function Home (  ) {
+
+const fetcher = (...args) => fetch(...args).then(res => res.json())
+// const {data: session, status} = useSession();
+
+ const { data, error } = useSWR(
+    `/api/leaderBoardApi`,
+    fetcher
+  )
 
 
-export default function Home ( ) {
-  
-const {data: session, status} = useSession();
-
-console.log(session.user.name)
+  console.log(data)
   return (
     <div className={styles.container}>
       <Head>
@@ -18,15 +25,16 @@ console.log(session.user.name)
       </Head>
 
       <main>
-        <div>
-          <Link href='/QApage'>
-            <a>QA</a>
-          </Link>
-          <span>---</span>
-          <Link href='/WrongAnswersPage'>
-            <a>WrongAnswersPage</a>
-          </Link>
-        </div>
+       <div>
+         {
+           data.map(x => 
+           <p key={x._id}>{x.name} : {x.SCORE}</p>
+           
+           
+           
+           )
+         }
+       </div>
       </main>
 
       <footer>
@@ -35,3 +43,7 @@ console.log(session.user.name)
     </div>
   )
 }
+
+
+
+

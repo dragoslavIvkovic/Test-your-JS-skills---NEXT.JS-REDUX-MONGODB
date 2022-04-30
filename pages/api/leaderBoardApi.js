@@ -2,14 +2,16 @@ import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler (req, res)   {
   const { db } = await connectToDatabase();
-  const collection = req.query.collection;
+ 
 
-  const questions = await db
-   .collection(collection)
+  const users = await db
+   .collection("sorts")
     .find({})
-    .sort({ metacritic: -1 })
+     
     .limit(20)
     .toArray();
 
-  res.json(questions);
+  res.json(users);
 };
+
+
