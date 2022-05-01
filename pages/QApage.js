@@ -14,11 +14,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useRouter } from "next/router";
 import styles from "../styles/Qpage.module.css";
-
+import { useSession } from 'next-auth/react'
 import shuffleArray from "../util/shuffle";
+ 
 
-export default function Questions({ data }) {
-  console.log(data);
+export default function Questions({ data  }) {
+  const {data: session, status} = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
 
@@ -122,12 +123,36 @@ export default function Questions({ data }) {
   }, [isActive, totalCount]); // try with and without totalCount.
 
   console.log(data);
+  
 
   useEffect(() => {
     if (collection !== router.query.collection) {
       router.push(`/QApage?collection=${collection}`);
     }
   }, [collection]);
+
+
+
+let submitForm = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    let res = await fetch("http://localhost:3000/api/usersAPI", {
+      method: "POST",
+      body: JSON.stringify({
+        user: session.user.name,
+        score: JSON.stringify(score),
+      }),
+    });
+    res = await res.json();
+    setPostsState([...postsState, res]);
+    setTitle("");
+    setContent("");
+    setLoading(false);
+  };
+
+
+console.log("session" ,session?.user.name)
+console.log("score" ,typeof score)
 
   return (
     <>
@@ -165,7 +190,7 @@ export default function Questions({ data }) {
                       <p>
                         You scored {score} out of {questions.length}
                       </p>
-                      <button  >Do you wan to save</button>
+                      <button onClick={submitForm} >Do you wan to save</button>
                     </div>
                   ) : (
                     <>
@@ -235,16 +260,16 @@ export default function Questions({ data }) {
 }
 
 export async function getServerSideProps({ query: { collection = "xxx" } }) {
-  console.log(typeof collection, collection);
-
-  const client = await clientPromise;
+ const client = await clientPromise;
 
   const db = client.db("javascript_questions");
-
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
+
+
+
   return {
-    props: { data },
+    props: { data  },
   };
 }
