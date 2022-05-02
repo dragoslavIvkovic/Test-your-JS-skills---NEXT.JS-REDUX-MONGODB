@@ -140,15 +140,15 @@ let submitForm = async (e) => {
       method: "POST",
       body: JSON.stringify({
         user: session.user.name,
-        score: JSON.stringify(score),
+        score: Number(score),
       }),
     });
     res = await res.json();
    
   };
+console.log("score ",Object.values(score), typeof score)
 
-
-console.log("session" ,session?.user.name)
+console.log("session" ,!session)
 console.log("score" ,typeof score)
  
 
@@ -187,8 +187,20 @@ console.log("score" ,typeof score)
                     <div className="score-section">
                       <p>
                         You scored {score} out of {questions.length}
-                      </p>
-                      <button onClick={submitForm} >Do you wan to save</button>
+                      </p> 
+                      <div> { !session ? ( <p>If you want to save score login first</p>) : <button onClick={submitForm} >Do you wan to save</button>
+
+
+                      }
+
+
+
+                      
+</div>
+
+
+
+
                     </div>
                   ) : (
                     <>

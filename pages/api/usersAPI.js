@@ -23,7 +23,7 @@ const options = { upsert: true };
       res.json(newScore);
       break;
     case "GET":
-      const users = await db.collection("leaderboard").find({}).toArray();
+      const users = await db.collection("leaderboard.sort").find({}).toArray();
       res.json(users);
       break;
   }
