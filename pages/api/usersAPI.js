@@ -7,11 +7,23 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       let bodyObject = JSON.parse(req.body);
-      let newScore = await db.collection("users").insertOne(bodyObject);
-      res.json(newScore.ops[0]);
+      console.log("bodyObject" ,bodyObject)
+const query = { user:bodyObject.user };
+const update = { $set:{score:bodyObject.score}};
+const options = { upsert: true };
+ 
+
+
+         let newScore = await db.collection("leaderboard").findOneAndUpdate( query, update , options );
+
+
+
+ 
+
+      res.json(newScore);
       break;
     case "GET":
-      const users = await db.collection("users").find({}).toArray();
+      const users = await db.collection("leaderboard").find({}).toArray();
       res.json(users);
       break;
   }

@@ -10,7 +10,7 @@ export default function Home ({users}) {
   // // const {data: session, status} = useSession();
 
   // const { data, error } = useSWR(`/api/leaderBoardApi`, fetcher)
- 
+ console.log(users)
   return (
     <div className={styles.container}>
       <Head>
@@ -22,7 +22,7 @@ export default function Home ({users}) {
         <div>
           {users?.map(x => (
             <p key={x._id}>
-              {x.name} : {x.SCORE}
+              {x.user} : {x.score}
             </p>
           ))}
         </div>

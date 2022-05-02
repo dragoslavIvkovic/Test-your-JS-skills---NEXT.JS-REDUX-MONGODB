@@ -30,7 +30,7 @@ export default function Questions({ data  }) {
   const [wrongQ, setWrongQ] = useState([]);
 
   // total count accumulated
-  const [totalCount, setTotalCount] = useState(20);
+  const [totalCount, setTotalCount] = useState(10);
 
   const [width, setWidth] = useState(100);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,7 +68,7 @@ export default function Questions({ data  }) {
     }
   };
 
-  // const shuffle = () => 0.20 - Math.random()
+  // const shuffle = () => 0.10 - Math.random()
 
   function startFn() {
     setIsActive(!isActive);
@@ -76,7 +76,7 @@ export default function Questions({ data  }) {
   function clear() {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
-      setTotalCount(20);
+      setTotalCount(10);
       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
     } else if (nextQuestion < questions.length) {
       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
@@ -87,7 +87,7 @@ export default function Questions({ data  }) {
   }
 
   const barWidth = {
-    width: totalCount * 20,
+    width: totalCount * 10,
   };
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function Questions({ data  }) {
     if (isActive) {
       interval = setInterval(() => {
         totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
-        setWidth(width - 20);
+        setWidth(width - 10);
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setIsActive(false);
@@ -144,15 +144,13 @@ let submitForm = async (e) => {
       }),
     });
     res = await res.json();
-    setPostsState([...postsState, res]);
-    setTitle("");
-    setContent("");
-    setLoading(false);
+   
   };
 
 
 console.log("session" ,session?.user.name)
 console.log("score" ,typeof score)
+ 
 
   return (
     <>
