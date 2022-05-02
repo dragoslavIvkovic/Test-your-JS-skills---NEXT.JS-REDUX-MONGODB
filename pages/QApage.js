@@ -1,118 +1,115 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-import { useSelector, useDispatch } from 'react-redux'
-import { increment, reset } from '../store/reducers/counterSlice'
+import { useSelector, useDispatch } from "react-redux";
+import { increment, reset } from "../store/reducers/counterSlice";
 import {
   addWrongQuestions,
   selectWrongQuestions,
   wrongQuestions,
-  resetWrongQuestions
-} from '../store/reducers/wrongQuestionsCounter'
+  resetWrongQuestions,
+} from "../store/reducers/wrongQuestionsCounter";
 import clientPromise from "../lib/mongodb";
 // import { CopyBlock, dracula } from 'react-code-blocks';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
-
-import styles from '../styles/Qpage.module.css'
-
-import shuffleArray from '../util/shuffle'
-
-
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { useRouter } from "next/router";
+import styles from "../styles/Qpage.module.css";
+import { useSession } from 'next-auth/react'
+import shuffleArray from "../util/shuffle";
  
 
-export default function Questions ({data}) {
-  console.log(data)
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [showScore, setShowScore] = useState(false)
+export default function Questions({ data  }) {
+  const {data: session, status} = useSession();
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showScore, setShowScore] = useState(false);
 
-  const [questions, setQuestions] = useState({})
-  const [collection, setCollection] = useState("XXX" )
-  const [loading, setLoading] = useState(false)
-  const [isActive, setIsActive] = useState(false)
-  const [wrongQ, setWrongQ] = useState([])
+  const [questions, setQuestions] = useState({});
+  const [collection, setCollection] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [wrongQ, setWrongQ] = useState([]);
 
   // total count accumulated
-  const [totalCount, setTotalCount] = useState(20)
- 
+  const [totalCount, setTotalCount] = useState(10);
 
-  const [width, setWidth] = useState(100)
-  const [isLoading, setIsLoading] = useState(true)
+  const [width, setWidth] = useState(100);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   const fetchQuestions = () => {
-    setQuestions(shuffleArray(data))
-    setLoading(true)
-    startFn()
-    dispatch(reset())
-    dispatch(resetWrongQuestions())
-  }
+    setQuestions(shuffleArray(data));
+    setLoading(true);
+    startFn();
+    dispatch(reset());
+    dispatch(resetWrongQuestions());
+  };
 
-  const dispatch = useDispatch()
-  const counter = useSelector(state => state.counter)
-  const wrongQuestion = useSelector(state => state.wrongQuestions)
-  const score = Object.values(counter)
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter);
+  const wrongQuestion = useSelector((state) => state.wrongQuestions);
+  const score = Object.values(counter);
 
-  const nextQuestion = currentQuestion + 1
+  const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect, questions, currentQuestion) => {
     if (isCorrect && nextQuestion < questions.length) {
-      dispatch(increment())
+      dispatch(increment());
 
-      setCurrentQuestion(nextQuestion)
-      startFn()
+      setCurrentQuestion(nextQuestion);
+      startFn();
     } else if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion)
-      startFn()
+      setCurrentQuestion(nextQuestion);
+      startFn();
 
-      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
+      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
     } else {
-      setIsActive(false)
-      setShowScore(true)
-      
+      setIsActive(false);
+      setShowScore(true);
     }
-  }
+  };
 
-  // const shuffle = () => 0.20 - Math.random()
+  // const shuffle = () => 0.10 - Math.random()
 
-  function startFn () {
-    setIsActive(!isActive)
+  function startFn() {
+    setIsActive(!isActive);
   }
-  function clear () {
+  function clear() {
     if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion)
-      setTotalCount(20)
-      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
+      setCurrentQuestion(nextQuestion);
+      setTotalCount(10);
+      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
     } else if (nextQuestion < questions.length) {
-      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
+      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
     } else if (nextQuestion === questions.length) {
-      setWrongQ(wrongQ => [...wrongQ, questions[currentQuestion]._id])
-      startFn()
+      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
+      startFn();
     }
   }
 
   const barWidth = {
-    width: totalCount * 20
-  }
+    width: totalCount * 10,
+  };
 
   useEffect(() => {
-    let interval = null
+    let interval = null;
 
     // on initial render, the effect fn is called, but isActive is false so nothing happens
     // when i click "Start", isActive changes so the effect fn fires and the if statement kicks off an interval to increment the count.
     // each time the totalCount changes, we want the interval to run again so we need the effect fn to call again. add totalCount to the dependency array so the effect fn will fire on totalCount change.
     if (isActive) {
       interval = setInterval(() => {
-        totalCount === 0 ? clear() : setTotalCount(totalCount - 1)
-        setWidth(width - 20)
-      }, 1000)
+        totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
+        setWidth(width - 10);
+      }, 1000);
     } else if (nextQuestion === questions.length) {
-      setIsActive(false)
-      setShowScore(true)
-      setWidth(100)
+      setIsActive(false);
+      setShowScore(true);
+      setWidth(100);
       dispatch(
         addWrongQuestions(
-          data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id))
+          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
         )
-      )
+      );
       //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
 
       // } else {
@@ -122,10 +119,38 @@ export default function Questions ({data}) {
     }
     // the clean up function will fire before running the effect fn again.
     // this way we only have 1 interval function running at a time.
-    return () => clearInterval(interval)
-  }, [isActive, totalCount]) // try with and without totalCount.
+    return () => clearInterval(interval);
+  }, [isActive, totalCount]); // try with and without totalCount.
 
- console.log(data)
+  console.log(data);
+  
+
+  useEffect(() => {
+    if (collection !== router.query.collection) {
+      router.push(`/QApage?collection=${collection}`);
+    }
+  }, [collection]);
+
+
+
+let submitForm = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    let res = await fetch("http://localhost:3000/api/usersAPI", {
+      method: "POST",
+      body: JSON.stringify({
+        user: session.user.name,
+        score: JSON.stringify(score),
+      }),
+    });
+    res = await res.json();
+   
+  };
+
+
+console.log("session" ,session?.user.name)
+console.log("score" ,typeof score)
+ 
 
   return (
     <>
@@ -133,21 +158,21 @@ export default function Questions ({data}) {
         <div className={styles.block}>
           {collection === undefined ? (
             <div>
-              {' '}
+              {" "}
               <button
                 className={styles.button}
-                onClick={() => setCollection('questions')}
+                onClick={() => setCollection("questions")}
               >
                 questions
               </button>
               <button
-                onClick={() => setCollection('middle')}
+                onClick={() => setCollection("middle")}
                 className={styles.button}
               >
                 middle
               </button>
               <button
-                onClick={() => setCollection('XXX')}
+                onClick={() => setCollection("XXX")}
                 className={styles.button}
               >
                 xxx
@@ -155,13 +180,15 @@ export default function Questions ({data}) {
             </div>
           ) : (
             <div>
-              {' '}
+              {" "}
               {loading ? (
-                <div className='app'>
+                <div className="app">
                   {showScore ? (
-                    <div className='score-section'>
-                     <p>You scored {score} out of {questions.length}</p> 
-                     <button onClick ={clickHandler}>Do you wan to save</button>
+                    <div className="score-section">
+                      <p>
+                        You scored {score} out of {questions.length}
+                      </p>
+                      <button onClick={submitForm} >Do you wan to save</button>
                     </div>
                   ) : (
                     <>
@@ -180,19 +207,19 @@ export default function Questions ({data}) {
                       </div>
                       <div className={styles.code}>
                         <SyntaxHighlighter
-                          language='javascript'
+                          language="javascript"
                           style={dracula}
                         >
                           {questions[currentQuestion].code.replace(
                             /(^"|"$)/g,
-                            ''
+                            ""
                           )}
                         </SyntaxHighlighter>
                       </div>
 
                       <div className={styles.answer_section}>
                         {questions[currentQuestion].answerOptions.map(
-                          answerOption => (
+                          (answerOption) => (
                             <button
                               className={styles.answer}
                               key={questions._id}
@@ -213,8 +240,6 @@ export default function Questions ({data}) {
                         <span>{totalCount.toFixed(0)}sec</span>
                       </div>
                     </>
-
-                  
                   )}
                 </div>
               ) : (
@@ -229,22 +254,20 @@ export default function Questions ({data}) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
+export async function getServerSideProps({ query: { collection = "xxx" } }) {
+ const client = await clientPromise;
 
-export async function getServerSideProps({ query: { collection } }){
-    console.log(typeof collection, collection);
-
-  
-  const client = await clientPromise;
- 
   const db = client.db("javascript_questions");
- 
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
+
+
+
   return {
-    props: { data },
+    props: { data  },
   };
 }
