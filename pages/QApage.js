@@ -14,12 +14,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useRouter } from "next/router";
 import styles from "../styles/Qpage.module.css";
-import { useSession } from 'next-auth/react'
+import { useSession } from "next-auth/react";
 import shuffleArray from "../util/shuffle";
- 
+import Link from 'next/link'
 
-export default function Questions({ data  }) {
-  const {data: session, status} = useSession();
+export default function Questions({ data }) {
+  const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
 
@@ -123,7 +123,6 @@ export default function Questions({ data  }) {
   }, [isActive, totalCount]); // try with and without totalCount.
 
   console.log(data);
-  
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -131,9 +130,7 @@ export default function Questions({ data  }) {
     }
   }, [collection]);
 
-
-
-let submitForm = async (e) => {
+  let submitForm = async (e) => {
     setLoading(true);
     e.preventDefault();
     let res = await fetch("http://localhost:3000/api/usersAPI", {
@@ -144,18 +141,41 @@ let submitForm = async (e) => {
       }),
     });
     res = await res.json();
-   
   };
-console.log("score ",Object.values(score), typeof score)
+  console.log("score ", Object.values(score), typeof score);
 
-console.log("session" ,!session)
-console.log("score" ,typeof score)
- 
+  console.log("session", !session);
+  console.log("score", typeof score);
 
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.block}>
+        <div>
+          {
+            <div>
+              {" "}
+              {!session ? (
+                <>
+                  <p>Plase login before continue</p>
+
+                  <Link href="/api/auth/signin">
+                    <a className={styles.link}>
+                      {session ? (
+                        <>
+                          Signed in as {session.user.email} <br />
+                          <button onClick={() => signOut()}>Sign out</button>
+                        </>
+                      ) : (
+                        <>
+                          Not signed in <br />
+                          <button onClick={() => signIn()}>Sign in</button>
+                        </>
+                      )}
+                    </a>
+                  </Link>
+                </>
+              ) : (
+                <div className={styles.block}>
           {collection === undefined ? (
             <div>
               {" "}
@@ -187,20 +207,14 @@ console.log("score" ,typeof score)
                     <div className="score-section">
                       <p>
                         You scored {score} out of {questions.length}
-                      </p> 
-                      <div> { !session ? ( <p>If you want to save score login first</p>) : <button onClick={submitForm} >Do you wan to save</button>
-
-
-                      }
-
-
-
-                      
-</div>
-
-
-
-
+                      </p>
+                      <div>
+                         
+                          <button onClick={submitForm}>
+                            Do you wan to save
+                          </button>
+                       
+                      </div>
                     </div>
                   ) : (
                     <>
@@ -264,22 +278,24 @@ console.log("score" ,typeof score)
 
           <div></div>
         </div>
+              )}
+            </div>
+          }
+        </div>
+        
       </div>
     </>
   );
 }
 
 export async function getServerSideProps({ query: { collection = "xxx" } }) {
- const client = await clientPromise;
+  const client = await clientPromise;
 
   const db = client.db("javascript_questions");
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
-
-
-
   return {
-    props: { data  },
+    props: { data },
   };
 }
