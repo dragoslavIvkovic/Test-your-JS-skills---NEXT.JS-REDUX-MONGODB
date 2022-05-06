@@ -144,7 +144,7 @@ export default function Questions({ data }) {
   };
   console.log("score ", Object.values(score), typeof score);
 
-  console.log("session", !session);
+  console.log("session", session);
   console.log("score", typeof score);
 
   return (
@@ -186,13 +186,13 @@ export default function Questions({ data }) {
                 questions
               </button>
               <button
-                onClick={() => setCollection("middle")}
+                onClick={() => setCollection("XXX")}
                 className={styles.button}
               >
                 middle
               </button>
               <button
-                onClick={() => setCollection("XXX")}
+                onClick={() => setCollection("radnome.xxx")}
                 className={styles.button}
               >
                 xxx
