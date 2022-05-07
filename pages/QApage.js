@@ -27,13 +27,13 @@ export default function Questions({ data }) {
   const [collection, setCollection] = useState();
   const [loading, setLoading] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [wrongQ, setWrongQ] = useState([]);
+ 
 
   // total count accumulated
   const [totalCount, setTotalCount] = useState(10);
 
   const [width, setWidth] = useState(100);
-  const [isLoading, setIsLoading] = useState(true);
+ 
   const router = useRouter();
 
   const fetchQuestions = () => {
@@ -64,16 +64,13 @@ export default function Questions({ data }) {
       setCurrentQuestion(nextQuestion);
       startFn();
       setTotalCount(10);
-      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
-    } else {
+      setWrongQuestions()
+    } else if (nextQuestion == questions.length) {
       setIsActive(false);
       setShowScore(true);
-       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
-       dispatch(
-        addWrongQuestions(
-          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
-        )
-      );
+       setWrongQuestions()
+       
+      
     }
   };
 
@@ -82,22 +79,31 @@ export default function Questions({ data }) {
   function startFn() {
     setIsActive(!isActive);
   }
+  function setWrongQuestions() {
+    dispatch(
+        addWrongQuestions(
+         questions[currentQuestion]
+        )
+      );
+  }
+
+
+console.log("currentQuestion",currentQuestion)
+
+
+
   function clear() {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       setTotalCount(10);
-      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
+      setWrongQuestions()
     } else if (nextQuestion < questions.length) {
-      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
+      setWrongQuestions()
     } else if (nextQuestion === questions.length) {
-      setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
+      setWrongQuestions()
       startFn();
       setWidth(100);
-      dispatch(
-        addWrongQuestions(
-          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
-        )
-      );
+      
     }
   }
 
@@ -120,7 +126,7 @@ export default function Questions({ data }) {
       setIsActive(false);
       setShowScore(true);
       
-      //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
+       
 
       // } else {
       //   setIsActive(false)
@@ -132,7 +138,7 @@ export default function Questions({ data }) {
     return () => clearInterval(interval);
   }, [isActive, totalCount]); // try with and without totalCount.
 
-  console.log(data);
+ 
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -154,6 +160,8 @@ export default function Questions({ data }) {
     res = await res.json();
   };
 
+
+  
   return (
     <>
       <div className={styles.container}>
@@ -193,13 +201,13 @@ export default function Questions({ data }) {
                         questions
                       </button>
                       <button
-                        onClick={() => setCollection("XXX")}
+                        onClick={() => setCollection("middle.sample")}
                         className={styles.button}
                       >
                         middle
                       </button>
                       <button
-                        onClick={() => setCollection("radnome.xxx")}
+                        onClick={() => setCollection("middle")}
                         className={styles.button}
                       >
                         xxx

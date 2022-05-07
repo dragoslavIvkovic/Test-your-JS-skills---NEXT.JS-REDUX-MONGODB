@@ -7,7 +7,8 @@ function WrongAnswersPage () {
   const [currentQuestions, setCurrentQuestion] = useState(0)
   const wrongQuestion = useSelector(state => state.wrongQuestions)
   const x = Object.values(wrongQuestion)
-  const wrongQ = x.flat(2)
+  const wrongQ = x.flat()
+   
   const [remainingQuestions, setRemainingQuestions] = useState(wrongQ.length)
 
   const nextQ = () => {
@@ -20,11 +21,14 @@ function WrongAnswersPage () {
     }
   }
 
- 
+  console.log(wrongQ)
+  console.log(x)
+  
 
   return (
     <div className={styles.container}>
       <div className={styles.block}>
+      <p>questions: {wrongQ.length}</p>
         <div className={styles.code}>
           {!wrongQ.length ? (
             'you answered everting'
@@ -32,7 +36,7 @@ function WrongAnswersPage () {
             <p>No more questions</p>
           ) : (
             <div>
-              <p>What is the output?</p>
+              
               <CopyBlock
                 language='javascript'
                 text={wrongQ[currentQuestions]?.code}
@@ -45,11 +49,11 @@ function WrongAnswersPage () {
               <p>{wrongQ[currentQuestions]?.answer}</p>
               <p>{wrongQ[currentQuestions]?.answerText}</p>
               {/* <p>{  wrongQ[currentQuestions].answerOptions.filter(x => x.isCorrect  === true && x.answerText  )}</p> */}
-              <p>
+              {/* <p>
                 {wrongQ[currentQuestions].answerOptions.find(x =>
                   x === true ? x.answerText : 0
                 )}
-              </p>
+              </p> */}
             </div>
           )}
         </div>
