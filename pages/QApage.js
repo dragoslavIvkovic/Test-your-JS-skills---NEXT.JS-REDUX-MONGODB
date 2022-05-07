@@ -16,8 +16,7 @@ import { useRouter } from "next/router";
 import styles from "../styles/Qpage.module.css";
 import { useSession } from "next-auth/react";
 import shuffleArray from "../util/shuffle";
-import Link from 'next/link'
-
+import Link from "next/link";
 
 export default function Questions({ data }) {
   const { data: session, status } = useSession();
@@ -53,19 +52,28 @@ export default function Questions({ data }) {
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect, questions, currentQuestion) => {
-    if (isCorrect && nextQuestion < questions.length) {
+    if (isCorrect && nextQuestion === questions.length) {
       dispatch(increment());
-
+      startFn();
+    } else if (isCorrect && nextQuestion < questions.length) {
+      dispatch(increment());
       setCurrentQuestion(nextQuestion);
       startFn();
+      setTotalCount(10);
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       startFn();
-
+      setTotalCount(10);
       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
     } else {
       setIsActive(false);
       setShowScore(true);
+       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
+       dispatch(
+        addWrongQuestions(
+          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
+        )
+      );
     }
   };
 
@@ -84,6 +92,12 @@ export default function Questions({ data }) {
     } else if (nextQuestion === questions.length) {
       setWrongQ((wrongQ) => [...wrongQ, questions[currentQuestion]._id]);
       startFn();
+      setWidth(100);
+      dispatch(
+        addWrongQuestions(
+          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
+        )
+      );
     }
   }
 
@@ -105,12 +119,7 @@ export default function Questions({ data }) {
     } else if (nextQuestion === questions.length) {
       setIsActive(false);
       setShowScore(true);
-      setWidth(100);
-      dispatch(
-        addWrongQuestions(
-          data.filter((obj1) => wrongQ.find((obj2) => obj1.id === obj2.id))
-        )
-      );
+      
       //  console.log("xx" , data.filter(obj1 => wrongQ.find(obj2 => obj1.id === obj2.id)))
 
       // } else {
@@ -139,15 +148,11 @@ export default function Questions({ data }) {
       body: JSON.stringify({
         user: session.user.name,
         score: Number(score),
-        avatar:session.user.image,
+        avatar: session.user.image,
       }),
     });
     res = await res.json();
   };
-
-
-  console.log("session", session);
-  console.log("session.user.image", session.user.image);
 
   return (
     <>
@@ -178,113 +183,114 @@ export default function Questions({ data }) {
                 </>
               ) : (
                 <div className={styles.block}>
-          {collection === undefined ? (
-            <div>
-              {" "}
-              <button
-                className={styles.button}
-                onClick={() => setCollection("questions")}
-              >
-                questions
-              </button>
-              <button
-                onClick={() => setCollection("XXX")}
-                className={styles.button}
-              >
-                middle
-              </button>
-              <button
-                onClick={() => setCollection("radnome.xxx")}
-                className={styles.button}
-              >
-                xxx
-              </button>
-            </div>
-          ) : (
-            <div>
-              {" "}
-              {loading ? (
-                <div className="app">
-                  {showScore ? (
-                    <div className="score-section">
-                      <p>
-                        You scored {score} out of {questions.length}
-                      </p>
-                      <div>
-                         
-                          <button onClick={submitForm}>
-                            Do you wan to save
-                          </button>
-                       
-                      </div>
+                  {collection === undefined ? (
+                    <div>
+                      {" "}
+                      <button
+                        className={styles.button}
+                        onClick={() => setCollection("questions")}
+                      >
+                        questions
+                      </button>
+                      <button
+                        onClick={() => setCollection("XXX")}
+                        className={styles.button}
+                      >
+                        middle
+                      </button>
+                      <button
+                        onClick={() => setCollection("radnome.xxx")}
+                        className={styles.button}
+                      >
+                        xxx
+                      </button>
                     </div>
                   ) : (
-                    <>
-                      <div>
-                        <div className={styles.questionCount}>
-                          <span className={styles.questionText}>
-                            <p>What is the output?</p>
-                          </span>
+                    <div>
+                      {" "}
+                      {loading ? (
+                        <div className="app">
+                          {showScore ? (
+                            <div className="score-section">
+                              <p>
+                                You scored {score} out of {questions.length}
+                              </p>
+                              <div>
+                                <button onClick={submitForm}>
+                                  Do you wan to save
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div>
+                                <div className={styles.questionCount}>
+                                  <span className={styles.questionText}>
+                                    <p>What is the output?</p>
+                                  </span>
 
-                          <span className={styles.questionText}>
-                            <p>
-                              Question {currentQuestion + 1}/{questions.length}
-                            </p>
-                          </span>
-                        </div>
-                      </div>
-                      <div className={styles.code}>
-                        <SyntaxHighlighter
-                          language="javascript"
-                          style={dracula}
-                        >
-                          {questions[currentQuestion].code.replace(
-                            /(^"|"$)/g,
-                            ""
+                                  <span className={styles.questionText}>
+                                    <p>
+                                      Question {currentQuestion + 1}/
+                                      {questions.length}
+                                    </p>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className={styles.code}>
+                                <SyntaxHighlighter
+                                  language="javascript"
+                                  style={dracula}
+                                >
+                                  {questions[currentQuestion].code.replace(
+                                    /(^"|"$)/g,
+                                    ""
+                                  )}
+                                </SyntaxHighlighter>
+                              </div>
+
+                              <div className={styles.answer_section}>
+                                {questions[currentQuestion].answerOptions.map(
+                                  (answerOption) => (
+                                    <button
+                                      className={styles.answer}
+                                      key={questions._id}
+                                      onClick={() =>
+                                        handleAnswerOptionClick(
+                                          answerOption.isCorrect,
+                                          questions,
+                                          currentQuestion
+                                        )
+                                      }
+                                    >
+                                      {answerOption.answerText}
+                                    </button>
+                                  )
+                                )}
+                              </div>
+                              <div style={barWidth} className={styles.bar}>
+                                <span>{totalCount.toFixed(0)}sec</span>
+                              </div>
+                            </>
                           )}
-                        </SyntaxHighlighter>
-                      </div>
-
-                      <div className={styles.answer_section}>
-                        {questions[currentQuestion].answerOptions.map(
-                          (answerOption) => (
-                            <button
-                              className={styles.answer}
-                              key={questions._id}
-                              onClick={() =>
-                                handleAnswerOptionClick(
-                                  answerOption.isCorrect,
-                                  questions,
-                                  currentQuestion
-                                )
-                              }
-                            >
-                              {answerOption.answerText}
-                            </button>
-                          )
-                        )}
-                      </div>
-                      <div style={barWidth} className={styles.bar}>
-                        <span>{totalCount.toFixed(0)}sec</span>
-                      </div>
-                    </>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={fetchQuestions}
+                          className={styles.button}
+                        >
+                          START
+                        </button>
+                      )}
+                    </div>
                   )}
-                </div>
-              ) : (
-                <button onClick={fetchQuestions} className={styles.button}>
-                  START
-                </button>
-              )}
-            </div>
-          )}
 
-          <div></div>
-        </div>
+                  <div></div>
+                </div>
               )}
             </div>
           }
         </div>
-        
       </div>
     </>
   );
