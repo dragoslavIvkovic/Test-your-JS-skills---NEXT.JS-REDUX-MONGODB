@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import shuffleArray from "../util/shuffle";
 import Link from 'next/link'
 
+
 export default function Questions({ data }) {
   const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -138,14 +139,15 @@ export default function Questions({ data }) {
       body: JSON.stringify({
         user: session.user.name,
         score: Number(score),
+        avatar:session.user.image,
       }),
     });
     res = await res.json();
   };
-  console.log("score ", Object.values(score), typeof score);
 
-  console.log("session", !session);
-  console.log("score", typeof score);
+
+  console.log("session", session);
+  console.log("session.user.image", session.user.image);
 
   return (
     <>
@@ -186,13 +188,13 @@ export default function Questions({ data }) {
                 questions
               </button>
               <button
-                onClick={() => setCollection("middle")}
+                onClick={() => setCollection("XXX")}
                 className={styles.button}
               >
                 middle
               </button>
               <button
-                onClick={() => setCollection("XXX")}
+                onClick={() => setCollection("radnome.xxx")}
                 className={styles.button}
               >
                 xxx
