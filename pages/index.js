@@ -4,6 +4,7 @@ import QApage from './QApage'
 import styles from '../styles/Qpage.module.css'
 import { useSession } from 'next-auth/react'
 import clientPromise from "../lib/mongodb";
+import Image from 'next/image'
 
 export default function Home ({users}) {
   // const fetcher = (...args) => fetch(...args).then(res => res.json())
@@ -22,7 +23,15 @@ export default function Home ({users}) {
         <div>
           {users?.map(x => (
             <p key={x._id}>
-              {x.user} : {x.score}
+             <Image
+        alt="Mountains"
+        src={x.avatar}
+        
+         width={20}
+                    height={20}
+      /> 
+      
+     {console.log(x)} : {x.user} : {x.score}
             </p>
           ))}
         </div>

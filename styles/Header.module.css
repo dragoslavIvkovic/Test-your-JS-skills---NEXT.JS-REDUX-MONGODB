@@ -33,6 +33,10 @@
 
  
 
-.topnavRight {
-  float: right;
+.topNavRight {
+  display: inline-block;
+   position: absolute;
+  right: 1rem;
 }
+
+ 
