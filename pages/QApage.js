@@ -37,8 +37,8 @@ export default function Questions({ data }) {
   // total count accumulated
   const [totalCount, setTotalCount] = useState(10);
 
-  const [width, setWidth] = useState(100);
- 
+  // const [width, setWidth] = useState(100);
+  let width = useRef(100);
   const router = useRouter();
 
   const fetchQuestions = () => {
@@ -46,7 +46,7 @@ export default function Questions({ data }) {
     loading.current = !loading.current
     startFn();
     dispatch(reset());
-    dispatch(resetWrongQuestions());
+    dispatch(resetWrongQuestions(0));
   };
 
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ export default function Questions({ data }) {
       setTotalCount(10);
       setWrongQuestions()
     } else if (nextQuestion == questions.length) {
-      setIsActive(false);
+      startFn();
       setShowScore(true);
        setWrongQuestions()
        
@@ -106,7 +106,7 @@ console.log("currentQuestion",currentQuestion)
     } else if (nextQuestion === questions.length) {
       setWrongQuestions()
       startFn();
-      setWidth(100);
+    width.current = 100;
       
     }
   }
@@ -124,10 +124,10 @@ console.log("currentQuestion",currentQuestion)
     if (isActive) {
       interval = setInterval(() => {
         totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
-        setWidth(width - 10);
+       width.current = width - 10;
       }, 1000);
     } else if (nextQuestion === questions.length) {
-      setIsActive(false);
+      startFn();
       setShowScore(true);
       
        
