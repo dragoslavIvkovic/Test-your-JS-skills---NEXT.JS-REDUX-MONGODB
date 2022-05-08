@@ -97,8 +97,7 @@ console.log("currentQuestion",currentQuestion)
       setCurrentQuestion(nextQuestion);
       setTotalCount(10);
       setWrongQuestions()
-    } else if (nextQuestion < questions.length) {
-      setWrongQuestions()
+ 
     } else if (nextQuestion === questions.length) {
       setWrongQuestions()
       startFn();
