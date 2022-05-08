@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, reset } from "../store/reducers/counterSlice";
@@ -25,7 +25,12 @@ export default function Questions({ data }) {
 
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+
+
+  let loading = useRef(false);
+
+
   const [isActive, setIsActive] = useState(false);
  
 
@@ -38,7 +43,7 @@ export default function Questions({ data }) {
 
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
-    setLoading(true);
+    loading.current = !loading.current
     startFn();
     dispatch(reset());
     dispatch(resetWrongQuestions());
@@ -146,7 +151,7 @@ console.log("currentQuestion",currentQuestion)
   }, [collection]);
 
   let submitForm = async (e) => {
-    setLoading(true);
+    loading.current = !loading.current
     e.preventDefault();
     let res = await fetch("http://localhost:3000/api/usersAPI", {
       method: "POST",
@@ -215,7 +220,7 @@ console.log("currentQuestion",currentQuestion)
                   ) : (
                     <div>
                       {" "}
-                      {loading ? (
+                      {loading.current ? (
                         <div className="app">
                           {showScore ? (
                             <div className="score-section">
