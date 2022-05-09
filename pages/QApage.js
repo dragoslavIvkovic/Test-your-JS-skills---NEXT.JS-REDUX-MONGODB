@@ -31,7 +31,8 @@ export default function Questions({ data,collectionALL }) {
   let loading = useRef(false);
 
 
-  const [isActive, setIsActive] = useState(false);
+  // const [isActive, setIsActive] = useState(false);
+  let isActive = useRef(false);
  
 
   // total count accumulated
@@ -64,19 +65,19 @@ export default function Questions({ data,collectionALL }) {
   const handleAnswerOptionClick = (isCorrect, questions, currentQuestion) => {
     if (isCorrect && nextQuestion === questions.length) {
       dispatch(increment());
-       setIsActive(true);
+      isActive.current = true;
     } else if (isCorrect && nextQuestion < questions.length) {
       dispatch(increment());
       setCurrentQuestion(nextQuestion);
-    setIsActive(true);
+    isActive.current = true;
       setTotalCount(10);
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
-     setIsActive(true);
+    isActive.current = true;
       setTotalCount(10);
       setWrongQuestions()
     } else if (nextQuestion == questions.length) {
-     setIsActive(false);
+     isActive.current = false;
       setShowScore(true);
        setWrongQuestions()
        
@@ -87,7 +88,7 @@ export default function Questions({ data,collectionALL }) {
   // const shuffle = () => 0.10 - Math.random()
 
   function startFn() {
-    setIsActive(!isActive);
+    isActive.current = !isActive.current;
   }
   function setWrongQuestions() {
     dispatch(
@@ -126,7 +127,7 @@ console.log("currentQuestion",currentQuestion)
     // on initial render, the effect fn is called, but isActive is false so nothing happens
     // when i click "Start", isActive changes so the effect fn fires and the if statement kicks off an interval to increment the count.
     // each time the totalCount changes, we want the interval to run again so we need the effect fn to call again. add totalCount to the dependency array so the effect fn will fire on totalCount change.
-    if (isActive) {
+    if (isActive.current) {
       interval = setInterval(() => {
         totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
        width.current = width - 10;
@@ -145,7 +146,7 @@ console.log("currentQuestion",currentQuestion)
     // the clean up function will fire before running the effect fn again.
     // this way we only have 1 interval function running at a time.
     return () => clearInterval(interval);
-  }, [isActive, totalCount]); // try with and without totalCount.
+  }, [isActive.current, totalCount]); // try with and without totalCount.
 
  
 
