@@ -38,7 +38,7 @@ export default function Home({ users }) {
 export async function getServerSideProps() {
   const client = await clientPromise;
 
-  const db = client.db("javascript_questions");
+  const db = client.db("leaderBoard");
 
   let res = await fetch("http://localhost:3000/api/usersAPI", {
     method: "GET",

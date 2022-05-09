@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import shuffleArray from "../util/shuffle";
 import Link from "next/link";
 
-export default function Questions({ data }) {
+export default function Questions({ data,collectionALL }) {
   const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -49,6 +49,11 @@ export default function Questions({ data }) {
     dispatch(resetWrongQuestions(0));
   };
 
+
+   
+
+
+
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
   const wrongQuestion = useSelector((state) => state.wrongQuestions);
@@ -59,19 +64,19 @@ export default function Questions({ data }) {
   const handleAnswerOptionClick = (isCorrect, questions, currentQuestion) => {
     if (isCorrect && nextQuestion === questions.length) {
       dispatch(increment());
-      startFn();
+       setIsActive(true);
     } else if (isCorrect && nextQuestion < questions.length) {
       dispatch(increment());
       setCurrentQuestion(nextQuestion);
-      startFn();
+    setIsActive(true);
       setTotalCount(10);
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
-      startFn();
+     setIsActive(true);
       setTotalCount(10);
       setWrongQuestions()
     } else if (nextQuestion == questions.length) {
-      startFn();
+     setIsActive(false);
       setShowScore(true);
        setWrongQuestions()
        
@@ -194,28 +199,18 @@ console.log("currentQuestion",currentQuestion)
                   </Link>
                 </>
               ) : (
-                <div className={styles.block}>
+                 <div className={styles.block}>
                   {collection === undefined ? (
                     <div>
-                      {" "}
-                      <button
-                        className={styles.button}
-                        onClick={() => setCollection("questions")}
-                      >
-                        questions
-                      </button>
-                      <button
-                        onClick={() => setCollection("middle.sample")}
-                        className={styles.button}
-                      >
-                        middle
-                      </button>
-                      <button
-                        onClick={() => setCollection("middle")}
-                        className={styles.button}
-                      >
-                        xxx
-                      </button>
+                      {collectionALL.map((x) => {
+                        return (
+                          <>
+                            <button onClick={() => setCollection(x.name)}>
+                              {x.name}
+                            </button>
+                          </>
+                        );
+                      })}
                     </div>
                   ) : (
                     <div>
@@ -315,7 +310,10 @@ export async function getServerSideProps({ query: { collection = "xxx" } }) {
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
+  let collectionALL = await db.listCollections().toArray();
+  collectionALL = JSON.parse(JSON.stringify(collectionALL));
+
   return {
-    props: { data },
+    props: { data, collectionALL },
   };
 }
