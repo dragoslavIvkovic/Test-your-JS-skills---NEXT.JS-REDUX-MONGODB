@@ -7,11 +7,6 @@ import clientPromise from "../lib/mongodb";
 import Image from "next/image";
 
 export default function Home({ users }) {
-  // const fetcher = (...args) => fetch(...args).then(res => res.json())
-  // // const {data: session, status} = useSession();
-
-  // const { data, error } = useSWR(`/api/leaderBoardApi`, fetcher)
-  console.log(users);
   return (
     <div className={styles.container}>
       <Head>
@@ -24,7 +19,7 @@ export default function Home({ users }) {
           {users?.map((x) => (
             <p key={x._id}>
               <Image alt="img" src={x.avatar} width={20} height={20} />
-              {console.log(x)} : {x.user} : {x.score}
+              {x.user} : {x.score}
             </p>
           ))}
         </div>

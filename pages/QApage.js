@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, reset } from "../store/reducers/counterSlice";
@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import shuffleArray from "../util/shuffle";
 import Link from "next/link";
 
-export default function Questions({ data,collectionALL }) {
+export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -27,13 +27,10 @@ export default function Questions({ data,collectionALL }) {
   const [collection, setCollection] = useState();
   // const [loading, setLoading] = useState(false);
 
-
   let loading = useRef(false);
-
 
   // const [isActive, setIsActive] = useState(false);
   let isActive = useRef(false);
- 
 
   // total count accumulated
   const [totalCount, setTotalCount] = useState(10);
@@ -44,16 +41,11 @@ export default function Questions({ data,collectionALL }) {
 
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
-    loading.current = !loading.current
+    loading.current = !loading.current;
     startFn();
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
   };
-
-
-   
-
-
 
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
@@ -69,19 +61,17 @@ export default function Questions({ data,collectionALL }) {
     } else if (isCorrect && nextQuestion < questions.length) {
       dispatch(increment());
       setCurrentQuestion(nextQuestion);
-    isActive.current = true;
+      isActive.current = true;
       setTotalCount(10);
     } else if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
-    isActive.current = true;
+      isActive.current = true;
       setTotalCount(10);
-      setWrongQuestions()
+      setWrongQuestions();
     } else if (nextQuestion == questions.length) {
-     isActive.current = false;
+      isActive.current = false;
       setShowScore(true);
-       setWrongQuestions()
-       
-      
+      setWrongQuestions();
     }
   };
 
@@ -90,30 +80,20 @@ export default function Questions({ data,collectionALL }) {
   function startFn() {
     isActive.current = !isActive.current;
   }
+
   function setWrongQuestions() {
-    dispatch(
-        addWrongQuestions(
-         questions[currentQuestion]
-        )
-      );
+    dispatch(addWrongQuestions(questions[currentQuestion]));
   }
-
-
-console.log("currentQuestion",currentQuestion)
-
-
 
   function clear() {
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       setTotalCount(10);
-      setWrongQuestions()
- 
+      setWrongQuestions();
     } else if (nextQuestion === questions.length) {
-      setWrongQuestions()
+      setWrongQuestions();
       startFn();
-    width.current = 100;
-      
+      width.current = 100;
     }
   }
 
@@ -124,31 +104,18 @@ console.log("currentQuestion",currentQuestion)
   useEffect(() => {
     let interval = null;
 
-    // on initial render, the effect fn is called, but isActive is false so nothing happens
-    // when i click "Start", isActive changes so the effect fn fires and the if statement kicks off an interval to increment the count.
-    // each time the totalCount changes, we want the interval to run again so we need the effect fn to call again. add totalCount to the dependency array so the effect fn will fire on totalCount change.
     if (isActive.current) {
       interval = setInterval(() => {
         totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
-       width.current = width - 10;
+        width.current = width - 10;
       }, 1000);
     } else if (nextQuestion === questions.length) {
       startFn();
       setShowScore(true);
-      
-       
-
-      // } else {
-      //   setIsActive(false)
-      //   setShowScore(true)
-      // }
     }
-    // the clean up function will fire before running the effect fn again.
-    // this way we only have 1 interval function running at a time.
-    return () => clearInterval(interval);
-  }, [isActive.current, totalCount]); // try with and without totalCount.
 
- 
+    return () => clearInterval(interval);
+  }, [isActive.current, totalCount]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -157,7 +124,7 @@ console.log("currentQuestion",currentQuestion)
   }, [collection]);
 
   let submitForm = async (e) => {
-    loading.current = !loading.current
+    loading.current = !loading.current;
     e.preventDefault();
     let res = await fetch("http://localhost:3000/api/usersAPI", {
       method: "POST",
@@ -170,8 +137,6 @@ console.log("currentQuestion",currentQuestion)
     res = await res.json();
   };
 
-
-  
   return (
     <>
       <div className={styles.container}>
@@ -200,7 +165,7 @@ console.log("currentQuestion",currentQuestion)
                   </Link>
                 </>
               ) : (
-                 <div className={styles.block}>
+                <div className={styles.block}>
                   {collection === undefined ? (
                     <div>
                       {collectionALL.map((x) => {
@@ -238,7 +203,7 @@ console.log("currentQuestion",currentQuestion)
                                   </span>
 
                                   <span className={styles.questionText}>
-                                    <p>
+                                    <p >
                                       Question {currentQuestion + 1}/
                                       {questions.length}
                                     </p>

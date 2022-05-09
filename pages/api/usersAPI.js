@@ -6,8 +6,7 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       let bodyObject = JSON.parse(req.body);
-      console.log("bodyObject", bodyObject);
-      const query = { user: bodyObject.user,avatar: bodyObject.avatar};
+      const query = { user: bodyObject.user, avatar: bodyObject.avatar };
       const update = { $set: { score: bodyObject.score } };
       const options = { upsert: true };
 
@@ -23,5 +22,3 @@ export default async function handler(req, res) {
       break;
   }
 }
-
-
