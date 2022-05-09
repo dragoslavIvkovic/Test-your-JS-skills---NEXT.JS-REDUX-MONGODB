@@ -76,7 +76,7 @@ export default function Questions({ data, collectionALL }) {
   };
 
   // const shuffle = () => 0.10 - Math.random()
-
+ 
   function startFn() {
     isActive.current = !isActive.current;
   }
@@ -130,8 +130,9 @@ export default function Questions({ data, collectionALL }) {
       method: "POST",
       body: JSON.stringify({
         user: session.user.name,
-        score: Number(score),
+        score: Number(score) ,
         avatar: session.user.image,
+        level: collection,
       }),
     });
     res = await res.json();
