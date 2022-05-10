@@ -1,7 +1,4 @@
-```
-  Easy, Medium, & Hard Questions 
-  and Easy, Medium, & Hard Questions map
-Progress so far```
+```Easy, Medium, & Hard Questions and Easy, Medium, & Hard Questions map, Progress so far```
 
 
 
