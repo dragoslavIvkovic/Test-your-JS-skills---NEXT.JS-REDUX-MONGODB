@@ -3,8 +3,15 @@ const nextConfig = {
   reactStrictMode: true,
   // domains: ['lh3.googleusercontent.com'],
   images: {
-    domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'], formats: ['image/avif', 'image/webp'],
-  },
-};
+    domains: ['lh3.googleusercontent.com','avatars.githubusercontent.com']
+  }
+}
+    
+    
+   
+ 
 
-module.exports = nextConfig;
+module.exports = nextConfig
+
+
+
