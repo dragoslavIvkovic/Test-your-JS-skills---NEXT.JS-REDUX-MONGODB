@@ -1,10 +1,7 @@
-import Head from "next/head";
-import Link from "next/link";
-import QApage from "./QApage";
-import styles from "../styles/Qpage.module.css";
-import { useSession } from "next-auth/react";
-import clientPromise from "../lib/mongodb";
-import Image from "next/image";
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../styles/Qpage.module.css';
+import clientPromise from '../lib/mongodb';
 
 export default function Home({ users }) {
   return (
@@ -13,7 +10,6 @@ export default function Home({ users }) {
         <title> </title>
         {/* <link rel='icon' href='/favicon.ico' /> */}
       </Head>
-
       <main>
         <div>
           {users?.map((x) => (
@@ -24,7 +20,6 @@ export default function Home({ users }) {
           ))}
         </div>
       </main>
-
       <footer></footer>
     </div>
   );
