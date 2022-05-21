@@ -1,20 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
- 
-import { increment, reset } from '../store/reducers/counterSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
+import { increment, reset } from "../store/reducers/counterSlice";
 import {
-  addWrongQuestions, resetWrongQuestions,
-} from '../store/reducers/wrongQuestionsCounter';
-import clientPromise from '../lib/mongodb';
+  addWrongQuestions,
+  resetWrongQuestions,
+} from "../store/reducers/wrongQuestionsCounter";
+import clientPromise from "../lib/mongodb";
 // import { CopyBlock, dracula } from 'react-code-blocks';
-import styles from '../styles/Qpage.module.css';
-import shuffleArray from '../util/shuffle';
-import BtnSignIn from '../components/BtnSignIn';
+import styles from "../styles/Qpage.module.css";
+import shuffleArray from "../util/shuffle";
+import BtnSignIn from "../components/BtnSignIn";
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -58,8 +59,6 @@ export default function Questions({ data, collectionALL }) {
     dispatch(resetWrongQuestions(0));
   };
 
-
-
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect) => {
@@ -91,9 +90,9 @@ export default function Questions({ data, collectionALL }) {
       setTotalCount(10);
       setWrongQuestions();
     } else if (nextQuestion === questions.length) {
+      isActive.current = false;
+      setShowScore(true);
       setWrongQuestions();
-      startFn();
-      width.current = 100;
     }
   }
 
@@ -127,11 +126,11 @@ export default function Questions({ data, collectionALL }) {
   const submitForm = async (e) => {
     loading.current = !loading.current;
     e.preventDefault();
-    let res = await fetch('http://localhost:3000/api/usersAPI', {
-      method: 'POST',
+    let res = await fetch("http://localhost:3000/api/usersAPI", {
+      method: "POST",
       body: JSON.stringify({
         user: session.user.name,
-        score: Number(score) ,
+        score: Number(score),
         avatar: session.user.image,
         level: collection,
       }),
@@ -140,12 +139,10 @@ export default function Questions({ data, collectionALL }) {
   };
 
   return (
-
     <div className={styles.container}>
       <div>
-
         <div>
-          { !session ? (
+          {!session ? (
             <>
               <p>Plase login before continue</p>
               <BtnSignIn />
@@ -188,9 +185,7 @@ export default function Questions({ data, collectionALL }) {
                               <span className={styles.questionText}>
                                 <p>
                                   Question
-                                  {currentQuestion + 1}
-                                  /
-                                  {questions.length}
+                                  {currentQuestion + 1}/{questions.length}
                                 </p>
                               </span>
                             </div>
@@ -203,7 +198,7 @@ export default function Questions({ data, collectionALL }) {
                               {questions[currentQuestion].code.replace(
                                 /(^"|"$)/g,
                                 // eslint-disable-next-line quotes
-                                "",
+                                ""
                               )}
                             </SyntaxHighlighter>
                           </div>
@@ -215,15 +210,17 @@ export default function Questions({ data, collectionALL }) {
                                   className={styles.answer}
                                   // eslint-disable-next-line no-underscore-dangle
                                   key={questions._id}
-                                  onClick={() => handleAnswerOptionClick(
-                                    answerOption.isCorrect,
-                                    questions,
-                                    currentQuestion,
-                                  )}
+                                  onClick={() =>
+                                    handleAnswerOptionClick(
+                                      answerOption.isCorrect,
+                                      questions,
+                                      currentQuestion
+                                    )
+                                  }
                                 >
                                   {answerOption.answerText}
                                 </button>
-                              ),
+                              )
                             )}
                           </div>
                           <div style={barWidth} className={styles.bar}>
@@ -237,10 +234,7 @@ export default function Questions({ data, collectionALL }) {
                     </div>
                   ) : (
                     // eslint-disable-next-line react/button-has-type
-                    <button
-                      onClick={fetchQuestions}
-                      className={styles.button}
-                    >
+                    <button onClick={fetchQuestions} className={styles.button}>
                       START
                     </button>
                   )}
@@ -251,17 +245,15 @@ export default function Questions({ data, collectionALL }) {
             </div>
           )}
         </div>
-
       </div>
     </div>
-
   );
 }
 
-export async function getServerSideProps({ query: { collection = 'xxx' } }) {
+export async function getServerSideProps({ query: { collection = "xxx" } }) {
   const client = await clientPromise;
 
-  const db = client.db('javascript_questions');
+  const db = client.db("javascript_questions");
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
