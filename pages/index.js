@@ -18,27 +18,30 @@ export default function Home({ users }) {
       </Head>
       <main className={styles.leaderBoard}>
         <div>
+          <p>beginners</p>
           {beginners?.map((x) => (
             <p key={x._id}>
               <Image alt="img" src={x.avatar} width={20} height={20} />
-              {x.user} : {x.score} : {x.level}
+              {x.user} : {x.score} 
             </p>
           ))}
         </div>
         
         <div>
+           <p>intermediate</p>
           {intermediate?.map((x) => (
             <p key={x._id}>
               <Image alt="img" src={x.avatar} width={20} height={20} />
-              {x.user} : {x.score} : {x.level}
+              {x.user} : {x.score}  
             </p>
           ))}
         </div>
         <div>
+             <p>hardcore</p>
           {hardcore?.map((x) => (
             <p key={x._id}>
               <Image alt="img" src={x.avatar} width={20} height={20} />
-              {x.user} : {x.score} : {x.level}
+              {x.user} : {x.score}  
             </p>
           ))}
         </div>

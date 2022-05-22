@@ -149,7 +149,7 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-  
+  console.log(data)
 
   return (
     <div className={styles.container}>
