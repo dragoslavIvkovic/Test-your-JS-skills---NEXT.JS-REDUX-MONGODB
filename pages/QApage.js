@@ -5,18 +5,16 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-
 import { increment, reset } from "../store/reducers/counterSlice";
 import {
   addWrongQuestions,
   resetWrongQuestions,
 } from "../store/reducers/wrongQuestionsCounter";
 import clientPromise from "../lib/mongodb";
-// import { CopyBlock, dracula } from 'react-code-blocks';
 import styles from "../styles/Qpage.module.css";
 import shuffleArray from "../util/shuffle";
 import BtnSignIn from "../components/BtnSignIn";
-import SaveComponents from "./SaveComponents";
+import SaveComponent from "../components/SaveComponent";
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -25,24 +23,13 @@ export default function Questions({ data, collectionALL }) {
 
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
-  // const [loading, setLoading] = useState(false);
-
-  const loading = useRef(false);
-  
-
-  // const [isActive, setIsActive] = useState(false);
+ const loading = useRef(false);
   const isActive = useRef(false);
-
-  // total count accumulated
-  const [totalCount, setTotalCount] = useState(10);
-
-  // const [width, setWidth] = useState(100);
+ const [totalTime, setTotalTime] = useState(10);
   const width = useRef(100);
   const router = useRouter();
-
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
-  // const wrongQuestion = useSelector((state) => state.wrongQuestions);
   const score = Object.values(counter);
 
   function startFn() {
@@ -65,7 +52,7 @@ export default function Questions({ data, collectionALL }) {
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (
-      (totalCount === 0 && nextQuestion === questions.length) ||
+      (totalTime === 0 && nextQuestion === questions.length) ||
       (!isCorrect && nextQuestion === questions.length) ||
       (isCorrect && nextQuestion === questions.length)
     ) {
@@ -75,52 +62,19 @@ export default function Questions({ data, collectionALL }) {
       dispatch(increment());
       setCurrentQuestion(nextQuestion);
       isActive.current = true;
-      setTotalCount(10);
+      setTotalTime(10);
     } else if (!isCorrect && nextQuestion < questions.length) {
       setWrongQuestions();
       setCurrentQuestion(nextQuestion);
       isActive.current = true;
-      setTotalCount(10);
+      setTotalTime(10);
     }
   };
-
-  // const handleAnswerOptionClick = (isCorrect) => {
-  //   if (isCorrect && nextQuestion === questions.length) {
-  //     dispatch(increment());
-  //     isActive.current = true;
-  //   } else if (isCorrect && nextQuestion < questions.length) {
-  //     dispatch(increment());
-  //     setCurrentQuestion(nextQuestion);
-  //     isActive.current = true;
-  //     setTotalCount(10);
-  //   } else if (nextQuestion < questions.length) {
-  //     setCurrentQuestion(nextQuestion);
-  //     isActive.current = true;
-  //     setTotalCount(10);
-  //     setWrongQuestions();
-  //   } else if (nextQuestion === questions.length) {
-  //     isActive.current = false;
-  //     setShowScore(true);
-  //     setWrongQuestions();
-  //   }
-  // };
-
+ 
   // const shuffle = () => 0.10 - Math.random()
-
-  // function clear() {
-  //   if (nextQuestion < questions.length) {
-  //     setCurrentQuestion(nextQuestion);
-  //     setTotalCount(10);
-  //     setWrongQuestions();
-  //   } else if (nextQuestion === questions.length) {
-  //     isActive.current = false;
-  //     setShowScore(true);
-  //     setWrongQuestions();
-  //   }
-  // }
-
-  const barWidth = {
-    width: totalCount * 10,
+ 
+  const countDownBarWith = {
+    width: totalTime * 10,
   };
 
   useEffect(() => {
@@ -129,9 +83,9 @@ export default function Questions({ data, collectionALL }) {
     if (isActive.current) {
       interval = setInterval(() => {
         // eslint-disable-next-line no-unused-expressions
-        totalCount === 0
+        totalTime === 0
           ? handleAnswerOptionClick()
-          : setTotalCount(totalCount - 1);
+          : setTotalTime(totalTime - 1);
         width.current = width - 10;
       }, 1000);
     } else if (nextQuestion === questions.length) {
@@ -141,7 +95,7 @@ export default function Questions({ data, collectionALL }) {
     }
 
     return () => clearInterval(interval);
-  }, [isActive.current, totalCount]);
+  }, [isActive.current, totalTime]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -149,7 +103,7 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-  console.log(data)
+ 
 
   return (
     <div className={styles.container}>
@@ -181,7 +135,7 @@ export default function Questions({ data, collectionALL }) {
                           out of
                           {questions.length}
                         </p>
-                        <SaveComponents/>
+                        <SaveComponent/>
                       </div>
                     ) : (
                       <>
@@ -229,9 +183,9 @@ export default function Questions({ data, collectionALL }) {
                             )
                           )}
                         </div>
-                        <div style={barWidth} className={styles.bar}>
+                        <div style={countDownBarWith} className={styles.bar}>
                           <span>
-                            {totalCount.toFixed(0)}
+                            {totalTime.toFixed(0)}
                             sec
                           </span>
                         </div>

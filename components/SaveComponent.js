@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
-function SaveComponents(  collection, score) {
+function SaveComponent(  collection, score) {
       const { data: session, status } = useSession();
  const [saved,setSaved] = useState(false)
 
-    const submitForm = async (e) => {
+    const saveScore = async (e) => {
     
     e.preventDefault();
   
@@ -34,7 +34,7 @@ function SaveComponents(  collection, score) {
   return (
     <>
       {!saved ? (
-        <button type="button" onClick={submitForm}>
+        <button type="button" onClick={saveScore}>
           Do you wan to save
         </button>
       ) : (
@@ -44,4 +44,4 @@ function SaveComponents(  collection, score) {
   );
 }
 
-export default SaveComponents;
+export default SaveComponent;

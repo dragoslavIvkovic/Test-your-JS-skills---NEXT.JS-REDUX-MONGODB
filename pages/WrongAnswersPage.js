@@ -31,7 +31,7 @@ function WrongAnswersPage() {
           ) : remainingQuestions == 0 ? (
             <p>No more questions</p>
           ) : (
-            <div>
+            <>
               <CopyBlock
                 language="javascript"
                 text={wrongQ[currentQuestions]?.code}
@@ -43,13 +43,7 @@ function WrongAnswersPage() {
 
               <p>{wrongQ[currentQuestions]?.answer}</p>
               <p>{wrongQ[currentQuestions]?.answerText}</p>
-              {/* <p>{  wrongQ[currentQuestions].answerOptions.filter(x => x.isCorrect  === true && x.answerText  )}</p> */}
-              {/* <p>
-                {wrongQ[currentQuestions].answerOptions.find(x =>
-                  x === true ? x.answerText : 0
-                )}
-              </p> */}
-            </div>
+            </>
           )}
         </div>
         <button onClick={nextQ}>next</button>
