@@ -11,7 +11,7 @@ import {
   resetWrongQuestions,
 } from "../store/reducers/wrongQuestionsCounter";
 import clientPromise from "../lib/mongodb";
-import styles from "../styles/Qpage.module.css";
+import styles from "../styles/Elements.module.css";
 import shuffleArray from "../util/shuffle";
 import BtnSignIn from "../components/BtnSignIn";
 import SaveComponent from "../components/SaveComponent";
@@ -106,7 +106,7 @@ export default function Questions({ data, collectionALL }) {
  
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerQuestions}>
       <>
         {!session ? (
           <>
@@ -118,7 +118,7 @@ export default function Questions({ data, collectionALL }) {
             {collection === undefined ? (
               <>
                 {collectionALL?.map((x) => (
-                  <button type="button" onClick={() => setCollection(x.name)}>
+                  <button className={styles.nextBtn} type="button" onClick={() => setCollection(x.name)}>
                     {x.name}
                   </button>
                 ))}
@@ -151,7 +151,8 @@ export default function Questions({ data, collectionALL }) {
                         </div>
 
                         <div className={styles.code}>
-                          <SyntaxHighlighter
+                                <SyntaxHighlighter
+                                    wrapLines={true}
                             language="javascript"
                             style={dracula}
                           >
@@ -194,7 +195,7 @@ export default function Questions({ data, collectionALL }) {
                   </div>
                 ) : (
                   // eslint-disable-next-line react/button-has-type
-                  <button onClick={fetchQuestions} className={styles.button}>
+                  <button onClick={fetchQuestions} className={styles.nextBtn}>
                     START
                   </button>
                 )}

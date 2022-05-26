@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/Qpage.module.css";
+import styles from "../styles/Elements.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { CopyBlock, dracula } from "react-code-blocks";
 
@@ -22,9 +22,11 @@ function WrongAnswersPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerQuestions}>
       <div className={styles.block}>
+        <div  className={styles.nextBtnContainer}> 
         <p>questions: {wrongQ.length}</p>
+        <button onClick={nextQ} className={styles.nextBtn}>next</button></div>
         <div className={styles.code}>
           {!wrongQ.length ? (
             "you answered everting"
@@ -39,14 +41,21 @@ function WrongAnswersPage() {
                 showLineNumbers={false}
                 highlight="1 -10"
                 codeBlock
-              />
-
-              <p>{wrongQ[currentQuestions]?.answer}</p>
-              <p>{wrongQ[currentQuestions]?.answerText}</p>
+                  />
+                  <div className="answer-container">
+                <div  className={styles.correctAnswer}>
+                    <p className={styles.correctTitle} >ANSWER:</p>
+                    <p  className={styles.correctText}> {wrongQ[currentQuestions]?.answer}</p>
+                    </div>
+                  <div className={styles.correctAnswer}>
+                    <p  className={styles.correctTitle}>EXPLANATION:</p>
+                      <p  className={styles.correctTextExplanation} > {wrongQ[currentQuestions]?.answerText}</p></div>
+                  </div>
+       
             </>
           )}
         </div>
-        <button onClick={nextQ}>next</button>
+       
       </div>
     </div>
   );
