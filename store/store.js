@@ -5,12 +5,14 @@ import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import counterSlice from './reducers/counterSlice';
-import wrongQuestionsCounter from './reducers/wrongQuestionsCounter';
+import wrongQueCounterSlice from './reducers/wrongQueCounterSlice';
+import scoreStateSlice from './reducers/showScoreSlice';
  
 
 const reducers = combineReducers({
  counter: counterSlice,
-    wrongQuestions: wrongQuestionsCounter
+    wrongQuestions: wrongQueCounterSlice,
+    showScoreState: scoreStateSlice
 });
 
 const persistConfig = {

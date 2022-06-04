@@ -9,12 +9,12 @@ import { increment, reset } from "../store/reducers/counterSlice";
 import {
   addWrongQuestions,
   resetWrongQuestions,
-} from "../store/reducers/wrongQuestionsCounter";
+} from "../store/reducers/wrongQueCounterSlice";
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
 import shuffleArray from "../util/shuffle";
 import BtnSignIn from "../components/BtnSignIn";
-import SaveComponent from "../components/SaveComponent";
+
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -31,6 +31,10 @@ export default function Questions({ data, collectionALL }) {
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
   const score = Object.values(counter);
+   
+  
+
+
 
   function startFn() {
     isActive.current = !isActive.current;
@@ -103,17 +107,12 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
- 
+   console.log("qua" ,score)
 
   return (
     <div className={styles.containerQuestions}>
       <>
-        {!session ? (
-          <>
-            <p>Please login before continue</p>
-            <BtnSignIn />
-          </>
-        ) : (
+        {
           <div className={styles.block}>
             {collection === undefined ? (
               <>
@@ -128,15 +127,9 @@ export default function Questions({ data, collectionALL }) {
                 {loading.current ? (
                   <div className="score">
                     {showScore ? (
-                      <div className="score-section">
-                        <p className="score-section">
-                          You scored
-                          {score}
-                          out of
-                          {questions.length}
-                        </p>
-                        <SaveComponent/>
-                      </div>
+                      <button onClick={() => router.push('/SaveComponent')}>
+                        See score
+                      </button>
                     ) : (
                       <>
                         <div className={styles.questionCount}>
@@ -151,8 +144,8 @@ export default function Questions({ data, collectionALL }) {
                         </div>
 
                         <div className={styles.code}>
-                                <SyntaxHighlighter
-                                    wrapLines={true}
+                          <SyntaxHighlighter
+                            wrapLines={true}
                             language="javascript"
                             style={dracula}
                           >
@@ -203,7 +196,7 @@ export default function Questions({ data, collectionALL }) {
             )}
             <div />
           </div>
-        )}
+        }
       </>
     </div>
   );

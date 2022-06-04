@@ -4,7 +4,7 @@ const initialState = {
   value: []
 }
 
-export const wrongQuestionsCounter = createSlice({
+export const wrongQueCounterSlice = createSlice({
   name: 'wrongQuestions',
   initialState,
   reducers: {
@@ -22,8 +22,8 @@ export const wrongQuestionsCounter = createSlice({
 export const {
   addWrongQuestions,
   resetWrongQuestions
-} = wrongQuestionsCounter.actions
+} = wrongQueCounterSlice.actions
 
 export const selectWrongQuestions = state => state.wrongQuestions.value
 
-export default wrongQuestionsCounter.reducer
+export default wrongQueCounterSlice.reducer

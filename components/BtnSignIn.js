@@ -28,3 +28,7 @@ function BtnSignIn({session, useSession, signIn, signOut}) {
 }
 
 export default BtnSignIn
+
+//  signOut({
+//       callbackUrl: `${window.location.origin}`
+//     })
