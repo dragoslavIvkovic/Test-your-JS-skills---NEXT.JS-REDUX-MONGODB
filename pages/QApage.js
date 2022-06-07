@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 
-import { useSelector, useDispatch } from "react-redux";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { increment, reset } from "../store/reducers/counterSlice";
+import { useSelector, useDispatch } from 'react-redux';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import { increment, reset } from '../store/reducers/counterSlice';
 import {
   addWrongQuestions,
   resetWrongQuestions,
-} from "../store/reducers/wrongQueCounterSlice";
-import clientPromise from "../lib/mongodb";
-import styles from "../styles/Elements.module.css";
-import shuffleArray from "../util/shuffle";
-import BtnSignIn from "../components/BtnSignIn";
+} from '../store/reducers/wrongQueCounterSlice';
+import clientPromise from '../lib/mongodb';
+import styles from '../styles/Elements.module.css';
+import shuffleArray from '../util/shuffle';
 
+import QuizLogic from '../components/QuizLogic';
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -23,18 +23,12 @@ export default function Questions({ data, collectionALL }) {
 
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
- const loading = useRef(false);
+  const loading = useRef(false);
   const isActive = useRef(false);
- const [totalTime, setTotalTime] = useState(10);
+  const [totalTime, setTotalTime] = useState(10);
   const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
-  const counter = useSelector((state) => state.counter);
-  const score = Object.values(counter);
-   
-  
-
-
 
   function startFn() {
     isActive.current = !isActive.current;
@@ -56,9 +50,9 @@ export default function Questions({ data, collectionALL }) {
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (
-      (totalTime === 0 && nextQuestion === questions.length) ||
-      (!isCorrect && nextQuestion === questions.length) ||
-      (isCorrect && nextQuestion === questions.length)
+      (totalTime === 0 && nextQuestion === questions.length)
+      || (!isCorrect && nextQuestion === questions.length)
+      || (isCorrect && nextQuestion === questions.length)
     ) {
       isActive.current = false;
       setShowScore(true);
@@ -74,9 +68,9 @@ export default function Questions({ data, collectionALL }) {
       setTotalTime(10);
     }
   };
- 
+
   // const shuffle = () => 0.10 - Math.random()
- 
+
   const countDownBarWith = {
     width: totalTime * 10,
   };
@@ -107,105 +101,23 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-   console.log("qua" ,score)
+  console.log( loading.current)
 
   return (
     <div className={styles.containerQuestions}>
-      <>
-        {
-          <div className={styles.block}>
-            {collection === undefined ? (
-              <>
-                {collectionALL?.map((x) => (
-                  <button className={styles.nextBtn} type="button" onClick={() => setCollection(x.name)}>
-                    {x.name}
-                  </button>
-                ))}
-              </>
-            ) : (
-              <>
-                {loading.current ? (
-                  <div className="score">
-                    {showScore ? (
-                      <button onClick={() => router.push('/SaveComponent')}>
-                        See score
-                      </button>
-                    ) : (
-                      <>
-                        <div className={styles.questionCount}>
-                          <p className={styles.questionText}>
-                            What is the output?
-                          </p>
 
-                          <p className={styles.questionText}>
-                            Question
-                            {currentQuestion + 1}/{questions.length}
-                          </p>
-                        </div>
+      <div className={styles.block}>
+        <QuizLogic />
+      </div>
 
-                        <div className={styles.code}>
-                          <SyntaxHighlighter
-                            wrapLines={true}
-                            language="javascript"
-                            style={dracula}
-                          >
-                            {questions[currentQuestion].code.replace(
-                              /(^"|"$)/g,
-                              // eslint-disable-next-line quotes
-                              ""
-                            )}
-                          </SyntaxHighlighter>
-                        </div>
-                        <div className={styles.answer_section}>
-                          {questions[currentQuestion].answerOptions.map(
-                            (answerOption) => (
-                              <button
-                                type="button"
-                                className={styles.answer}
-                                // eslint-disable-next-line no-underscore-dangle
-                                key={questions._id}
-                                onClick={() =>
-                                  handleAnswerOptionClick(
-                                    answerOption.isCorrect,
-                                    questions,
-                                    currentQuestion
-                                  )
-                                }
-                              >
-                                {answerOption.answerText}
-                              </button>
-                            )
-                          )}
-                        </div>
-                        <div style={countDownBarWith} className={styles.bar}>
-                          <span>
-                            {totalTime.toFixed(0)}
-                            sec
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  // eslint-disable-next-line react/button-has-type
-                  <button onClick={fetchQuestions} className={styles.nextBtn}>
-                    START
-                  </button>
-                )}
-              </>
-            )}
-            <div />
-          </div>
-        }
-      </>
     </div>
   );
 }
 
-export async function getServerSideProps({ query: { collection = "xxx" } }) {
+export async function getServerSideProps({ query: { collection = 'xxx' } }) {
   const client = await clientPromise;
 
-  const db = client.db("javascript_questions");
+  const db = client.db('javascript_questions');
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
