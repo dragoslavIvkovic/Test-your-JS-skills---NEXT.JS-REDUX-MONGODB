@@ -6,9 +6,8 @@ import styles from '../styles/Elements.module.css';
 // eslint-disable-next-line max-len
 function QuizLogic(questions, collection, collectionALL, setCollection, loading, showScore, currentQuestion, handleAnswerOptionClick, countDownBarWith, fetchQuestions, totalTime) {
   const { questions: que } = questions;
+  // const { loading: load } = loading;
 
-
-   
   const router = useRouter();
   if (!collection) {
     return (collectionALL?.map((x) => (
@@ -16,13 +15,13 @@ function QuizLogic(questions, collection, collectionALL, setCollection, loading,
         {x.name}
       </button>
     )));
-  } if (collection && loading.current && showScore) {
+  } if (collection && loading && showScore) {
     return (
       <button onClick={() => router.push('/SaveComponent')} type="button">
         See score
       </button>
     );
-  } if (collection && loading.current && !showScore) {
+  } if (collection && loading && !showScore) {
     <>
       <div className={styles.questionCount}>
         <p className={styles.questionText}>
@@ -76,7 +75,7 @@ function QuizLogic(questions, collection, collectionALL, setCollection, loading,
         </span>
       </div>
     </>;
-  } else if (collection && !loading.current) {
+  } else if (collection && !loading) {
     <button onClick={fetchQuestions} className={styles.nextBtn} type="button">
       START
     </button>;

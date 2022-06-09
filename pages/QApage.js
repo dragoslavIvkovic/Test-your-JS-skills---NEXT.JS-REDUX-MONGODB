@@ -13,8 +13,7 @@ import {
 import clientPromise from '../lib/mongodb';
 import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
-
-import QuizLogic from '../components/QuizLogic';
+import uuidv from '../util/uuidv';
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -101,13 +100,89 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-  console.log( loading.current)
+  const CollectionBtn = collectionALL?.map((x, i) => (
+    <button key={uuidv()} className={styles.nextBtn} type="button" onClick={() => setCollection(x.name)}>
+      {x.name}
+    </button>
+  ));
+
+  const QuizLogic = () => {
+    if (loading && showScore) {
+      <button onClick={() => router.push('/SaveComponent')} type="button">See score</button>;
+    } else if (loading && !showScore) {
+      <>
+        <div className={styles.questionCount}>
+          <p className={styles.questionText}>
+            What is the output?
+          </p>
+
+          <p className={styles.questionText}>
+            Question
+            {currentQuestion + 1}
+            /
+            {questions.length}
+          </p>
+        </div>
+
+        <div className={styles.code}>
+          <SyntaxHighlighter
+            wrapLines
+            language="javascript"
+            style={dracula}
+          >
+            {questions[currentQuestion].code.replace(
+              /(^"|"$)/g,
+              // eslint-disable-next-line quotes
+              "",
+            )}
+          </SyntaxHighlighter>
+        </div>
+        <div className={styles.answer_section}>
+          {questions[currentQuestion].answerOptions.map(
+            (answerOption) => (
+              <button
+                type="button"
+                className={styles.answer}
+                // eslint-disable-next-line no-underscore-dangle
+                key={questions._id}
+                onClick={() => handleAnswerOptionClick(
+                  answerOption.isCorrect,
+                  questions,
+                  currentQuestion,
+                )}
+              >
+                {answerOption.answerText}
+              </button>
+            ),
+          )}
+        </div>
+        <div style={countDownBarWith} className={styles.bar}>
+          <span>
+            {totalTime.toFixed(0)}
+            sec
+          </span>
+        </div>
+      </>;
+    } else if (!loading && !showScore) {
+      <button onClick={fetchQuestions} className={styles.nextBtn} type="button">
+        START
+      </button>;
+    }
+  };
+
+  // eslint-disable-next-line consistent-return
+  const QuizEngine = () => {
+    if (!collection) {
+      return { CollectionBtn };
+    }
+      <QuizLogic />;
+  };
 
   return (
     <div className={styles.containerQuestions}>
 
       <div className={styles.block}>
-        <QuizLogic />
+        <QuizEngine />
       </div>
 
     </div>
