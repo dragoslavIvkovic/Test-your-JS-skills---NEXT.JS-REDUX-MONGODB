@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       break;
     }
     case 'GET': {
-      const users = await db.collection('middle.leaderBoard').find({}).toArray();
+      const users = await db.collection('leaderBoard.sort').find({}).toArray();
       res.json(users);
       break;
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -5,16 +6,15 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
- 
 import { increment, reset } from '../store/reducers/counterSlice';
 import {
-  addWrongQuestions, resetWrongQuestions,
-} from '../store/reducers/wrongQuestionsCounter';
+  addWrongQuestions,
+  resetWrongQuestions,
+} from '../store/reducers/wrongQueCounterSlice';
 import clientPromise from '../lib/mongodb';
-// import { CopyBlock, dracula } from 'react-code-blocks';
-import styles from '../styles/Qpage.module.css';
+import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
-import BtnSignIn from '../components/BtnSignIn';
+import uudiv from '../util/uuidv';
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -23,24 +23,12 @@ export default function Questions({ data, collectionALL }) {
 
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
-  // const [loading, setLoading] = useState(false);
-
   const loading = useRef(false);
-
-  // const [isActive, setIsActive] = useState(false);
   const isActive = useRef(false);
-
-  // total count accumulated
-  const [totalCount, setTotalCount] = useState(10);
-
-  // const [width, setWidth] = useState(100);
+  const [totalTime, setTotalTime] = useState(10);
   const width = useRef(100);
   const router = useRouter();
-
   const dispatch = useDispatch();
-  const counter = useSelector((state) => state.counter);
-  // const wrongQuestion = useSelector((state) => state.wrongQuestions);
-  const score = Object.values(counter);
 
   function startFn() {
     isActive.current = !isActive.current;
@@ -58,47 +46,33 @@ export default function Questions({ data, collectionALL }) {
     dispatch(resetWrongQuestions(0));
   };
 
-
-
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect) => {
-    if (isCorrect && nextQuestion === questions.length) {
-      dispatch(increment());
-      isActive.current = true;
+    if (
+      (totalTime === 0 && nextQuestion === questions.length)
+      || (!isCorrect && nextQuestion === questions.length)
+      || (isCorrect && nextQuestion === questions.length)
+    ) {
+      isActive.current = false;
+      setShowScore(true);
     } else if (isCorrect && nextQuestion < questions.length) {
       dispatch(increment());
       setCurrentQuestion(nextQuestion);
       isActive.current = true;
-      setTotalCount(10);
-    } else if (nextQuestion < questions.length) {
+      setTotalTime(10);
+    } else if (!isCorrect && nextQuestion < questions.length) {
+      setWrongQuestions();
       setCurrentQuestion(nextQuestion);
       isActive.current = true;
-      setTotalCount(10);
-      setWrongQuestions();
-    } else if (nextQuestion === questions.length) {
-      isActive.current = false;
-      setShowScore(true);
-      setWrongQuestions();
+      setTotalTime(10);
     }
   };
 
   // const shuffle = () => 0.10 - Math.random()
 
-  function clear() {
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-      setTotalCount(10);
-      setWrongQuestions();
-    } else if (nextQuestion === questions.length) {
-      setWrongQuestions();
-      startFn();
-      width.current = 100;
-    }
-  }
-
-  const barWidth = {
-    width: totalCount * 10,
+  const countDownBarWith = {
+    width: totalTime * 10,
   };
 
   useEffect(() => {
@@ -107,16 +81,19 @@ export default function Questions({ data, collectionALL }) {
     if (isActive.current) {
       interval = setInterval(() => {
         // eslint-disable-next-line no-unused-expressions
-        totalCount === 0 ? clear() : setTotalCount(totalCount - 1);
+        totalTime === 0
+          ? handleAnswerOptionClick()
+          : setTotalTime(totalTime - 1);
         width.current = width - 10;
       }, 1000);
     } else if (nextQuestion === questions.length) {
+      setWrongQuestions();
       startFn();
       setShowScore(true);
     }
 
     return () => clearInterval(interval);
-  }, [isActive.current, totalCount]);
+  }, [isActive.current, totalTime]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -124,137 +101,95 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-  const submitForm = async (e) => {
-    loading.current = !loading.current;
-    e.preventDefault();
-    let res = await fetch('http://localhost:3000/api/usersAPI', {
-      method: 'POST',
-      body: JSON.stringify({
-        user: session.user.name,
-        score: Number(score) ,
-        avatar: session.user.image,
-        level: collection,
-      }),
-    });
-    res = await res.json();
-  };
-
   return (
+    <div className={styles.containerQuestions}>
 
-    <div className={styles.container}>
-      <div>
+      <div className={styles.block}>
+        {collection === undefined ? (
 
-        <div>
-          { !session ? (
-            <>
-              <p>Plase login before continue</p>
-              <BtnSignIn />
-            </>
-          ) : (
-            <div className={styles.block}>
-              {collection === undefined ? (
-                <div>
-                  {collectionALL.map((x) => (
-                    <button type="button" onClick={() => setCollection(x.name)}>
-                      {x.name}
-                    </button>
-                  ))}
-                </div>
+          collectionALL?.map((x) => (
+            <button className={styles.nextBtn} type="button" onClick={() => setCollection(x.name)}>
+              {x.name}
+            </button>
+          ))
+
+        ) : (
+
+          loading.current ? (
+            <div className="score">
+              {showScore ? (
+                <button onClick={() => router.push('/SaveComponent')} type="button">
+                  See score
+                </button>
               ) : (
-                <div>
-                  {loading.current ? (
-                    <div className="app">
-                      {showScore ? (
-                        <div className="score-section">
-                          <p>
-                            You scored
-                            {score}
-                            out of
-                            {questions.length}
-                          </p>
-                          <div>
-                            <button type="button" onClick={submitForm}>
-                              Do you wan to save
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div>
-                            <div className={styles.questionCount}>
-                              <span className={styles.questionText}>
-                                <p>What is the output?</p>
-                              </span>
-                              <span className={styles.questionText}>
-                                <p>
-                                  Question
-                                  {currentQuestion + 1}
-                                  /
-                                  {questions.length}
-                                </p>
-                              </span>
-                            </div>
-                          </div>
-                          <div className={styles.code}>
-                            <SyntaxHighlighter
-                              language="javascript"
-                              style={dracula}
-                            >
-                              {questions[currentQuestion].code.replace(
-                                /(^"|"$)/g,
-                                // eslint-disable-next-line quotes
-                                "",
-                              )}
-                            </SyntaxHighlighter>
-                          </div>
-                          <div className={styles.answer_section}>
-                            {questions[currentQuestion].answerOptions.map(
-                              (answerOption) => (
-                                <button
-                                  type="button"
-                                  className={styles.answer}
-                                  // eslint-disable-next-line no-underscore-dangle
-                                  key={questions._id}
-                                  onClick={() => handleAnswerOptionClick(
-                                    answerOption.isCorrect,
-                                    questions,
-                                    currentQuestion,
-                                  )}
-                                >
-                                  {answerOption.answerText}
-                                </button>
-                              ),
-                            )}
-                          </div>
-                          <div style={barWidth} className={styles.bar}>
-                            <span>
-                              {totalCount.toFixed(0)}
-                              sec
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    // eslint-disable-next-line react/button-has-type
-                    <button
-                      onClick={fetchQuestions}
-                      className={styles.button}
+                <>
+                  <div className={styles.questionCount}>
+                    <p className={styles.questionText}>
+                      What is the output?
+                    </p>
+
+                    <p className={styles.questionText}>
+                      Question
+                      {currentQuestion + 1}
+                      /
+                      {questions.length}
+                    </p>
+                  </div>
+
+                  <div className={styles.code}>
+                    <SyntaxHighlighter
+                      wrapLines
+                      language="javascript"
+                      style={dracula}
                     >
-                      START
-                    </button>
-                  )}
-                </div>
+                      {questions[currentQuestion].code.replace(
+                        /(^"|"$)/g,
+                        // eslint-disable-next-line quotes
+                        "",
+                      )}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className={styles.answer_section}>
+                    {questions[currentQuestion].answerOptions.map(
+                      (answerOption) => (
+                        <button
+                          type="button"
+                          className={styles.answer}
+                                // eslint-disable-next-line no-underscore-dangle
+                          // eslint-disable-next-line no-undef
+                          key={uudiv()}
+                          onClick={() => handleAnswerOptionClick(
+                            answerOption.isCorrect,
+                            questions,
+                            currentQuestion,
+                          )}
+                        >
+                          {answerOption.answerText}
+                        </button>
+                      ),
+                    )}
+                  </div>
+                  <div style={countDownBarWith} className={styles.bar}>
+                    <span>
+                      {totalTime.toFixed(0)}
+                      sec
+                    </span>
+                  </div>
+                </>
               )}
-
-              <div />
             </div>
-          )}
-        </div>
+          ) : (
+          // eslint-disable-next-line react/button-has-type
+            <button onClick={fetchQuestions} className={styles.nextBtn}>
+              START
+            </button>
+          )
 
+        )}
+        <div />
       </div>
-    </div>
 
+    </div>
   );
 }
 
