@@ -1,31 +1,30 @@
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
-import {combineReducers} from "redux";
+import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import counterSlice from './reducers/counterSlice';
-import wrongQuestionsCounter from './reducers/wrongQuestionsCounter';
- 
+import wrongQueCounterSlice from './reducers/wrongQueCounterSlice';
+import scoreStateSlice from './reducers/showScoreSlice';
 
 const reducers = combineReducers({
- counter: counterSlice,
-    wrongQuestions: wrongQuestionsCounter
+  counter: counterSlice,
+  wrongQuestions: wrongQueCounterSlice,
+  showScoreState: scoreStateSlice,
 });
 
 const persistConfig = {
-    key: 'root',
-    storage
+  key: 'root',
+  storage,
 };
-
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
-    reducer: persistedReducer,
-    devTools: process.env.NODE_ENV !== 'production',
-    middleware: [thunk]
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: [thunk],
 });
 
 export default store;
-
