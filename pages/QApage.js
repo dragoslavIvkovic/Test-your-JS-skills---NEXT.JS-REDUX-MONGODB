@@ -15,6 +15,7 @@ import clientPromise from '../lib/mongodb';
 import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
 import uudiv from '../util/uuidv';
+import QuizLogic from '../components/QuizLogic';
 
 export default function Questions({ data, collectionALL }) {
   const { data: session, status } = useSession();
@@ -101,75 +102,75 @@ export default function Questions({ data, collectionALL }) {
     }
   }, [collection]);
 
-  const CodeBlock = () => {
-    if (loading.current && showScore) {
-      return (<button
-                onClick={() => router.push('/SaveComponent')}
-                type="button"
-              >
-                See score
-              </button>)
-    } else if (loading.current && !showScore) {
-      return (
-       <>
-                <div className={styles.questionCount}>
-                  <p className={styles.questionText}>What is the output?</p>
+//   const CodeBlock = () => {
+//     if (loading.current && showScore) {
+//       return (<button
+//                 onClick={() => router.push('/SaveComponent')}
+//                 type="button"
+//               >
+//                 See score
+//               </button>)
+//     } else if (loading.current && !showScore) {
+//       return (
+//        <>
+//                 <div className={styles.questionCount}>
+//                   <p className={styles.questionText}>What is the output?</p>
 
-                  <p className={styles.questionText}>
-                    Question
-                    {currentQuestion + 1}
-                    /
-                    {questions.length}
-                  </p>
-                </div>
+//                   <p className={styles.questionText}>
+//                     Question
+//                     {currentQuestion + 1}
+//                     /
+//                     {questions.length}
+//                   </p>
+//                 </div>
 
-                <div className={styles.code}>
-                  <SyntaxHighlighter
-                    wrapLines
-                    language="javascript"
-                    style={dracula}
-                  >
-                    {questions[currentQuestion].code.replace(
-                      /(^"|"$)/g,
-                      // eslint-disable-next-line quotes
-                      "",
-                    )}
-                  </SyntaxHighlighter>
-                </div>
-                <div className={styles.answer_section}>
-                  {questions[currentQuestion].answerOptions.map(
-                    (answerOption) => (
-                      <button
-                        type="button"
-                        className={styles.answer}
-                        // eslint-disable-next-line no-underscore-dangle
-                        // eslint-disable-next-line no-undef
-                        key={uudiv()}
-                        onClick={() => handleAnswerOptionClick(
-                          answerOption.isCorrect,
-                          questions,
-                          currentQuestion,
-                        )}
-                      >
-                        {answerOption.answerText}
-                      </button>
-                    ),
-                  )}
-                </div>
-                <div style={countDownBarWith} className={styles.bar}>
-                  <span>
-                    {totalTime.toFixed(0)}
-                    sec
-                  </span>
-                </div>
-              </>
-            )
-    } else if (!loading.current) {
-      return ( <button onClick={fetchQuestions} className={styles.nextBtn}>
-            START
-          </button>)
-    }
-};
+//                 <div className={styles.code}>
+//                   <SyntaxHighlighter
+//                     wrapLines
+//                     language="javascript"
+//                     style={dracula}
+//                   >
+//                     {questions[currentQuestion].code.replace(
+//                       /(^"|"$)/g,
+//                       // eslint-disable-next-line quotes
+//                       "",
+//                     )}
+//                   </SyntaxHighlighter>
+//                 </div>
+//                 <div className={styles.answer_section}>
+//                   {questions[currentQuestion].answerOptions.map(
+//                     (answerOption) => (
+//                       <button
+//                         type="button"
+//                         className={styles.answer}
+//                         // eslint-disable-next-line no-underscore-dangle
+//                         // eslint-disable-next-line no-undef
+//                         key={uudiv()}
+//                         onClick={() => handleAnswerOptionClick(
+//                           answerOption.isCorrect,
+//                           questions,
+//                           currentQuestion,
+//                         )}
+//                       >
+//                         {answerOption.answerText}
+//                       </button>
+//                     ),
+//                   )}
+//                 </div>
+//                 <div style={countDownBarWith} className={styles.bar}>
+//                   <span>
+//                     {totalTime.toFixed(0)}
+//                     sec
+//                   </span>
+//                 </div>
+//               </>
+//             )
+//     } else if (!loading.current) {
+//       return ( <button onClick={fetchQuestions} className={styles.nextBtn}>
+//             START
+//           </button>)
+//     }
+// };
 
   return (
     <div className={styles.containerQuestions}>
@@ -183,7 +184,7 @@ export default function Questions({ data, collectionALL }) {
             </button>
           ))
 
-        ) : <CodeBlock />}
+        ) : <QuizLogic />}
         <div />
       </div>
 
