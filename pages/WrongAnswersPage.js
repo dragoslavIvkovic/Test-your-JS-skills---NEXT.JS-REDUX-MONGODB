@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CopyBlock, dracula } from 'react-code-blocks';
@@ -20,8 +22,6 @@ function WrongAnswersPage() {
       setRemainingQuestions(0);
     }
   };
-
-  
 
   return (
     <div className={styles.containerQuestions}>

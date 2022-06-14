@@ -16,14 +16,14 @@ function BtnSignIn({
             {session.user.email}
             {' '}
             <br />
-            <button onClick={() => signOut()} type="button">Sign out</button>
+            <button onClick={() => signOut({ callbackUrl: `${window.location.origin}/` })} type="button">Sign out</button>
           </>
         ) : (
           <>
             Not signed in
             {' '}
             <br />
-            <button onClick={() => signIn({ callbackUrl: `${window.location.origin}/` })} type="button">Sign in</button>
+            <button onClick={() => ({ session, callbackUrl: `${window.location.origin}/` })} type="button">Sign in</button>
           </>
         )}
       </a>

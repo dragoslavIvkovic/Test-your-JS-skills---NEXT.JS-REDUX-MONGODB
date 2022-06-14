@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
@@ -6,7 +7,7 @@ import thunk from 'redux-thunk';
 
 import counterSlice from './reducers/counterSlice';
 import wrongQueCounterSlice from './reducers/wrongQueCounterSlice';
-import scoreStateSlice from './reducers/showScoreSlice';
+import scoreStateSlice from './reducers/scoreStateSlice';
 
 const reducers = combineReducers({
   counter: counterSlice,
