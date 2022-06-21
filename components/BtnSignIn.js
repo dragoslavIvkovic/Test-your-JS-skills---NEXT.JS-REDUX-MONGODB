@@ -23,7 +23,7 @@ function BtnSignIn({
             Not signed in
             {' '}
             <br />
-            <button onClick={() => ({ session, callbackUrl: `${window.location.origin}/` })} type="button">Sign in</button>
+            <button onClick={() => signIn({ session, callbackUrl: `${window.location.origin}/SaveComponent` })} type="button">Sign in</button>
           </>
         )}
       </a>
