@@ -12,7 +12,6 @@ function SaveComponent() {
   const score = Object.values(counter);
   const lev = useSelector((state) => state.levels);
   const setLevel = Object.values(lev);
-  console.log("setLevel" ,  setLevel);
 
   const saveScore = async (e) => {
     e.preventDefault();
