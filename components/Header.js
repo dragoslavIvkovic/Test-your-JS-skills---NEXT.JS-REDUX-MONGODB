@@ -17,17 +17,20 @@ function Header() {
 
   return (
     <div>
-      <nav className={styles.topnav}>
+      <nav className={styles.topNav}>
+        <div>
+          {' '}
+          <a href="/" className={styles.link}>Home</a>
 
-        <a href="/" className={styles.link}>Home</a>
+          <a href="/QApage" className={styles.link}>QA</a>
 
-        <a href="/QApage" className={styles.link}>QA</a>
+        </div>
 
         <div className={styles.topNavRight}>
 
           <a href="/WrongAnswersPage" className={styles.link}>WrongAnswersPage</a>
 
-          <Link href="/api/auth/signin">
+          <Link className={styles.link} href="/api/auth/signin">
 
             {session ? (
               <>

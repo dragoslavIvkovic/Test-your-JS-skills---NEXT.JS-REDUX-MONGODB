@@ -49,18 +49,18 @@ export default function Questions({ data, collectionALL }) {
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect) => {
-    if (
+    if (isCorrect && nextQuestion < questions.length) {
+      dispatch(increment());
+      setCurrentQuestion(nextQuestion);
+      isActive.current = true;
+      setTotalTime(10);
+    } else if (
       (totalTime === 0 && nextQuestion === questions.length)
       || (!isCorrect && nextQuestion === questions.length)
       || (isCorrect && nextQuestion === questions.length)
     ) {
       isActive.current = false;
       setShowScore(true);
-    } else if (isCorrect && nextQuestion < questions.length) {
-      dispatch(increment());
-      setCurrentQuestion(nextQuestion);
-      isActive.current = true;
-      setTotalTime(10);
     } else if (!isCorrect && nextQuestion < questions.length) {
       setWrongQuestions();
       setCurrentQuestion(nextQuestion);
@@ -105,15 +105,31 @@ export default function Questions({ data, collectionALL }) {
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
         {collection === undefined ? (
-          collectionALL?.map((x) => (
+          <>
             <button
               className={styles.nextBtn}
               type="button"
-              onClick={() => setCollection(x.name)}
+              onClick={() => setCollection('beginnerSample')}
             >
-              {x.name}
+              beginner
             </button>
-          ))
+            <button
+              className={styles.nextBtn}
+              type="button"
+              onClick={() => setCollection('hardcoreSample')}
+            >
+              hardcore
+            </button>
+            <button
+              className={styles.nextBtn}
+              type="button"
+              onClick={() => setCollection('middleSample')}
+            >
+              middle
+            </button>
+
+          </>
+
         ) : loading.current ? (
           <div className="score">
             {showScore ? (
@@ -127,15 +143,12 @@ export default function Questions({ data, collectionALL }) {
               <>
                 <div className={styles.questionCount}>
                   <p className={styles.questionText}>What is the output?</p>
-
                   <p className={styles.questionText}>
-                    Question
                     {currentQuestion + 1}
                     /
                     {questions.length}
                   </p>
                 </div>
-
                 <div className={styles.code}>
                   <SyntaxHighlighter
                     wrapLines
@@ -190,17 +203,19 @@ export default function Questions({ data, collectionALL }) {
   );
 }
 
-export async function getServerSideProps({ query: { collection = 'xxx' } }) {
+export async function getServerSideProps({ query: { collection = 'beginner' } }) {
   const client = await clientPromise;
 
   const db = client.db('javascript_questions');
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
-  let collectionALL = await db.listCollections().toArray();
-  collectionALL = JSON.parse(JSON.stringify(collectionALL));
+  // let collectionALL = await db.listCollections().toArray();
+  // collectionALL = JSON.parse(JSON.stringify(collectionALL));
+
+  // const beginner = await db.collection('beginner.sample').find().toArray();
 
   return {
-    props: { data, collectionALL },
+    props: { data },
   };
 }
