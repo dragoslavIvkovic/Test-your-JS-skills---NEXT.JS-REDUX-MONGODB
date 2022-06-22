@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
- 
+
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
 
