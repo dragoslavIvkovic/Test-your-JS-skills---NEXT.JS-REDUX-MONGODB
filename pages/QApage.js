@@ -18,7 +18,6 @@ import shuffleArray from '../util/shuffle';
 import uudiv from '../util/uuidv';
 
 export default function Questions({ data }) {
-  const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
 
@@ -56,6 +55,11 @@ export default function Questions({ data }) {
       setCurrentQuestion(nextQuestion);
       isActive.current = true;
       setTotalTime(10);
+    } else if (!isCorrect && nextQuestion < questions.length) {
+      setWrongQuestions();
+      setCurrentQuestion(nextQuestion);
+      isActive.current = true;
+      setTotalTime(10);
     } else if (
       (totalTime === 0 && nextQuestion === questions.length)
       || (!isCorrect && nextQuestion === questions.length)
@@ -63,11 +67,6 @@ export default function Questions({ data }) {
     ) {
       isActive.current = false;
       setShowScore(true);
-    } else if (!isCorrect && nextQuestion < questions.length) {
-      setWrongQuestions();
-      setCurrentQuestion(nextQuestion);
-      isActive.current = true;
-      setTotalTime(10);
     }
   };
 
@@ -112,7 +111,7 @@ export default function Questions({ data }) {
               className={styles.nextBtn}
               type="button"
               onClick={() => setCollection('beginnerSample')}
-              
+
             >
               beginner
             </button>

@@ -6,8 +6,6 @@ import clientPromise from '../lib/mongodb';
 import uuidv from '../util/uuidv';
 
 export default function Home({ users }) {
-
-  console.log(typeof users)
   const beginnerSample = users.filter((user) => user.level === 'beginnerSample');
   const hardcoreSample = users.filter((user) => user.level === 'hardcoreSample');
   const middleSample = users.filter((user) => user.level === 'middleSample');

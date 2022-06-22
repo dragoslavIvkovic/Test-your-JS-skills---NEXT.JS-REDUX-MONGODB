@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
+ 
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
 
@@ -34,13 +35,11 @@ function SaveComponent() {
     }
   };
 
-  console.log('save', score);
-
   return (
 
     <div className={styles.saveSection}>
-      <p className="score-section">
-        You scored
+      <p className={styles.scoreSection}>
+        You scored =&nbsp;
         {score}
 
       </p>
@@ -51,8 +50,8 @@ function SaveComponent() {
         <p>
           {' '}
           {!saved ? (
-            <button type="button" onClick={saveScore}>
-              Do you wan to save
+            <button type="button" onClick={saveScore} className={styles.nextBtn}>
+              Do you wan to save ?
             </button>
           ) : (
             <p>Saved</p>
