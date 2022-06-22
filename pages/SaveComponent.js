@@ -1,32 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
 
-function SaveComponent({collection} ) {
+function SaveComponent() {
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(false);
-  const [levels, setLevels] = useState('');
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
   const score = Object.values(counter);
-
-  useEffect(() => {
-    setLevels(collection);
-  }, [collection]);
+  const lev = useSelector((state) => state.levels);
+  const setLevel = Object.values(lev);
+  console.log("setLevel" ,  setLevel);
 
   const saveScore = async (e) => {
     e.preventDefault();
     try {
-      setSaved(true); console.log(collection);
+      setSaved(true);
       let res = await fetch('http://localhost:3000/api/usersAPI', {
         method: 'POST',
         body: JSON.stringify({
           user: session.user.name,
           score: Number(score),
           avatar: session.user.image,
-          level: levels,
+          level: setLevel[0],
         }),
 
       });
@@ -36,6 +34,8 @@ function SaveComponent({collection} ) {
       setSaved(false);
     }
   };
+
+  console.log('save', score);
 
   return (
 

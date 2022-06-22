@@ -11,12 +11,13 @@ import {
   addWrongQuestions,
   resetWrongQuestions,
 } from '../store/reducers/wrongQueCounterSlice';
+import { setLevel } from '../store/reducers/collectionSlice';
 import clientPromise from '../lib/mongodb';
 import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
 import uudiv from '../util/uuidv';
 
-export default function Questions({ data, collectionALL }) {
+export default function Questions({ data }) {
   const { data: session, status } = useSession();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -44,6 +45,7 @@ export default function Questions({ data, collectionALL }) {
     startFn();
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
+    dispatch(setLevel(collection));
   };
 
   const nextQuestion = currentQuestion + 1;
@@ -110,6 +112,7 @@ export default function Questions({ data, collectionALL }) {
               className={styles.nextBtn}
               type="button"
               onClick={() => setCollection('beginnerSample')}
+              
             >
               beginner
             </button>
@@ -117,6 +120,7 @@ export default function Questions({ data, collectionALL }) {
               className={styles.nextBtn}
               type="button"
               onClick={() => setCollection('hardcoreSample')}
+              collection={collection}
             >
               hardcore
             </button>
@@ -124,6 +128,7 @@ export default function Questions({ data, collectionALL }) {
               className={styles.nextBtn}
               type="button"
               onClick={() => setCollection('middleSample')}
+              collection={collection}
             >
               middle
             </button>
