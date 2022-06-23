@@ -51,13 +51,13 @@ export default function Questions({ data }) {
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect && nextQuestion < questions.length) {
-      dispatch(increment());
       setCurrentQuestion(nextQuestion);
+      dispatch(increment());
       isActive.current = true;
       setTotalTime(10);
     } else if (!isCorrect && nextQuestion < questions.length) {
-      setWrongQuestions();
       setCurrentQuestion(nextQuestion);
+      setWrongQuestions();
       isActive.current = true;
       setTotalTime(10);
     } else if (

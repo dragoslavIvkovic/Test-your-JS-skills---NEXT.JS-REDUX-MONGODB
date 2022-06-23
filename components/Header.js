@@ -20,9 +20,9 @@ function Header() {
       <nav className={styles.topNav}>
         <div>
           {' '}
-          <a href="/" className={styles.link}>Home</a>
+          <a href="/" className={styles.link}>LeaderBoard</a>
 
-          <a href="/QApage" className={styles.link}>QA</a>
+          <a href="/QApage" className={styles.link}>Tests</a>
 
         </div>
 
