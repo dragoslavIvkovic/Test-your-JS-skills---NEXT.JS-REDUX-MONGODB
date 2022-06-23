@@ -54,7 +54,7 @@ function SaveComponent() {
               Do you wan to save ?
             </button>
           ) : (
-            <p>Saved</p>
+            <p className={styles.saved}>Saved</p>
           )}
 
         </p>

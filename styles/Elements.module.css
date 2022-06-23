@@ -59,7 +59,7 @@
 .questionText {
   text-align: start;
   /* margin-bottom: 2rem; */
-  
+
   font-weight: 900;
   font-size: 1rem;
   color: var(--main-bg-black);
@@ -101,8 +101,11 @@
 
 .topNav {
   overflow: hidden;
-  margin: 1rem 3rem; display: flex;
-  flex-wrap: wrap;display: flex;justify-content: space-between;
+  margin: 1rem 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
 }
 
 .link {
@@ -121,26 +124,24 @@
 
 .link:hover {
   border: 2px solid var(--main-bg-purple);
-  
-box-shadow: inset 5px 5px 14px #3f33a0,
-            inset -5px -5px 14px #5141cc
+
+  box-shadow: inset 5px 5px 14px #3f33a0, inset -5px -5px 14px #5141cc;
 }
 
 .link:active {
   font-weight: bold;
- 
-box-shadow: inset 5px 5px 14px #3f33a0,
-            inset -5px -5px 14px #5141cc
+
+  box-shadow: inset 5px 5px 14px #3f33a0, inset -5px -5px 14px #5141cc;
 }
 
 .topNavRight {
- 
   right: 1rem;
 }
 
 .nextBtnContainer {
   display: flex;
-  justify-content: space-between; cursor: pointer;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 .nextBtn {
@@ -242,25 +243,19 @@ box-shadow: inset 5px 5px 14px #3f33a0,
   grid-column-gap: 1vw;
   grid-row-gap: 1vh;
   width: max-content;
- 
 }
 
-@media  (max-width: 850px) {
-.leaderBoard {
-  font-size: 0.8rem;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 1vw;
-  grid-row-gap: 1vh;
-  width: max-content;
- 
+@media (max-width: 850px) {
+  .leaderBoard {
+    font-size: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 1vw;
+    grid-row-gap: 1vh;
+    width: max-content;
+  }
 }
-}
-  
- 
-
-
 
 .levelContainer {
   text-transform: uppercase;
@@ -286,7 +281,7 @@ box-shadow: inset 5px 5px 14px #3f33a0,
 
 .containerUser {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   margin: 0.5rem;
   padding: 0.5em;
   border-radius: 9px;
@@ -305,22 +300,24 @@ box-shadow: inset 5px 5px 14px #3f33a0,
 /* Save Component */
 
 .saveSection {
-   display: grid;
+  display: grid;
   place-items: center;
 }
 
-.scoreSection{
+.scoreSection {
   font-size: 3rem;
   border-radius: 7px;
   font-weight: 900;
-  padding:0.5em;color:black;
-background: #483ab6;
-box-shadow:  5px 5px 14px #3f33a0,
-             -5px -5px 14px #5141cc;
+  padding: 0.5em;
+  color: black;
+  background: #483ab6;
+  box-shadow: 5px 5px 14px #3f33a0, -5px -5px 14px #5141cc;
+
+  text-shadow: 4px -4px 8px #372c8a, -4px 4px 8px #5948e2;
+}
 
 
-         
-text-shadow: 4px -4px 8px #372c8a,
--4px 4px 8px #5948e2;    
-
+.saved{
+    color: black;  font-weight: 900;  font-size: 3rem;
+   
 }

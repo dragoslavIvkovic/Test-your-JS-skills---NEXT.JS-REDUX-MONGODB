@@ -1,11 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { increment, reset } from '../store/reducers/counterSlice';
 import {
   addWrongQuestions,
@@ -30,9 +29,9 @@ export default function Questions({ data }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  function startFn() {
-    isActive.current = !isActive.current;
-  }
+  // function startFn() {
+  //   isActive.current = !isActive.current;
+  // }
 
   function setWrongQuestions() {
     dispatch(addWrongQuestions(questions[currentQuestion]));
@@ -40,8 +39,9 @@ export default function Questions({ data }) {
 
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
-    loading.current = !loading.current;
-    startFn();
+    loading.current = true;
+    // startFn();
+    isActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     dispatch(setLevel(collection));
@@ -51,10 +51,10 @@ export default function Questions({ data }) {
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect && nextQuestion < questions.length) {
+      setTotalTime(10);
       setCurrentQuestion(nextQuestion);
       dispatch(increment());
       isActive.current = true;
-      setTotalTime(10);
     } else if (!isCorrect && nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       setWrongQuestions();
@@ -89,7 +89,7 @@ export default function Questions({ data }) {
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
-      startFn();
+      // startFn();
       setShowScore(true);
     }
 
