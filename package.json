@@ -16,11 +16,11 @@
     "mongo": "^0.1.0",
     "mongodb": "^4.7.0",
     "next": "^12.1.6",
-    "next-auth": "^4.4.0",
+    "next-auth": "^4.6.1",
     "next-redux-wrapper": "^7.0.5",
-    "react": "^18.1.0",
+    "react": "^18.2.0",
     "react-code-blocks": "^0.0.9-0",
-    "react-dom": "^18.1.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
     "react-syntax-highlighter": "^15.5.0",
     "redux": "^4.2.0",
@@ -28,12 +28,12 @@
     "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "^8.17.0",
+    "eslint": "^8.18.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.6",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.5.0"
+    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }

@@ -1,23 +1,22 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { increment, reset } from '../store/reducers/counterSlice';
 import {
   addWrongQuestions,
   resetWrongQuestions,
 } from '../store/reducers/wrongQueCounterSlice';
+import { setLevel } from '../store/reducers/collectionSlice';
 import clientPromise from '../lib/mongodb';
 import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
 import uudiv from '../util/uuidv';
 
-export default function Questions({ data, collectionALL }) {
-  const { data: session, status } = useSession();
+export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
 
@@ -30,9 +29,9 @@ export default function Questions({ data, collectionALL }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  function startFn() {
-    isActive.current = !isActive.current;
-  }
+  // function startFn() {
+  //   isActive.current = !isActive.current;
+  // }
 
   function setWrongQuestions() {
     dispatch(addWrongQuestions(questions[currentQuestion]));
@@ -40,32 +39,34 @@ export default function Questions({ data, collectionALL }) {
 
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
-    loading.current = !loading.current;
-    startFn();
+    loading.current = true;
+    // startFn();
+    isActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
+    dispatch(setLevel(collection));
   };
 
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect) => {
-    if (
+    if (isCorrect && nextQuestion < questions.length) {
+      setTotalTime(10);
+      setCurrentQuestion(nextQuestion);
+      dispatch(increment());
+      isActive.current = true;
+    } else if (!isCorrect && nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+      setWrongQuestions();
+      isActive.current = true;
+      setTotalTime(10);
+    } else if (
       (totalTime === 0 && nextQuestion === questions.length)
       || (!isCorrect && nextQuestion === questions.length)
       || (isCorrect && nextQuestion === questions.length)
     ) {
       isActive.current = false;
       setShowScore(true);
-    } else if (isCorrect && nextQuestion < questions.length) {
-      dispatch(increment());
-      setCurrentQuestion(nextQuestion);
-      isActive.current = true;
-      setTotalTime(10);
-    } else if (!isCorrect && nextQuestion < questions.length) {
-      setWrongQuestions();
-      setCurrentQuestion(nextQuestion);
-      isActive.current = true;
-      setTotalTime(10);
     }
   };
 
@@ -88,7 +89,7 @@ export default function Questions({ data, collectionALL }) {
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
-      startFn();
+      // startFn();
       setShowScore(true);
     }
 
@@ -105,15 +106,34 @@ export default function Questions({ data, collectionALL }) {
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
         {collection === undefined ? (
-          collectionALL?.map((x) => (
+          <>
             <button
               className={styles.nextBtn}
               type="button"
-              onClick={() => setCollection(x.name)}
+              onClick={() => setCollection('beginnerSample')}
+
             >
-              {x.name}
+              beginner
             </button>
-          ))
+            <button
+              className={styles.nextBtn}
+              type="button"
+              onClick={() => setCollection('hardcoreSample')}
+              collection={collection}
+            >
+              hardcore
+            </button>
+            <button
+              className={styles.nextBtn}
+              type="button"
+              onClick={() => setCollection('middleSample')}
+              collection={collection}
+            >
+              middle
+            </button>
+
+          </>
+
         ) : loading.current ? (
           <div className="score">
             {showScore ? (
@@ -127,15 +147,12 @@ export default function Questions({ data, collectionALL }) {
               <>
                 <div className={styles.questionCount}>
                   <p className={styles.questionText}>What is the output?</p>
-
                   <p className={styles.questionText}>
-                    Question
                     {currentQuestion + 1}
                     /
                     {questions.length}
                   </p>
                 </div>
-
                 <div className={styles.code}>
                   <SyntaxHighlighter
                     wrapLines
@@ -190,17 +207,19 @@ export default function Questions({ data, collectionALL }) {
   );
 }
 
-export async function getServerSideProps({ query: { collection = 'xxx' } }) {
+export async function getServerSideProps({ query: { collection = 'beginner' } }) {
   const client = await clientPromise;
 
   const db = client.db('javascript_questions');
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
 
-  let collectionALL = await db.listCollections().toArray();
-  collectionALL = JSON.parse(JSON.stringify(collectionALL));
+  // let collectionALL = await db.listCollections().toArray();
+  // collectionALL = JSON.parse(JSON.stringify(collectionALL));
+
+  // const beginner = await db.collection('beginner.sample').find().toArray();
 
   return {
-    props: { data, collectionALL },
+    props: { data },
   };
 }

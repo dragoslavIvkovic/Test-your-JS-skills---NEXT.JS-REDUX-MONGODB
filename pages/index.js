@@ -6,9 +6,13 @@ import clientPromise from '../lib/mongodb';
 import uuidv from '../util/uuidv';
 
 export default function Home({ users }) {
-  const beginners = users.filter((user) => user.level === 'beginner');
-  const hardcore = users.filter((user) => user.level === 'hardcore');
-  const intermediate = users.filter((user) => user.level === 'intermediate');
+  const beginnerSample = users.filter((user) => user.level === 'beginnerSample');
+  const hardcoreSample = users.filter((user) => user.level === 'hardcoreSample');
+  const middleSample = users.filter((user) => user.level === 'middleSample');
+  // const hard = hardcore.map((x) => x.score).sort((a, b) => b - a);
+  const beginner = beginnerSample.sort((a, b) => (a.score > b.score ? -1 : 1));
+  const hardcore = hardcoreSample.sort((a, b) => (a.score > b.score ? -1 : 1));
+  const middle = middleSample.sort((a, b) => (a.score > b.score ? -1 : 1));
 
   return (
     <div className={styles.containerIndex}>
@@ -19,9 +23,9 @@ export default function Home({ users }) {
       <main className={styles.leaderBoard}>
         <div className={styles.levelContainer}>
           <p className={styles.levelTitle}>beginners</p>
-          {beginners?.map((x) => (
+          {beginner?.map((x) => (
             <div className={styles.containerUser}>
-              <Image alt="img" src={x.avatar} width={20} height={20} />
+              <Image alt="img" src={x.avatar} width="30px" height="30px" />
               <p key={uuidv()} className={styles.level}>
                 {x.user}
               </p>
@@ -34,9 +38,9 @@ export default function Home({ users }) {
 
         <div className={styles.levelContainer}>
           <p className={styles.levelTitle}>intermediate</p>
-          {intermediate?.map((x) => (
+          {middle?.map((x) => (
             <div className={styles.containerUser}>
-              <Image alt="img" src={x.avatar} width={20} height={20} />
+              <Image alt="img" src={x.avatar} width="30px" height="30px" />
               <p key={uuidv()} className={styles.level}>
                 {x.user}
               </p>
@@ -50,7 +54,7 @@ export default function Home({ users }) {
           <p className={styles.levelTitle}>hardcore</p>
           {hardcore?.map((x) => (
             <div className={styles.containerUser}>
-              <Image alt="img" src={x.avatar} width={20} height={20} />
+              <Image alt="img" src={x.avatar} width="30px" height="30px" />
               <p key={uuidv()} className={styles.level}>
                 {x.user}
               </p>

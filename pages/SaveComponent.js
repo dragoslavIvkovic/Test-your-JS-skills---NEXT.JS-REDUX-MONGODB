@@ -1,15 +1,18 @@
 import React, { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
 
-function SaveComponent(collection, questions) {
+function SaveComponent() {
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(false);
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
   const score = Object.values(counter);
+  const lev = useSelector((state) => state.levels);
+  const setLevel = Object.values(lev);
 
   const saveScore = async (e) => {
     e.preventDefault();
@@ -21,7 +24,7 @@ function SaveComponent(collection, questions) {
           user: session.user.name,
           score: Number(score),
           avatar: session.user.image,
-          level: collection,
+          level: setLevel[0],
         }),
 
       });
@@ -32,13 +35,11 @@ function SaveComponent(collection, questions) {
     }
   };
 
-  console.log('save', score);
-
   return (
 
     <div className={styles.saveSection}>
-      <p className="score-section">
-        You scored
+      <p className={styles.scoreSection}>
+        You scored =&nbsp;
         {score}
 
       </p>
@@ -49,11 +50,11 @@ function SaveComponent(collection, questions) {
         <p>
           {' '}
           {!saved ? (
-            <button type="button" onClick={saveScore}>
-              Do you wan to save
+            <button type="button" onClick={saveScore} className={styles.nextBtn}>
+              Do you wan to save ?
             </button>
           ) : (
-            <p>Saved</p>
+            <p className={styles.saved}>Saved</p>
           )}
 
         </p>
