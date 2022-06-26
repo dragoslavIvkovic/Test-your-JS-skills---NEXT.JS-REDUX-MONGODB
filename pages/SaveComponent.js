@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {  useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -30,7 +30,7 @@ function SaveComponent() {
       });
       res = await res.json();
     } catch (err) {
-      console.log(err);
+     
       setSaved(false);
     }
   };
