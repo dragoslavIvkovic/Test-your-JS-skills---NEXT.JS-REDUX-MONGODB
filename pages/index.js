@@ -77,7 +77,7 @@ export async function getServerSideProps() {
   const db = client.db('leaderBoard');
   
 
-  const res = await fetch('https://js-git-main-ivkovicdragoslavdragi.vercel.app/api/usersAPI', {
+  const res = await fetch('test-your-js-skills-next-js-redux-mongodb-ivkovicdragoslavdragi.vercel.app/api/usersAPI', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
