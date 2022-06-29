@@ -75,8 +75,9 @@ export async function getServerSideProps() {
 
   // eslint-disable-next-line no-unused-vars
   const db = client.db('leaderBoard');
+  
 
-  const res = await fetch('http://localhost:3000/api/usersAPI', {
+  const res = await fetch('https://js-five.vercel.app/api/usersAPI', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
