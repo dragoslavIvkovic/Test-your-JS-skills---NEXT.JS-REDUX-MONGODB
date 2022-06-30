@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector  } from 'react-redux';
 
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
@@ -8,7 +8,7 @@ import BtnSignIn from '../components/BtnSignIn';
 function SaveComponent() {
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(false);
-  const dispatch = useDispatch();
+ 
   const counter = useSelector((state) => state.counter);
   const score = Object.values(counter);
   const lev = useSelector((state) => state.levels);
@@ -34,6 +34,7 @@ function SaveComponent() {
         }),
 
       });
+      // eslint-disable-next-line no-unused-vars
       res = await res.json();
     } catch (err) {
       setSaved(false);
