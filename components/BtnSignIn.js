@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-
 import styles from '../styles/Elements.module.css';
 
 function BtnSignIn({
@@ -8,7 +7,7 @@ function BtnSignIn({
 }) {
   return (
     <Link href="/api/auth/signin">
-      <a className={styles.link} href="/#">
+      <Link className={styles.link} href="/#">
         {session ? (
           <>
             Signed in as
@@ -26,7 +25,7 @@ function BtnSignIn({
             <button onClick={() => signIn({ session, callbackUrl: `${window.location.origin}/SaveComponent` })} type="button">Sign in</button>
           </>
         )}
-      </a>
+      </Link>
     </Link>
   );
 }

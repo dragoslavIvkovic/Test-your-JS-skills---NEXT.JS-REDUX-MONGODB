@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -18,7 +18,13 @@ function SaveComponent() {
     e.preventDefault();
     try {
       setSaved(true);
-      let res = await fetch('http://localhost:3000/api/usersAPI', {
+      // eslint-disable-next-line prefer-const
+      let dev = process.env.NODE_ENV !== 'production';
+      // eslint-disable-next-line prefer-const
+      let { DEV_URL, PROD_URL } = process.env;
+
+      // let res = await fetch('http://localhost:3000/api/usersAPI', {
+      let res = await fetch(`${dev ? DEV_URL : PROD_URL}/api/usersAPI`, {
         method: 'POST',
         body: JSON.stringify({
           user: session.user.name,
@@ -30,7 +36,6 @@ function SaveComponent() {
       });
       res = await res.json();
     } catch (err) {
-     
       setSaved(false);
     }
   };

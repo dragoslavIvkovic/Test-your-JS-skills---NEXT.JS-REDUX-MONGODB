@@ -29,10 +29,6 @@ export default function Questions({ data }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // function startFn() {
-  //   isActive.current = !isActive.current;
-  // }
-
   function setWrongQuestions() {
     dispatch(addWrongQuestions(questions[currentQuestion]));
   }
@@ -40,7 +36,7 @@ export default function Questions({ data }) {
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
     loading.current = true;
-    // startFn();
+
     isActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
@@ -69,8 +65,6 @@ export default function Questions({ data }) {
       setShowScore(true);
     }
   };
-
-  // const shuffle = () => 0.10 - Math.random()
 
   const countDownBarWith = {
     width: totalTime * 10,
@@ -213,11 +207,6 @@ export async function getServerSideProps({ query: { collection = 'beginner' } })
   const db = client.db('javascript_questions');
   let data = await db.collection(collection).find({}).toArray();
   data = JSON.parse(JSON.stringify(data));
-
-  // let collectionALL = await db.listCollections().toArray();
-  // collectionALL = JSON.parse(JSON.stringify(collectionALL));
-
-  // const beginner = await db.collection('beginner.sample').find().toArray();
 
   return {
     props: { data },
