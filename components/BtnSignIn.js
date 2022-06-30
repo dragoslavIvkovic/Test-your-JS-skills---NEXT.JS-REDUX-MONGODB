@@ -6,8 +6,11 @@ function BtnSignIn({
   session, signIn, signOut,
 }) {
   return (
-    <Link href="/api/auth/signin">
-      <Link className={styles.link} href="/#">
+
+   <Link href="/api/auth/signin">  
+      
+      <a className={styles.link} href="/#">
+
         {session ? (
           <>
             Signed in as
@@ -25,7 +28,7 @@ function BtnSignIn({
             <button onClick={() => signIn({ session, callbackUrl: `${window.location.origin}/SaveComponent` })} type="button">Sign in</button>
           </>
         )}
-      </Link>
+      </a>
     </Link>
   );
 }
