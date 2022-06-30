@@ -7,8 +7,8 @@ function BtnSignIn({
   session, signIn, signOut,
 }) {
   return (
-   /* <Link href="/api/auth/signin"> */
-     <Link href="https://test-your-js-skills-next-js-redux-mongodb-h8z377cql.vercel.app/api/auth">
+   <Link href="/api/auth/signin">  
+      
       <a className={styles.link} href="/#">
         {session ? (
           <>
