@@ -1,15 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-
 import styles from '../styles/Elements.module.css';
 
 function BtnSignIn({
   session, signIn, signOut,
 }) {
   return (
+
    <Link href="/api/auth/signin">  
       
       <a className={styles.link} href="/#">
+
         {session ? (
           <>
             Signed in as

@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,18 +17,16 @@ function Header() {
     <div>
       <nav className={styles.topNav}>
         <div>
-          {' '}
-          <a href="/" className={styles.link}>LeaderBoard</a>
-
-          <a href="/QApage" className={styles.link}>Tests</a>
+          <Link href="/"><a className={styles.link}>LeaderBoard</a></Link>
+          <Link href="/QApage"><a className={styles.link}>Tests</a></Link>
 
         </div>
 
         <div className={styles.topNavRight}>
 
-          <a href="/WrongAnswersPage" className={styles.link}>WrongAnswersPage</a>
+          <Link href="/WrongAnswersPage"><a className={styles.link}>WrongAnswersPage</a></Link>
 
-          <Link className={styles.link} href="/api/auth/signin">
+          <Link href="/api/auth/signin">
 
             {session ? (
               <>

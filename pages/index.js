@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable no-underscore-dangle */
 import Head from 'next/head';
 import Image from 'next/image';
@@ -75,9 +76,11 @@ export async function getServerSideProps() {
 
   // eslint-disable-next-line no-unused-vars
   const db = client.db('leaderBoard');
-  
-
-  const res = await fetch('https://test-your-js-skills-next-js-redux-mongodb-ilfa1554x.vercel.app/api/usersAPI', {
+  // eslint-disable-next-line prefer-const
+  let dev = process.env.NODE_ENV !== 'production';
+  // eslint-disable-next-line prefer-const
+  let { DEV_URL, PROD_URL } = process.env;
+  const res = await fetch(`${dev ? DEV_URL : PROD_URL}/api/usersAPI`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
