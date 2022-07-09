@@ -15,6 +15,7 @@ import clientPromise from '../lib/mongodb';
 import styles from '../styles/Elements.module.css';
 import shuffleArray from '../util/shuffle';
 import uudiv from '../util/uuidv';
+import SaveComponent from './SaveComponent'
 
 export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -41,6 +42,7 @@ export default function Questions({ data }) {
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     dispatch(setLevel(collection));
+   setGame('test');
   };
 
   const nextQuestion = currentQuestion + 1;
@@ -63,6 +65,7 @@ export default function Questions({ data }) {
     ) {
       isActive.current = false;
       setShowScore(true);
+      setGame('score')
     }
   };
 
@@ -85,6 +88,7 @@ export default function Questions({ data }) {
       setWrongQuestions();
       // startFn();
       setShowScore(true);
+      () => handleClick('score')
     }
 
     return () => clearInterval(interval);
@@ -96,106 +100,103 @@ export default function Questions({ data }) {
     }
   }, [collection]);
 
+
+  const [game, setGame] = useState('levels')
+
+  const handleClick = (gameState) => {
+    setGame(gameState)
+  }
+
+  // eslint-disable-next-line react/display-name
+  function SelectContent () {
+    switch (game) {
+   
+    case "levels":
+      return <LevelOptions handleClick={handleClick} />;
+    case "start":
+      return <FetchQuestions handleClick={handleClick} />;
+    case "test":
+      return <TestLogic handleClick={handleClick}/>;
+    case "score":
+      return <SaveComponent handleClick={handleClick} />;
+    default:
+      return null;
+    }
+  }
+
+  const Levels = ['beginnerSample','middleSample','hardcoreSample']
+  const LevelOptions = () => {
+    return  Levels.map(x => 
+      <button key={x}   className={styles.nextBtn} type="button"   onClick={() => { setCollection(x);setGame('start')}}>{x}</button>
+    ) 
+    
+  }
+
+  const FetchQuestions = () => {
+    return (<button onClick={fetchQuestions} className={styles.nextBtn} type="button">
+            START
+    </button>)
+  }
+
+
+  const TestLogic = () => {
+    return ( <>
+      <div className={styles.questionCount}>
+        <p className={styles.questionText}>What is the output?</p>
+        <p className={styles.questionText}>
+          {currentQuestion + 1}
+                    /
+          {questions.length}
+        </p>
+      </div>
+      <div className={styles.code}>
+        <SyntaxHighlighter
+          wrapLines
+          language="javascript"
+          style={dracula}
+        >
+          {questions[currentQuestion].code.replace(
+            /(^"|"$)/g,
+            // eslint-disable-next-line quotes
+            "",
+          )}
+        </SyntaxHighlighter>
+      </div>
+      <div className={styles.answer_section}>
+        {questions[currentQuestion].answerOptions.map(
+          (answerOption) => (
+            <button
+              type="button"
+              className={styles.answer}
+              // eslint-disable-next-line no-underscore-dangle
+              // eslint-disable-next-line no-undef
+              key={uudiv()}
+              onClick={() => handleAnswerOptionClick(
+                answerOption.isCorrect,
+                questions,
+                currentQuestion,
+              )}
+            >
+              {answerOption.answerText}
+            </button>
+          ),
+        )}
+      </div>
+      <div style={countDownBarWith} className={styles.bar}>
+        <span>
+          {totalTime.toFixed(0)}
+                    sec
+        </span>
+      </div>
+    </>)
+  }
+
+
   return (
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
-        {collection === undefined ? (
-          <>
-            <button
-              className={styles.nextBtn}
-              type="button"
-              onClick={() => setCollection('beginnerSample')}
-
-            >
-              beginner
-            </button>
-            <button
-              className={styles.nextBtn}
-              type="button"
-              onClick={() => setCollection('hardcoreSample')}
-              collection={collection}
-            >
-              hardcore
-            </button>
-            <button
-              className={styles.nextBtn}
-              type="button"
-              onClick={() => setCollection('middleSample')}
-              collection={collection}
-            >
-              middle
-            </button>
-
-          </>
-
-        ) : loading.current ? (
-          <div className="score">
-            {showScore ? (
-              <button
-                onClick={() => router.push('/SaveComponent')}
-                type="button"
-              >
-                See score
-              </button>
-            ) : (
-              <>
-                <div className={styles.questionCount}>
-                  <p className={styles.questionText}>What is the output?</p>
-                  <p className={styles.questionText}>
-                    {currentQuestion + 1}
-                    /
-                    {questions.length}
-                  </p>
-                </div>
-                <div className={styles.code}>
-                  <SyntaxHighlighter
-                    wrapLines
-                    language="javascript"
-                    style={dracula}
-                  >
-                    {questions[currentQuestion].code.replace(
-                      /(^"|"$)/g,
-                      // eslint-disable-next-line quotes
-                      "",
-                    )}
-                  </SyntaxHighlighter>
-                </div>
-                <div className={styles.answer_section}>
-                  {questions[currentQuestion].answerOptions.map(
-                    (answerOption) => (
-                      <button
-                        type="button"
-                        className={styles.answer}
-                        // eslint-disable-next-line no-underscore-dangle
-                        // eslint-disable-next-line no-undef
-                        key={uudiv()}
-                        onClick={() => handleAnswerOptionClick(
-                          answerOption.isCorrect,
-                          questions,
-                          currentQuestion,
-                        )}
-                      >
-                        {answerOption.answerText}
-                      </button>
-                    ),
-                  )}
-                </div>
-                <div style={countDownBarWith} className={styles.bar}>
-                  <span>
-                    {totalTime.toFixed(0)}
-                    sec
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-        ) : (
-
-          <button onClick={fetchQuestions} className={styles.nextBtn} type="button">
-            START
-          </button>
-        )}
-        <div />
+        
+        <SelectContent />
       </div>
     </div>
   );

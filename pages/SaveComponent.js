@@ -5,7 +5,7 @@ import { useSelector  } from 'react-redux';
 import styles from '../styles/Elements.module.css';
 import BtnSignIn from '../components/BtnSignIn';
 
-function SaveComponent() {
+function SaveComponent({props}) {
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(false);
  
