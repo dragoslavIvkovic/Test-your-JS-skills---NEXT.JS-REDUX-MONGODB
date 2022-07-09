@@ -19,7 +19,7 @@ import SaveComponent from './SaveComponent'
 
 export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showScore, setShowScore] = useState(false);
+ 
 
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
@@ -42,7 +42,7 @@ export default function Questions({ data }) {
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     dispatch(setLevel(collection));
-   setGame('test');
+    setGame('test');
   };
 
   const nextQuestion = currentQuestion + 1;
@@ -64,7 +64,7 @@ export default function Questions({ data }) {
       || (isCorrect && nextQuestion === questions.length)
     ) {
       isActive.current = false;
-      setShowScore(true);
+    
       setGame('score')
     }
   };
@@ -87,7 +87,7 @@ export default function Questions({ data }) {
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
       // startFn();
-      setShowScore(true);
+      
       () => handleClick('score')
     }
 

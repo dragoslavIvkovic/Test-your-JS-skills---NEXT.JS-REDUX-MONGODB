@@ -1,10 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from '../styles/Elements.module.css';
+import { useSession, signIn, signOut } from 'next-auth/react'
 
-function BtnSignIn({
-  session, signIn, signOut,
-}) {
+function BtnSignIn() {
+  const { data: session } = useSession();
+  const handleSignIn = (e) => {
+    e.preventDefault()
+    signIn()
+  }    
+  const handleSignOut = (e) => {
+    e.preventDefault()
+    signOut()
+  }
+
+
+
   return (
     <Link href="/api/auth/signin">
       <Link className={styles.link} href="/#">
@@ -15,14 +26,14 @@ function BtnSignIn({
             {session.user.email}
             {' '}
             <br />
-            <button onClick={() => signOut({ callbackUrl: `${window.location.origin}/` })} type="button">Sign out</button>
+            <button onClick={handleSignOut} type="button" className={styles.nextBtn}>Sign out</button>
           </>
         ) : (
           <>
             Not signed in
             {' '}
             <br />
-            <button onClick={() => signIn({ session, callbackUrl: `${window.location.origin}/SaveComponent` })} type="button">Sign in</button>
+            <button onClick={handleSignIn} type="button" className={styles.nextBtn}>Sign in</button>
           </>
         )}
       </Link>
