@@ -1,6 +1,6 @@
 {
-  "name": "next-authentication",
-  "version": "0.1.0",
+  "name": "next-mongodb-test",
+  "version": "0.6.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,21 +9,21 @@
     "lint": "eslint --fix .",
     "format": "prettier ./**/*.{js,jsx,ts,tsx,css,scss,md,json} --config ./.prettierrc --write",
     "formatmd": "prettier --write",
-    "success-message": "echo \n\n\n🚀  Everything is awesome. 🚀\n\n🖥️  Auto checking completed, ready to deploy.🖥️\n\n☁️  Run: git push ☁️"
+    "success-message": "echo \n\n\n🚀  Everything is awesome. 🚀\n\n🖥️  Auto checking completed, ready to deploy.🖥️\n\n☁️  Run: git push ☁️",
+    "prepare": "husky install",
+    "test": "jest"
   },
   "dependencies": {
     "@next/eslint-plugin-next": "^12.1.6",
     "@reduxjs/toolkit": "^1.8.2",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-markdown": "^2.2.1",
-    "highlight.js": "^11.5.1",
     "mongo": "^0.1.0",
     "mongodb": "^4.7.0",
     "next": "^12.1.6",
     "next-auth": "^4.6.1",
     "next-redux-wrapper": "^7.0.5",
     "react": "^18.2.0",
-    "react-code-blocks": "^0.0.9-0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
     "react-syntax-highlighter": "^15.5.0",
@@ -43,9 +43,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^4.3.8",
+    "husky": "^8.0.0",
+    "jest": "^28.1.2",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "yarn-upgrade-all": "^0.7.1"
   },
   "husky": {
     "hooks": {

@@ -3,40 +3,52 @@ import Link from 'next/link';
 import styles from '../styles/Elements.module.css';
 import { useSession, signIn, signOut } from 'next-auth/react'
 
+import Image from 'next/image';
+
 function BtnSignIn() {
   const { data: session } = useSession();
   const handleSignIn = (e) => {
     e.preventDefault()
-    signIn()
+    signIn(session?.user, {
+      callbackUrl: '/SaveComponent',
+    })
   }    
   const handleSignOut = (e) => {
     e.preventDefault()
-    signOut()
+    signOut(session?.user, {
+      callbackUrl: '/SaveComponent',
+    })
   }
+ 
 
+  const handleOnError = () => {
+    // eslint-disable-next-line no-undef
+    setImgSrc('/default-image.png');
+  };
 
 
   return (
-    <Link href="/api/auth/signin">
-      <Link className={styles.link} href="/#">
-        {session ? (
-          <>
-            Signed in as
-            {' '}
-            {session.user.email}
-            {' '}
-            <br />
-            <button onClick={handleSignOut} type="button" className={styles.nextBtn}>Sign out</button>
-          </>
-        ) : (
-          <>
-            Not signed in
-            {' '}
-            <br />
-            <button onClick={handleSignIn} type="button" className={styles.nextBtn}>Sign in</button>
-          </>
-        )}
-      </Link>
+    <Link href="/api/auth/signin" >
+       
+      {session ? (
+        <div className={styles.link}>
+          <Image
+            src={session?.user?.image}
+            alt="image-alt-text"
+            width={20}
+            height={20}
+            onError={handleOnError}  
+          />
+          <a onClick={handleSignOut}  >Sign out</a>
+        </div>
+      ) : (
+        <>
+         
+            <a onClick={handleSignIn} type="button" className={styles.link}>Sign in</a>
+            <p> If you want to save score. Sign in.</p>
+        </>
+      )}
+      
     </Link>
   );
 }

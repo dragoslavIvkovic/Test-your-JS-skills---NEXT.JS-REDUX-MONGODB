@@ -2,8 +2,10 @@
 /* eslint-disable eqeqeq */
 import React, {  useState } from 'react';
 import { useSelector  } from 'react-redux';
-import { CopyBlock, dracula } from 'react-code-blocks';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from '../styles/Elements.module.css';
+
 
 function WrongAnswersPage() {
   const [currentQuestions, setCurrentQuestion] = useState(0);
@@ -42,14 +44,13 @@ function WrongAnswersPage() {
             <p>No more questions</p>
           ) : (
             <>
-              <CopyBlock
+              <SyntaxHighlighter
+               
+                
+                wrapLines
                 language="javascript"
-                text={wrongQ[currentQuestions]?.code}
-                theme={dracula}
-                showLineNumbers={false}
-                highlight="1 -10"
-                codeBlock
-              />
+                style={dracula}
+              > {wrongQ[currentQuestions]?.code} </SyntaxHighlighter>
               <div className="answer-container">
                 <div className={styles.correctAnswer}>
                   <p className={styles.correctTitle}>ANSWER:</p>
