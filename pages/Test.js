@@ -59,7 +59,6 @@ export default function Questions({ data }) {
       (isCorrect && nextQuestion === questions.length)
     ) {
       isActive.current = false;
-
       setGame("score");
     }
   };
