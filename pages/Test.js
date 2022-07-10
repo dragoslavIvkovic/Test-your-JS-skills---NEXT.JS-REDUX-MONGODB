@@ -106,7 +106,7 @@ export default function Questions({ data }) {
     case "test":
       return <TestLogic handleClick={handleClick} />;
     case "score":
-      return <SaveComponent handleClick={handleClick}   handleClick={ handleClick} />;
+      return <SaveComponent handleClick={handleClick}   />;
     default:
       return null;
     }

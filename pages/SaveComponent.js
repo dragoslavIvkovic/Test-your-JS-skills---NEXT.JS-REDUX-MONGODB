@@ -38,7 +38,7 @@ function SaveComponent({ collection,handleClick }) {
     }
   };
 
- const updateStateProps = () => {
+  const updateStateProps = () => {
     handleClick('levels')
   }
   return (
@@ -67,7 +67,7 @@ function SaveComponent({ collection,handleClick }) {
           ) : (
             <>
               <p className={styles.nextBtn}>Saved</p>
-              <button type="button" onClick={updateStateProps }>Play Again</button></>
+              <button type="button" onClick={updateStateProps } className={styles.nextBtn}>Play Again</button></>
           )}
         </p>
       )}
