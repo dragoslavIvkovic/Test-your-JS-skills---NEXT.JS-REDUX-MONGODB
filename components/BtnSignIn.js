@@ -21,7 +21,7 @@ function BtnSignIn() {
   };
 
   const handleOnError = () => {
-    // eslint-disable-next-line no-undef
+     
     setImgSrc("/default-image.png");
   };
 

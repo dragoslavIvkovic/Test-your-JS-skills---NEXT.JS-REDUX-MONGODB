@@ -1,11 +1,10 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable eqeqeq */
-import React, {  useState } from 'react';
-import { useSelector  } from 'react-redux';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import styles from '../styles/Elements.module.css';
-
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import styles from "../styles/Elements.module.css";
 
 function WrongAnswersPage() {
   const [currentQuestions, setCurrentQuestion] = useState(0);
@@ -29,50 +28,45 @@ function WrongAnswersPage() {
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
         <div className={styles.nextBtnContainer}>
-          <p>
-            questions:
-            {' '}
-            {wrongQ.length}
-          </p>
-          <button onClick={nextQ} className={styles.nextBtn} type="button">next</button>
-
+          <p>questions: {wrongQ.length}</p>
+          <button onClick={nextQ} className={styles.nextBtn} type="button">
+            next
+          </button>
         </div>
         <div className={styles.code}>
           {!wrongQ.length ? (
-            'you answered everting'
+            "you answered everting"
           ) : remainingQuestions == 0 ? (
             <p>No more questions</p>
           ) : (
             <>
               <SyntaxHighlighter
-               
-                
                 wrapLines
                 language="javascript"
                 style={dracula}
-              > {wrongQ[currentQuestions]?.code} </SyntaxHighlighter>
+              >
+                {" "}
+                {wrongQ[currentQuestions]?.code}{" "}
+              </SyntaxHighlighter>
               <div className="answer-container">
                 <div className={styles.correctAnswer}>
                   <p className={styles.correctTitle}>ANSWER:</p>
                   <p className={styles.correctText}>
-                    {' '}
+                    {" "}
                     {wrongQ[currentQuestions]?.answer}
                   </p>
                 </div>
                 <div className={styles.correctAnswer}>
                   <p className={styles.correctTitle}>EXPLANATION:</p>
                   <p className={styles.correctTextExplanation}>
-                    {' '}
+                    {" "}
                     {wrongQ[currentQuestions]?.answerText}
                   </p>
-
                 </div>
               </div>
-
             </>
           )}
         </div>
-
       </div>
     </div>
   );

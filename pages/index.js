@@ -1,8 +1,7 @@
 import Head from "next/head";
- 
- 
+import styles from "../styles/Home.module.css";
 
-export default function Home( ) {
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -10,13 +9,9 @@ export default function Home( ) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        
-      </main>
+      <main></main>
 
-      <footer>
-         
-      </footer>
+      <footer></footer>
     </div>
   );
 }

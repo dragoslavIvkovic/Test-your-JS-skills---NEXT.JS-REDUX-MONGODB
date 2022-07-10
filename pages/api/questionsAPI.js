@@ -1,4 +1,4 @@
-/* eslint-disable no-case-declarations */
+ 
 import clientPromise from '../../lib/mongodb';
 
 export default async function handler(req, res) {
