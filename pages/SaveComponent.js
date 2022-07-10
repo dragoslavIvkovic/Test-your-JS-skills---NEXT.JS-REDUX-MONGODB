@@ -4,12 +4,12 @@ import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import styles from "../styles/Elements.module.css";
 import BtnSignIn from "../components/BtnSignIn";
+ 
 
-function SaveComponent({ collection }) {
+function SaveComponent({ collection,handleClick }) {
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(false);
   const [levels, setLevels] = useState("");
-
   const counter = useSelector((state) => state.counter);
   const score = Object.values(counter);
 
@@ -38,6 +38,9 @@ function SaveComponent({ collection }) {
     }
   };
 
+ const updateStateProps = () => {
+    handleClick('levels')
+  }
   return (
     <div className={styles.saveSection}>
       <p className={styles.scoreSection}>
@@ -53,7 +56,6 @@ function SaveComponent({ collection }) {
         </>
       ) : (
         <p>
-          {" "}
           {!saved ? (
             <button
               type="button"
@@ -63,7 +65,9 @@ function SaveComponent({ collection }) {
               Do you wan to save
             </button>
           ) : (
-            <p className={styles.nextBtn}>Saved</p>
+            <>
+              <p className={styles.nextBtn}>Saved</p>
+              <button type="button" onClick={updateStateProps }>Play Again</button></>
           )}
         </p>
       )}

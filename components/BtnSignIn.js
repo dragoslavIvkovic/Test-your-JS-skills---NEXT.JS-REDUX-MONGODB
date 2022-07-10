@@ -21,7 +21,6 @@ function BtnSignIn() {
   };
 
   const handleOnError = () => {
-     
     setImgSrc("/default-image.png");
   };
 

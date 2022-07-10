@@ -12,7 +12,7 @@ function Header() {
           <Link href="/">
             <a className={styles.link}>Home</a>
           </Link>
-          <Link href="/QApage">
+          <Link href="/Test">
             <a className={styles.link}>Tests</a>
           </Link>
         </div>

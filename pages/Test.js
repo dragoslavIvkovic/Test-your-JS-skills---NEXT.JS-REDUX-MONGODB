@@ -17,7 +17,6 @@ import SaveComponent from "./SaveComponent";
 
 export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
   const loading = useRef(false);
@@ -34,7 +33,6 @@ export default function Questions({ data }) {
   const fetchQuestions = () => {
     setQuestions(shuffleArray(data));
     loading.current = true;
-
     isActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
@@ -82,7 +80,6 @@ export default function Questions({ data }) {
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
-
       () => handleClick("score");
     }
 
@@ -91,12 +88,11 @@ export default function Questions({ data }) {
 
   useEffect(() => {
     if (collection !== router.query.collection) {
-      router.push(`/QApage?collection=${collection}`);
+      router.push(`/Test?collection=${collection}`);
     }
   }, [collection]);
 
   const [game, setGame] = useState("levels");
-
   const handleClick = (gameState) => {
     setGame(gameState);
   };
@@ -110,7 +106,7 @@ export default function Questions({ data }) {
     case "test":
       return <TestLogic handleClick={handleClick} />;
     case "score":
-      return <SaveComponent handleClick={handleClick} />;
+      return <SaveComponent handleClick={handleClick}   handleClick={ handleClick} />;
     default:
       return null;
     }
