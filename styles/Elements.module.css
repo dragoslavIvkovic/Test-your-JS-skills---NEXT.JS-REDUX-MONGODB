@@ -117,10 +117,14 @@
   text-decoration: none;
   border-radius: 10px;
   font-size: 1rem;
-
+  width: auto;
+ display: flex;
+    justify-content: space-between;
   background: var(--main-bg-purple);
   box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
 }
+
+
 
 .link:hover {
   border: 2px solid var(--main-bg-purple);
@@ -133,6 +137,12 @@
 
   box-shadow: inset 5px 5px 14px #3f33a0, inset -5px -5px 14px #5141cc;
 }
+
+.linkImg{
+  margin-right:  10px;
+
+}
+
 
 .topNavRight {
   right: 1rem;

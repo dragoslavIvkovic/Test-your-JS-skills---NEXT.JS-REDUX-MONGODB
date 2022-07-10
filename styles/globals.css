@@ -19,11 +19,14 @@ body {
   background: var(--main-bg-purple);
 
   font-size: 1rem;
+   
 }
 
 * {
   box-sizing: border-box;
 }
+
+ 
 
 p{
   margin:0.2em;

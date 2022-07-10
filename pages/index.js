@@ -1,10 +1,8 @@
 import Head from "next/head";
-import Link from "next/link";
-import QApage from "./QApage"
-import styles from '../styles/Qpage.module.css'
+ 
  
 
-export default function Home({ isConnected }) {
+export default function Home( ) {
   return (
     <div className={styles.container}>
       <Head>

@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector  } from "react-redux";
 import styles from "../styles/Elements.module.css";
 import BtnSignIn from "../components/BtnSignIn";
 
@@ -45,7 +46,8 @@ function SaveComponent({ collection }) {
       </p>
 
       {status === "unauthenticated" ? (
-        <BtnSignIn />
+        <>   <p> If you want to save score. Sign in.</p>
+          <BtnSignIn /></>
       ) : (
         <p>
           {" "}
