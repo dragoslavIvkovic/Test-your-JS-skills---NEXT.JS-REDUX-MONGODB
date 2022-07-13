@@ -1,9 +1,18 @@
-import React from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
-function profile() {
-  return (
-    <div>profile</div>
-  )
+export default function Profile () {
+  const router = useRouter()
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated () {
+      router.push('/api/auth/signin')
+    }
+  })
+
+  if (status === 'loading') {
+    return 'Loading or not authenticated...'
+  }
+
+  return 'User is logged in'
 }
-
-export default profile
