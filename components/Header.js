@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import styles from "../styles/Elements.module.css";
-import BtnSignIn from "./BtnSignIn";
+ 
 
 function Header() {
   return (
@@ -21,8 +21,11 @@ function Header() {
           <Link href="/WrongAnswersPage">
             <a className={styles.link}>WrongAnswersPage</a>
           </Link>
+          <Link href="/Report">
+            <a className={styles.link}>Report</a>
+          </Link>
 
-          <BtnSignIn />
+          
         </div>
       </nav>
     </div>

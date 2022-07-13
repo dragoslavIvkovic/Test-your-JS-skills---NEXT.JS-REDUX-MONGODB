@@ -239,9 +239,10 @@
   display: grid;
   place-items: center;
   padding: 3rem;
+  color:red;
 }
 
-/* .leaderBoard {
+/* .USERS {
   font-size: 0.8rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -252,7 +253,7 @@
 }
 
 @media (max-width: 850px) {
-  .leaderBoard {
+  .USERS {
     font-size: 0.8rem;
     display: grid;
     grid-template-columns: repeat(1, 1fr);

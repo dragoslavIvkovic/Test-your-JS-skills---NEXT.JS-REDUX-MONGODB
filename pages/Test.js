@@ -96,6 +96,10 @@ export default function Questions({ data }) {
     setGame(gameState);
   };
 
+
+
+
+
   function SelectContent() {
     switch (game) {
     case "levels":
@@ -182,6 +186,9 @@ export default function Questions({ data }) {
     );
   };
 
+
+
+  console.log(data)
   return (
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
