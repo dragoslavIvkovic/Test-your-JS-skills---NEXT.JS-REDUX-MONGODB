@@ -14,9 +14,9 @@ function WrongAnswersPage() {
  
 
   const [remainingQuestions, setRemainingQuestions] = useState(wrongQ.length);
-
+const nextQuestion = currentQuestions + 1;
   const nextQ = () => {
-    const nextQuestion = currentQuestions + 1;
+    
     if (nextQuestion < wrongQ.length) {
       setCurrentQuestion(nextQuestion);
       setRemainingQuestions(remainingQuestions - 1);
@@ -29,7 +29,7 @@ function WrongAnswersPage() {
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
         <div className={styles.nextBtnContainer}>
-          <p>questions: {wrongQ.length}</p>
+          <p>questions:   {currentQuestions + 1}/{wrongQ.length}  </p>
           <button onClick={nextQ} className={styles.nextBtn} type="button">
             next
           </button>
@@ -41,7 +41,10 @@ function WrongAnswersPage() {
             <p>No more questions</p>
           ) : (
             <>
-            <SyntaxHighlighter wrapLines={true} language="javascript" style={dracula}>
+                  <SyntaxHighlighter
+                  lineProps={{style: {wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}}
+                    language="javascript" style={dracula}>
+                     wrapLines={true}
                 {wrongQ[currentQuestions]?.code}
               </SyntaxHighlighter>
               

@@ -149,7 +149,9 @@ export default function Questions({ data }) {
         </div>
         <div className={styles.code}>
           <SyntaxHighlighter   
-              wrapLines={true} language="javascript" style={dracula}>
+            lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
+             wrapLines={true}
+            language="javascript" style={dracula}>
             {questions[currentQuestion].code.replace(
               /(^"|"$)/g,
 

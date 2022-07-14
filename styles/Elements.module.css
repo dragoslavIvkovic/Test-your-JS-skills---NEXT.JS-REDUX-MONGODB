@@ -18,7 +18,7 @@
 
 .code {
   display: block;
-  
+   width: 30rem;
   height: max-content;
   align-items: center;
   justify-content: center; 
@@ -26,6 +26,7 @@
 
 .answer {
   display: flex;
+ 
   flex-direction: column;
   flex-wrap: wrap;
   overflow-wrap: break-word;
@@ -355,10 +356,9 @@
  
 }
 
-/* .answer_section{
-    display: inline;
-    background-color:red;
-} */
+.answer_section{
+     width: 30rem;
+}
 
 .answer {
   display: flex;
@@ -375,7 +375,7 @@ cursor: pointer ;overflow-wrap: break-word;
   color: #e8e8e8;
   border: 1px solid #483ab6;
   transition: all 0.3s;flex-wrap: wrap;
- 
+ text-align: left;
 background: #483ab6;
 box-shadow:  2px 2px 5px #3f329e,
              -2px -2px 5px #5142ce;
@@ -409,7 +409,7 @@ box-shadow:  2px 2px 5px #3f329e,
 }
 
 
-.button {
+/* .button {
  color: #090909;
  padding: 0.5em 0.7em;
   
@@ -443,4 +443,4 @@ box-shadow:  2px 2px 5px #3f329e,
 }
 
 
- 
+  */
