@@ -8,13 +8,13 @@ import thunk from 'redux-thunk';
 import counterSlice from './reducers/counterSlice';
 import wrongQueCounterSlice from './reducers/wrongQueCounterSlice';
 import scoreStateSlice from './reducers/scoreStateSlice';
-import collectionSlice from './reducers/collectionSlice';
+ 
 
 const reducers = combineReducers({
   counter: counterSlice,
   wrongQuestions: wrongQueCounterSlice,
   showScoreState: scoreStateSlice,
-  levels: collectionSlice,
+  
 });
 
 const persistConfig = {

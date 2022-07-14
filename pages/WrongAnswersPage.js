@@ -11,7 +11,7 @@ function WrongAnswersPage() {
   const wrongQuestion = useSelector((state) => state.wrongQuestions);
   const x = Object.values(wrongQuestion);
   const wrongQ = x.flat();
-  console.log(wrongQ)
+ 
 
   const [remainingQuestions, setRemainingQuestions] = useState(wrongQ.length);
 
@@ -41,15 +41,10 @@ function WrongAnswersPage() {
             <p>No more questions</p>
           ) : (
             <>
-              
-                  
-              <SyntaxHighlighter wrapLines language="javascript" style={dracula}>
-                {wrongQ[currentQuestions]?.code}{" "}
+            <SyntaxHighlighter wrapLines={true} language="javascript" style={dracula}>
+                {wrongQ[currentQuestions]?.code}
               </SyntaxHighlighter>
-
-
-
-              <div className="answer-container">
+              
                 <div className={styles.correctAnswer}>
                   <p className={styles.correctTitle}>ANSWER:</p>
                   <p className={styles.correctText}>
@@ -64,7 +59,7 @@ function WrongAnswersPage() {
                     {wrongQ[currentQuestions]?.answerText}
                   </p>
                 </div>
-              </div>
+               
             </>
           )}
         </div>

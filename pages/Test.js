@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -8,10 +8,10 @@ import {
   addWrongQuestions,
   resetWrongQuestions,
 } from "../store/reducers/wrongQueCounterSlice";
-import { setLevel } from "../store/reducers/collectionSlice";
+ 
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
-import shuffleArray from "../util/shuffle";
+ 
 import uudiv from "../util/uuidv";
 import SaveComponent from "./SaveComponent";
 
@@ -31,16 +31,18 @@ export default function Questions({ data }) {
   }
 
   const fetchQuestions = () => {
-    setQuestions(shuffleArray(data));
+    setQuestions( data);
     loading.current = true;
     isActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
-    dispatch(setLevel(collection));
     setGame("test");
   };
 
   const nextQuestion = currentQuestion + 1;
+
+
+  
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect && nextQuestion < questions.length) {
@@ -60,6 +62,7 @@ export default function Questions({ data }) {
     ) {
       isActive.current = false;
       setGame("score");
+       setCurrentQuestion(0);
     }
   };
 
@@ -69,7 +72,6 @@ export default function Questions({ data }) {
 
   useEffect(() => {
     let interval = null;
-
     if (isActive.current) {
       interval = setInterval(() => {
         totalTime === 0
@@ -79,7 +81,7 @@ export default function Questions({ data }) {
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
-      () => handleClick("score");
+      () => handleClick("score"); setCurrentQuestion(0);
     }
 
     return () => clearInterval(interval);
@@ -95,10 +97,6 @@ export default function Questions({ data }) {
   const handleClick = (gameState) => {
     setGame(gameState);
   };
-
-
-
-
 
   function SelectContent() {
     switch (game) {
@@ -150,7 +148,8 @@ export default function Questions({ data }) {
           </p>
         </div>
         <div className={styles.code}>
-          <SyntaxHighlighter wrapLines language="javascript" style={dracula}>
+          <SyntaxHighlighter   
+              wrapLines={true} language="javascript" style={dracula}>
             {questions[currentQuestion].code.replace(
               /(^"|"$)/g,
 
@@ -172,23 +171,30 @@ export default function Questions({ data }) {
                 )
               }
             >
-              {answerOption.answerText}
+              {answerOption.answerText}{console.log("render")}
             </button>
           ))}
         </div>
-        <div style={countDownBarWith} className={styles.bar}>
+       <ProgressBar/>
+      </>
+    );
+  };
+ 
+  
+
+  const ProgressBar = () => {
+    return (
+      <div style={countDownBarWith} className={styles.bar}>
           <span>
             {totalTime.toFixed(0)}
             sec
           </span>
         </div>
-      </>
-    );
-  };
+    )
+  }
 
-
-
-  console.log(data)
+ 
+ 
   return (
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
