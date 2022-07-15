@@ -5,7 +5,7 @@ import { persistStore } from "redux-persist";
 import store from "../store/store";
 import Header from "../components/Header";
 import Head from "next/head";
-
+import 'normalize.css';
 const persistor = persistStore(store);
 
 export default function MyApp({ Component, pageProps }) {

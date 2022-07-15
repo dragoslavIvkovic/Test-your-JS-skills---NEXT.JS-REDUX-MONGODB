@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
-import { PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useRouter } from "next/router";
 import { increment, reset } from "../store/reducers/counterSlice";
@@ -8,10 +8,10 @@ import {
   addWrongQuestions,
   resetWrongQuestions,
 } from "../store/reducers/wrongQueCounterSlice";
- 
+
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
- 
+
 import uudiv from "../util/uuidv";
 import SaveComponent from "./SaveComponent";
 
@@ -31,7 +31,7 @@ export default function Questions({ data }) {
   }
 
   const fetchQuestions = () => {
-    setQuestions( data);
+    setQuestions(data);
     loading.current = true;
     isActive.current = true;
     dispatch(reset());
@@ -40,9 +40,6 @@ export default function Questions({ data }) {
   };
 
   const nextQuestion = currentQuestion + 1;
-
-
-  
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect && nextQuestion < questions.length) {
@@ -62,7 +59,7 @@ export default function Questions({ data }) {
     ) {
       isActive.current = false;
       setGame("score");
-       setCurrentQuestion(0);
+      setCurrentQuestion(0);
     }
   };
 
@@ -81,7 +78,8 @@ export default function Questions({ data }) {
       }, 1000);
     } else if (nextQuestion === questions.length) {
       setWrongQuestions();
-      () => handleClick("score"); setCurrentQuestion(0);
+      () => handleClick("score");
+      setCurrentQuestion(0);
     }
 
     return () => clearInterval(interval);
@@ -100,16 +98,16 @@ export default function Questions({ data }) {
 
   function SelectContent() {
     switch (game) {
-    case "levels":
-      return <LevelOptions handleClick={handleClick} />;
-    case "start":
-      return <FetchQuestions handleClick={handleClick} />;
-    case "test":
-      return <TestLogic handleClick={handleClick} />;
-    case "score":
-      return <SaveComponent handleClick={handleClick}   />;
-    default:
-      return null;
+      case "levels":
+        return <LevelOptions handleClick={handleClick} />;
+      case "start":
+        return <FetchQuestions handleClick={handleClick} />;
+      case "test":
+        return <TestLogic handleClick={handleClick} />;
+      case "score":
+        return <SaveComponent handleClick={handleClick} />;
+      default:
+        return null;
     }
   }
 
@@ -140,26 +138,29 @@ export default function Questions({ data }) {
 
   const TestLogic = () => {
     return (
-      <>
+      <div className={styles.block}>
         <div className={styles.questionCount}>
           <p className={styles.questionText}>What is the output?</p>
           <p className={styles.questionText}>
             {currentQuestion + 1}/{questions.length}
           </p>
         </div>
-        <div className={styles.code}>
-          <SyntaxHighlighter   
-            
-            lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
-             wrapLines={true}
-            language="javascript" style={dracula}>
-            {questions[currentQuestion].code.replace(
-              /(^"|"$)/g,
 
-              ""
-            )}
-          </SyntaxHighlighter>
-        </div>
+        <SyntaxHighlighter
+          lineProps={{
+            style: { wordBreak: "break-all", whiteSpace: "pre-wrap" },
+          }}
+          wrapLines={true}
+          language="javascript"
+          style={dracula}
+        >
+          {questions[currentQuestion].code.replace(
+            /(^"|"$)/g,
+
+            ""
+          )}
+        </SyntaxHighlighter>
+
         <div className={styles.answer_section}>
           {questions[currentQuestion].answerOptions.map((answerOption) => (
             <button
@@ -174,35 +175,30 @@ export default function Questions({ data }) {
                 )
               }
             >
-              {answerOption.answerText}{console.log("render")}
+              {answerOption.answerText}
+              {console.log("render")}
             </button>
           ))}
         </div>
-       <ProgressBar/>
-      </>
+        <ProgressBar />
+      </div>
     );
   };
- 
-  
 
   const ProgressBar = () => {
     return (
       <div style={countDownBarWith} className={styles.bar}>
-          <span>
-            {totalTime.toFixed(0)}
-            sec
-          </span>
-        </div>
-    )
-  }
+        <span>
+          {totalTime.toFixed(0)}
+          sec
+        </span>
+      </div>
+    );
+  };
 
- 
- 
   return (
     <div className={styles.containerQuestions}>
-      <div className={styles.block}>
-        <SelectContent />
-      </div>
+      <SelectContent />
     </div>
   );
 }
