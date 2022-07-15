@@ -37,5 +37,20 @@ box-shadow: inset 12px 12px 29px #e0e0e0,
             inset -12px -12px 29px #ffffff; transition: ease-in-out, width .35s ease-in-out;
             
 }
+
+ a{
+  font-size: 1rem;
+ }
+
+ @media  (max-width: 600px) {
+a{
+  
+    font-size:3vw;
+  }
  
+  
+   
+}
+
+
  

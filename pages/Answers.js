@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import styles from "../styles/Elements.module.css";
 
-function WrongAnswersPage() {
+function Answers() {
   const [currentQuestions, setCurrentQuestion] = useState(0);
   const wrongQuestion = useSelector((state) => state.wrongQuestions);
   const x = Object.values(wrongQuestion);
@@ -71,4 +71,4 @@ const nextQuestion = currentQuestions + 1;
   );
 }
 
-export default WrongAnswersPage;
+export default Answers;

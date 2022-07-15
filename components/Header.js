@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import styles from "../styles/Elements.module.css";
+import styles from "../styles/Header.module.css";
  
 
 function Header() {
@@ -19,7 +19,7 @@ function Header() {
 
         <div className={styles.topNavRight}>
           <Link href="/WrongAnswersPage">
-            <a className={styles.link}>WrongAnswersPage</a>
+            <a className={styles.link}>Answers</a>
           </Link>
           <Link href="/Report">
             <a className={styles.link}>Report</a>
