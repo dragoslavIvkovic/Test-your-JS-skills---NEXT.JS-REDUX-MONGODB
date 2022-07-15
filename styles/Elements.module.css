@@ -26,8 +26,7 @@
 
 .answer {
   display: flex;
- 
-  flex-direction: column;
+   flex-direction: column;
   flex-wrap: wrap;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -409,38 +408,50 @@ box-shadow:  2px 2px 5px #3f329e,
 }
 
 
-/* .button {
- color: #090909;
- padding: 0.5em 0.7em;
-  
+/* Report */
+
+.reportContainer2{
+    display: grid;
+   place-items: center;
+}
+
+
+.reportContainer{
  
- margin:0.5rem;
- background: #e8e8e8;
-
-
-  border: none;
- color: #090909;
- padding: 0.7em 1.7em;
+display: grid;
+grid-template-columns: 1fr;
  
- border-radius: 0.5em;
- background: #e8e8e8;
- border: 1px solid #e8e8e8;
- transition: all .3s;
- border: 1px solid #5343d1;
- transition: all .3s;
- box-shadow: 1px 1px 2px #3d319b,
-             -1px -1px 2px #5343d1;
+ 
+grid-row-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  margin:3rem ; 
+   
+  }
+
+ 
+.label{
+  text-transform: uppercase;
+  font-weight: 700;align-items: center;justify-items: center;
+  color:#ffffff;
 }
 
-.button:hover {
- border: 1px solid white;
+/* .reportInput{
+  line-height:2em;
+border-radius:  5px;
+background: #ffffff;
+box-shadow: inset 12px 12px 29px #e0e0e0,
+            inset -12px -12px 29px #ffffff;border-color: var(--main-bg-purple);
 }
 
-.button:active {
-   border: 1px solid #3d319b;
- box-shadow: 1px 1px 2px #5343d1,
-             -1px -1px 2px #3d319b;
+.reportInput[type=text]:focus{
+ border-color: var(--main-bg-purple);
+
+} */
+
+.reportInputMessage{
+   line-height:4em;
 }
 
 
-  */
+ 

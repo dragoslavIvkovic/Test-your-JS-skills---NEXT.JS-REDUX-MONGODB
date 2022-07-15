@@ -1,22 +1,22 @@
-import styles from "../styles/Report.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import styles from "../styles/Elements.module.css";
 
 export default function Report() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [data, setData] = useState();
+  const [sent, setSent] = useState(false);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Sending");
+  const onSubmit = (data) => {
+    setData(data);
+    setSent(true);
+  };
 
-    let data = {
-      name,
-      email,
-      message,
-    };
-
+  useEffect(() => {
     fetch("/api/reportAPI", {
       method: "POST",
       headers: {
@@ -28,60 +28,54 @@ export default function Report() {
       console.log("Response received");
       if (res.status === 200) {
         console.log("Response succeeded!");
-        setSubmitted(true);
-        setName("");
-        setEmail("");
-        setMessage("");
       }
     });
-  };
+  }, [data]);
+
+  console.log(handleSubmit);
 
   return (
-    <div className={styles.container}>
-      <form className={styles.main}>
-        <formGroup className={styles.inputGroup}>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            name="name"
-            className={styles.inputField}
-          />
-        </formGroup>
-
-        <formGroup className={styles.inputGroup}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            name="email"
-            className={styles.inputField}
-          />
-        </formGroup>
-
-        <formGroup className={styles.inputGroup}>
-          <label htmlFor="message">Message</label>
-          <input
-            type="text"
-            onChange={(e) => {
-              setMessage(e.target.value);
-            }}
-            name="message"
-            className={styles.inputField}
-          />
-        </formGroup>
-
+    <div  className={styles.reportContainer2}>
+      {sent ? <p className={styles.nextBtn}>Thank you for your feedback</p> :
+      
+    <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={styles.reportContainer}
+      >
+        <label className={styles.label}>Title</label>
         <input
-          type="submit"
-          onClick={(e) => {
-            handleSubmit(e);
-          }}
+          className={styles.reportInput}
+          type="text"
+          {...register("name", { required: true })}
         />
+        {errors.name && <p>{"The Name Field is Required "}</p>}
+
+        <label className={styles.label}>Message</label>
+        <input
+          className={styles.reportInputMessage}
+          type="text"
+          {...register("message", { required: true, minLength: 10 })}
+        />
+        {errors.message && (
+          <p>{"The message Field is Required and must be > 10 characters"}</p>
+        )}
+
+        <label className={styles.label} htmlFor="email">
+          Email
+        </label>
+        <input
+          className={styles.reportInput}
+          type="email"
+          {...register("email", { required: true })}
+        />
+ 
+        <input type="submit" className={styles.nextBtn} />
       </form>
+    }
+
+
+      
+      <div></div>
     </div>
   );
 }

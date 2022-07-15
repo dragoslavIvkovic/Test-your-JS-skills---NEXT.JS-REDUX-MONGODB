@@ -27,3 +27,15 @@ p{
   margin:0.2em;
   padding:0.2em
 }
+
+input{
+    line-height:2em;
+ width:20vw;
+border-radius:  5px;
+background: #ffffff;
+box-shadow: inset 12px 12px 29px #e0e0e0,
+            inset -12px -12px 29px #ffffff; transition: ease-in-out, width .35s ease-in-out;
+            
+}
+ 
+ 
