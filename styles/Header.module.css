@@ -1,53 +1,42 @@
 .topNav {
- 
+  margin: 1vh 3vw;
   display: inline-block;
-   white-space: nowrap;
-  
+  white-space: nowrap;
 }
 
-@media  (max-width: 600px) {
-.topNav{
-  
-   position: fixed; overflow: hidden;
- width: 100%;
-  bottom: 0;
+@media (max-width: 600px) {
+  .topNav {
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    bottom: 0;
   }
- 
-  
-   
 }
 
 .link {
   float: left;
-  margin :0.5rem;
-   color:whitesmoke;
+  margin: 0.5rem;
+  color: var(--main-bg-white);
   text-align: center;
   padding: 10px 12px;
   text-decoration: none;
-  border-radius:10px;
-      background: #483ab6;
+  border-radius: 10px;
+  background: var(--main-bg-purple);
   box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
 }
 
-
 .link:hover {
- border: 1px solid #483ab6;
-  box-shadow: 2px 2px 4px #c5c5c5,
-             -2px -2px 4px #ffffff;
+  border: 1px solid var(--main-bg-purple);
+  box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px var(--main-bg-white);
 }
 
 .link:active {
-    font-weight: bold; 
- box-shadow: 2px 2px 4px #c5c5c5,
-             -2px -2px 4px #ffffff;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px var(--main-bg-white);
 }
-
- 
 
 .topNavRight {
   display: inline-block;
-   position: absolute;
+  position: absolute;
   right: 1rem;
 }
-
- 

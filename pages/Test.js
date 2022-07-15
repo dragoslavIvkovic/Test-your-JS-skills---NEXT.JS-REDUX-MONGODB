@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, memo } from "react";
 import { useDispatch } from "react-redux";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useRouter } from "next/router";
 import { increment, reset } from "../store/reducers/counterSlice";
@@ -149,6 +149,7 @@ export default function Questions({ data }) {
         </div>
         <div className={styles.code}>
           <SyntaxHighlighter   
+            
             lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
              wrapLines={true}
             language="javascript" style={dracula}>

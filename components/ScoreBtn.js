@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';import styles from '../styles/Elements.module.css';
+import { useRouter } from 'next/router';
+import styles from '../styles/Elements.module.css';
 
 function ScoreBtn() {
   const router = useRouter();

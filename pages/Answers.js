@@ -2,7 +2,7 @@
 /* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import styles from "../styles/Elements.module.css";
 
@@ -11,12 +11,10 @@ function Answers() {
   const wrongQuestion = useSelector((state) => state.wrongQuestions);
   const x = Object.values(wrongQuestion);
   const wrongQ = x.flat();
- 
 
   const [remainingQuestions, setRemainingQuestions] = useState(wrongQ.length);
-const nextQuestion = currentQuestions + 1;
+  const nextQuestion = currentQuestions + 1;
   const nextQ = () => {
-    
     if (nextQuestion < wrongQ.length) {
       setCurrentQuestion(nextQuestion);
       setRemainingQuestions(remainingQuestions - 1);
@@ -29,7 +27,9 @@ const nextQuestion = currentQuestions + 1;
     <div className={styles.containerQuestions}>
       <div className={styles.block}>
         <div className={styles.nextBtnContainer}>
-          <p>questions:   {currentQuestions + 1}/{wrongQ.length}  </p>
+          <p className={styles.questionText}>
+            questions: {currentQuestions + 1}/{wrongQ.length}{" "}
+          </p>
           <button onClick={nextQ} className={styles.nextBtn} type="button">
             next
           </button>
@@ -41,28 +41,32 @@ const nextQuestion = currentQuestions + 1;
             <p>No more questions</p>
           ) : (
             <>
-                  <SyntaxHighlighter
-                  lineProps={{style: {wordBreak: 'break-all', whiteSpace: 'pre-wrap'}}}
-                    language="javascript" style={dracula}>
-                     wrapLines={true}
+              <SyntaxHighlighter
+                lineProps={{
+                  style: { wordBreak: "break-all", whiteSpace: "pre-wrap" },
+                }}
+                language="javascript"
+                style={dracula}
+                    wrapLines={true}
+                    
+              >
                 {wrongQ[currentQuestions]?.code}
               </SyntaxHighlighter>
-              
-                <div className={styles.correctAnswer}>
-                  <p className={styles.correctTitle}>ANSWER:</p>
-                  <p className={styles.correctText}>
-                    {" "}
-                    {wrongQ[currentQuestions]?.answer}
-                  </p>
-                </div>
-                <div className={styles.correctAnswer}>
-                  <p className={styles.correctTitle}>EXPLANATION:</p>
-                  <p className={styles.correctTextExplanation}>
-                    {" "}
-                    {wrongQ[currentQuestions]?.answerText}
-                  </p>
-                </div>
-               
+
+              <div className={styles.correctAnswer}>
+                <p className={styles.correctTitle}>ANSWER:</p>
+                <p className={styles.correctText}>
+                  {" "}
+                  {wrongQ[currentQuestions]?.answer}
+                </p>
+              </div>
+              <div className={styles.correctAnswer}>
+                <p className={styles.correctTitle}>EXPLANATION:</p>
+                <p className={styles.correctTextExplanation}>
+                  {" "}
+                  {wrongQ[currentQuestions]?.answerText}
+                </p>
+              </div>
             </>
           )}
         </div>

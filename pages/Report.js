@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../styles/Elements.module.css";
@@ -35,46 +36,45 @@ export default function Report() {
   console.log(handleSubmit);
 
   return (
-    <div  className={styles.reportContainer2}>
-      {sent ? <p className={styles.nextBtn}>Thank you for your feedback</p> :
-      
-    <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={styles.reportContainer}
-      >
-        <label className={styles.label}>Title</label>
-        <input
-          className={styles.reportInput}
-          type="text"
-          {...register("name", { required: true })}
-        />
-        {errors.name && <p>{"The Name Field is Required "}</p>}
+    <div className={styles.reportContainer2}>
+      {sent ? (
+        <p className={styles.nextBtn}>Thank you for your feedback</p>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={styles.reportContainer}
+        >
+          <label className={styles.label}>Title</label>
+          <input
+            className={styles.reportInput}
+            type="text"
+            {...register("name", { required: true })}
+          />
+          {errors.name && <p>{"The Name Field is Required "}</p>}
 
-        <label className={styles.label}>Message</label>
-        <input
-          className={styles.reportInputMessage}
-          type="text"
-          {...register("message", { required: true, minLength: 10 })}
-        />
-        {errors.message && (
-          <p>{"The message Field is Required and must be > 10 characters"}</p>
-        )}
+          <label className={styles.label}>Message</label>
+          <input
+            className={styles.reportInputMessage}
+            type="text"
+            {...register("message", { required: true, minLength: 10 })}
+          />
+          {errors.message && (
+            <p>{"The message Field is Required and must be > 10 characters"}</p>
+          )}
 
-        <label className={styles.label} htmlFor="email">
-          Email
-        </label>
-        <input
-          className={styles.reportInput}
-          type="email"
-          {...register("email", { required: true })}
-        />
- 
-        <input type="submit" className={styles.nextBtn} />
-      </form>
-    }
+          <label className={styles.label} htmlFor="email">
+            Email
+          </label>
+          <input
+            className={styles.reportInput}
+            type="email"
+            {...register("email", { required: true })}
+          />
 
+          <input type="submit" className={styles.nextBtn} />
+        </form>
+      )}
 
-      
       <div></div>
     </div>
   );

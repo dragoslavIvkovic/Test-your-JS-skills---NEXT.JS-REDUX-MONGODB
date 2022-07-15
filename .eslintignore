@@ -1,3 +1,7 @@
-/node_modules
-/build
-/dist
+.next
+public
+node_modules
+yarn.lock
+package-lock.json
+**/*.test.js
+coverage

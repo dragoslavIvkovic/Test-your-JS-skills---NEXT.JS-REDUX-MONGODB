@@ -1,8 +1,6 @@
-import React from "react";
-import Link from "next/link";
-
-import styles from "../styles/Header.module.css";
  
+import Link from "next/link";
+import styles from "../styles/Header.module.css";
 
 function Header() {
   return (
@@ -18,14 +16,12 @@ function Header() {
         </div>
 
         <div className={styles.topNavRight}>
-          <Link href="/WrongAnswersPage">
+          <Link href="/Answers">
             <a className={styles.link}>Answers</a>
           </Link>
           <Link href="/Report">
             <a className={styles.link}>Report</a>
           </Link>
-
-          
         </div>
       </nav>
     </div>

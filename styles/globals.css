@@ -6,7 +6,6 @@
   --main-bg-green: #82a7a6;
 }
 
-
 html,
 body {
   padding: 0;
@@ -14,43 +13,32 @@ body {
   font-family: monospace;
   background: var(--main-bg-purple);
   font-size: 1rem;
-   
 }
 
 * {
   box-sizing: border-box;
 }
 
- 
-
-p{
-  margin:0.2em;
-  padding:0.2em
+p {
+  margin: 0.2em;
+  padding: 0.2em;
 }
 
-input{
-    line-height:2em;
- width:20vw;
-border-radius:  5px;
-background: #ffffff;
-box-shadow: inset 12px 12px 29px #e0e0e0,
-            inset -12px -12px 29px #ffffff; transition: ease-in-out, width .35s ease-in-out;
-            
+input {
+  line-height: 2em;
+  width: 20vw;
+  border-radius: 5px;
+  background: var(--main-bg-white);
+  box-shadow: inset 12px 12px 29px #e0e0e0, inset -12px -12px 29px var(--main-bg-white);
+  transition: ease-in-out, width 0.35s ease-in-out;
 }
 
- a{
+a {
   font-size: 1rem;
- }
-
- @media  (max-width: 600px) {
-a{
-  
-    font-size:3vw;
-  }
- 
-  
-   
 }
 
-
- 
+@media (max-width: 600px) {
+  a {
+    font-size: 3vw;
+  }
+}

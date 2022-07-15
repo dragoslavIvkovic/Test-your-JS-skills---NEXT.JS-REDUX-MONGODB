@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 import "../styles/globals.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -17,8 +15,11 @@ export default function MyApp({ Component, pageProps }) {
         <PersistGate loading={null} persistor={persistor}>
           <Header />
           <Head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
-            </Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
+            />
+          </Head>
           <Component {...pageProps} />
         </PersistGate>{" "}
       </Provider>
