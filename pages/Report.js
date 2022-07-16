@@ -18,7 +18,10 @@ export default function Report() {
   };
 
   useEffect(() => {
-    fetch("/api/reportAPI", {
+
+
+    if (data) {
+  fetch("/api/reportAPI", {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -31,6 +34,13 @@ export default function Report() {
         console.log("Response succeeded!");
       }
     });
+    } else {
+      null
+}
+
+
+
+    
   }, [data]);
 
   console.log(handleSubmit);

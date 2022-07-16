@@ -1,9 +1,26 @@
-:root {
-  --main-bg-purple: #483ab6;
+/* :root {
+  --main-bg-background: #483ab6;
   --main-bg-black: #282a36;
+  --main-bg-titles: #13141b;
   --main-bg-red: #db3069;
   --main-bg-white: #e8e8e8;
   --main-bg-green: #82a7a6;
+} */
+:root {
+  --main-bg-background: #483ab6;
+  --main-bg-black: #282a36;
+  --main-bg-titles: #ff9678;
+  --main-bg-red: #db3069;
+  --main-bg-white: #e8e8e8;
+  --main-bg-green: #82a7a6;
+  --boxShadow-one:2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
+  --boxShadow-two:2px 2px 4px #c5c5c5, -2px -2px 4px var(--main-bg-white);
+  --border-one: 1px solid var(--main-bg-background);
+  --border-hole: box-shadow: inset 10px 10px 20px #232530,
+            inset -10px -10px 20px #2d2f3c;
+  --hover:inset 20px 20px 60px #3d319b,
+            inset -20px -20px 60px #5343d1;
+--transition: all 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 html,
@@ -11,7 +28,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: monospace;
-  background: var(--main-bg-purple);
+  background: var(--main-bg-background);
   font-size: 1rem;
 }
 
@@ -35,6 +52,19 @@ input {
 
 a {
   font-size: 1rem;
+  transition: var(--transition);
+}
+
+
+
+p{
+  text-transform: uppercase;
+  font-weight:700;
+  font-size:2em;color:var(--main-bg-black);
+  clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 @media (max-width: 600px) {

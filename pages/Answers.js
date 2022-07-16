@@ -36,7 +36,7 @@ function Answers() {
         </div>
 
         {!wrongQ.length ? (
-          "you answered everting"
+         <p> "you answered everting"</p>
         ) : remainingQuestions == 0 ? (
           <p>No more questions</p>
         ) : (

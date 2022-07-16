@@ -21,18 +21,17 @@
   padding: 10px 12px;
   text-decoration: none;
   border-radius: 10px;
-  background: var(--main-bg-purple);
-  box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one)
 }
 
 .link:hover {
-  border: 1px solid var(--main-bg-purple);
-  box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px var(--main-bg-white);
+  font-size: 1.2rem;
 }
 
 .link:active {
   font-weight: bold;
-  box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px var(--main-bg-white);
+  box-shadow:  var(--boxShadow-one);
 }
 
 .topNavRight {
