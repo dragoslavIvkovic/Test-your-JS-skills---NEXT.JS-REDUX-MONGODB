@@ -29,10 +29,19 @@
   padding: 0.3em 0.7em;
   border-radius: 0.5em;
   color: var(--main-bg-white);
+<<<<<<< Updated upstream
   border: 1px solid var(--main-bg-purple);
   transition: all 0.3s;
   background: var(--main-bg-purple);
   box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #473ba2;
+=======
+  border: var(--border-one);
+  transition: var(--transition);
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one);
+  left:0;
+  right:0;
+>>>>>>> Stashed changes
 }
 
 .answer:hover {
@@ -320,4 +329,150 @@
 .saved{
     color: black;  font-weight: 900;  font-size: 3rem;
    
+<<<<<<< Updated upstream
+=======
+}
+
+.container {
+  display: grid;
+  justify-content: center;
+}
+
+.block {
+  width: 30vw;
+  border-radius: 25px;
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one);
+  height: max-content;
+  padding:1rem;
+}
+
+
+@media (min-width: 1000px) {
+  .block {
+    width: 30vw;
+  }
+}
+
+@media (max-width: 1000px) {
+  .block {
+    width: 60vw;
+  }
+}
+
+.code {
+  align-items: center;justify-content: center;
+  width:30vw;
+   color: red;
+  }
+
+.highlighter {
+  height: fit-content;
+}
+
+.answer_section {
+  width: 30vw;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width:auto;
+  margin: 0.5rem;
+  padding: 0.3em 0.7em;
+  cursor: pointer;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  white-space: normal;
+  border-radius: 0.5em;
+  color: var(--main-bg-white);
+  border: var(--border-one);
+  transition: all 0.3s;
+  flex-wrap: wrap;
+  font-size:1em;
+  text-align: left;
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one);
+}
+
+.answer:hover {
+ font-size: 1.2em;
+}
+
+.answer:active {
+  font-size: 1.2rem;
+}
+.bar {
+  border-radius: 0.5em;
+  margin-top: 1 rem;
+  color: var(--main-bg-white);
+  border: var(--border-hole);
+  transition: all 0.3s;
+  background: var(--main-bg-black);
+  font-size: 1em;
+  height: 3vh;
+  padding: 0.3em 0.7em;
+  box-shadow: var(--main-bg-background);
+}
+
+.questionText {
+  text-align: start;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--main-bg-black);
+}
+
+/* Report */
+
+.reportContainer2 {
+  display: grid;
+  place-items: center;
+}
+
+.reportContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  margin: 3rem;
+  width:20vw;
+}
+
+.label {
+  white-space: wrap;
+    font-weight: 900;
+  font-size:1.2em;
+    align-items: center;
+  justify-items: center;
+  color: var(--main-bg-black);
+  padding:0;
+  margin: 0;
+}
+.warning {
+  white-space: wrap;
+  text-transform: none;
+  text-align: center;
+  
+  font-size:1em;
+   
+  align-items: center;
+  justify-items: center;
+  color: var(--main-bg-red);
+}
+
+.reportInputMessage {
+  line-height: 4em;
+}
+.reportInput {
+ width:20vw;
+}
+
+
+.correctAnswer{
+  display: flex;
+  flex-direction: column;
+>>>>>>> Stashed changes
 }
