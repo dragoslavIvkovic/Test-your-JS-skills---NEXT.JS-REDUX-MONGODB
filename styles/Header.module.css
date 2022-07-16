@@ -1,42 +1,34 @@
-.topnav {
-  overflow: hidden;
-  margin:1rem 3rem;
-  
+.topNav {
+  margin: 1vh 3vw;
+  display: inline-block;
+  white-space: nowrap;
 }
+
+ 
 
 .link {
   float: left;
-  margin :0.5rem;
-   color:whitesmoke;
+  margin: 0.5rem;
+  color: var(--main-bg-white);
   text-align: center;
   padding: 10px 12px;
   text-decoration: none;
-  border-radius:10px;
-  font-size: 1rem;
-
-   background: #483ab6;
-  box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #5343d1;
+  border-radius: 10px;
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one)
 }
 
-
 .link:hover {
- border: 1px solid #483ab6;
-  box-shadow: 2px 2px 4px #c5c5c5,
-             -2px -2px 4px #ffffff;
+  font-size: 1.2rem;
 }
 
 .link:active {
-    font-weight: bold; 
- box-shadow: 2px 2px 4px #c5c5c5,
-             -2px -2px 4px #ffffff;
+  font-weight: bold;
+  box-shadow:  var(--boxShadow-one);
 }
-
- 
 
 .topNavRight {
   display: inline-block;
-   position: absolute;
+  position: absolute;
   right: 1rem;
 }
-
- 

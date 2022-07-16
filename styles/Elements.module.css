@@ -29,19 +29,12 @@
   padding: 0.3em 0.7em;
   border-radius: 0.5em;
   color: var(--main-bg-white);
-<<<<<<< Updated upstream
-  border: 1px solid var(--main-bg-purple);
-  transition: all 0.3s;
-  background: var(--main-bg-purple);
-  box-shadow: 2px 2px 6px #3d319b, -2px -2px 6px #473ba2;
-=======
   border: var(--border-one);
   transition: var(--transition);
   background: var(--main-bg-background);
   box-shadow: var(--boxShadow-one);
   left:0;
   right:0;
->>>>>>> Stashed changes
 }
 
 .answer:hover {
@@ -329,8 +322,6 @@
 .saved{
     color: black;  font-weight: 900;  font-size: 3rem;
    
-<<<<<<< Updated upstream
-=======
 }
 
 .container {
@@ -474,5 +465,4 @@
 .correctAnswer{
   display: flex;
   flex-direction: column;
->>>>>>> Stashed changes
 }

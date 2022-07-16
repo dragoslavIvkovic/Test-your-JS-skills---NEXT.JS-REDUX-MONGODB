@@ -101,16 +101,16 @@ export default function Questions({ data }) {
 
   function SelectContent() {
     switch (game) {
-      case "levels":
-        return <LevelOptions handleClick={handleClick} />;
-      case "start":
-        return <FetchQuestions handleClick={handleClick} />;
-      case "test":
-        return <TestLogic handleClick={handleClick} />;
-      case "score":
-        return <SaveComponent handleClick={handleClick} />;
-      default:
-        return null;
+    case "levels":
+      return <LevelOptions handleClick={handleClick} />;
+    case "start":
+      return <FetchQuestions handleClick={handleClick} />;
+    case "test":
+      return <TestLogic handleClick={handleClick} />;
+    case "score":
+      return <SaveComponent handleClick={handleClick} />;
+    default:
+      return null;
     }
   }
 
