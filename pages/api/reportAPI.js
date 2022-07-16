@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable global-require */
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (req, res) {
-  let nodemailer = require("nodemailer");
+  const nodemailer = require("nodemailer");
   const transporter = nodemailer.createTransport({
     service: "Zoho",
     host: "smtp.zoho.com",
@@ -16,11 +18,11 @@ export default function (req, res) {
     from: req.body.email,
     to: process.env.ZOHO_EMAIL,
     subject: `Message From ${req.body.name}`,
-    text: req.body.message + " | Sent from: " + req.body.email,
+    text: `${req.body.message} | Sent from: ${req.body.email}`,
     html: `<div>${req.body.message}</div><p>Sent from: ${req.body.email}</p>`,
   };
 
-  transporter.sendMail(mailOptions, function (err, info) {
+  transporter.sendMail(mailOptions, (err, info) => {
     if (err) console.log(err);
     else console.log(info);
   });

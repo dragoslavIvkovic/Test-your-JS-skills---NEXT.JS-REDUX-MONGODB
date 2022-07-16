@@ -4,14 +4,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 600px) {
-  .topNav {
-    position: fixed;
-    overflow: hidden;
-    width: 100%;
-    bottom: 0;
-  }
-}
+ 
 
 .link {
   float: left;

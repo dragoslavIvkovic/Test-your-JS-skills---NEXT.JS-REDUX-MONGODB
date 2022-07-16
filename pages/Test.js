@@ -1,4 +1,7 @@
-import React, { useEffect, useState, useRef, memo } from "react";
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -25,6 +28,11 @@ export default function Questions({ data }) {
   const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [game, setGame] = useState("levels");
+
+  const handleClick = (gameState) => {
+    setGame(gameState);
+  };
 
   function setWrongQuestions() {
     dispatch(addWrongQuestions(questions[currentQuestion]));
@@ -91,11 +99,6 @@ export default function Questions({ data }) {
     }
   }, [collection]);
 
-  const [game, setGame] = useState("levels");
-  const handleClick = (gameState) => {
-    setGame(gameState);
-  };
-
   function SelectContent() {
     switch (game) {
       case "levels":
@@ -112,8 +115,8 @@ export default function Questions({ data }) {
   }
 
   const Levels = ["novice", "advanced", "expert"];
-  const LevelOptions = () => {
-    return Levels.map((x) => (
+  const LevelOptions = () =>
+    Levels.map((x) => (
       <button
         key={x}
         className={styles.nextBtn}
@@ -126,17 +129,16 @@ export default function Questions({ data }) {
         {x}
       </button>
     ));
-  };
 
-  const FetchQuestions = () => {
+  function FetchQuestions() {
     return (
       <button onClick={fetchQuestions} className={styles.nextBtn} type="button">
         START
       </button>
     );
-  };
+  }
 
-  const TestLogic = () => {
+  function TestLogic() {
     return (
       <div className={styles.block}>
         <div className={styles.questionCount}>
@@ -150,7 +152,7 @@ export default function Questions({ data }) {
           lineProps={{
             style: { wordBreak: "break-all", whiteSpace: "pre-wrap" },
           }}
-          wrapLines={true}
+          wrapLines
           language="javascript"
           style={dracula}
         >
@@ -183,9 +185,9 @@ export default function Questions({ data }) {
         <ProgressBar />
       </div>
     );
-  };
+  }
 
-  const ProgressBar = () => {
+  function ProgressBar() {
     return (
       <div style={countDownBarWith} className={styles.bar}>
         <span>
@@ -194,7 +196,7 @@ export default function Questions({ data }) {
         </span>
       </div>
     );
-  };
+  }
 
   return (
     <div className={styles.containerQuestions}>

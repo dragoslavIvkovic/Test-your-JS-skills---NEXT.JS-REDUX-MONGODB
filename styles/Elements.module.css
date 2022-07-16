@@ -147,6 +147,7 @@
   color: var(--main-bg-white);
   font-weight: bold;
   padding: 0.3rem;
+  font-size: 1em;
 }
 .correctText {
   text-transform: uppercase;
@@ -154,10 +155,13 @@
   padding: 0.3rem;
 }
 .correctTextExplanation {
-  color: var(--main-bg-titles);
+  color: var(--main-bg-black);
   font-weight: 900;
   padding: 0.3rem;
+  height:fit-content;
   font-size: 1em;
+  white-space: wrap;
+  text-transform: none;
 }
 
 .questionText {
@@ -299,16 +303,41 @@
   justify-items: center;
   align-items: center;
   margin: 3rem;
+  width:20vw;
 }
 
 .label {
-  text-transform: uppercase;
-  font-weight: 700;
+  white-space: wrap;
+  
+  font-weight: 900;
+  font-size:1.2em;
+    align-items: center;
+  justify-items: center;
+  color: var(--main-bg-black);
+  padding:0;
+  margin: 0;
+}
+.warning {
+  white-space: wrap;
+  text-transform: none;
+  text-align: center;
+  
+  font-size:1em;
+   
   align-items: center;
   justify-items: center;
-  color: var(--main-bg-white);
+  color: var(--main-bg-red);
 }
 
 .reportInputMessage {
   line-height: 4em;
+}
+.reportInput {
+ width:20vw;
+}
+
+
+.correctAnswer{
+  display: flex;
+  flex-direction: column;
 }

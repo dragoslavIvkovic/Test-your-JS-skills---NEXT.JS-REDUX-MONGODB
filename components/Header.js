@@ -1,4 +1,6 @@
- 
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-filename-extension */
+
 import Link from "next/link";
 import styles from "../styles/Header.module.css";
 

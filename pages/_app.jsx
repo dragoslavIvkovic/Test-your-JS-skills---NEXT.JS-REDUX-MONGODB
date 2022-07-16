@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import "../styles/globals.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import Head from "next/head";
 import store from "../store/store";
 import Header from "../components/Header";
-import Head from "next/head";
-import 'normalize.css';
+import "normalize.css";
+
 const persistor = persistStore(store);
 
 export default function MyApp({ Component, pageProps }) {

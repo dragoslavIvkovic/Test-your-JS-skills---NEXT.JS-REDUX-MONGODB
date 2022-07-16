@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: [],
 };
 
 export const wrongQueCounterSlice = createSlice({
-  name: 'wrongQuestions',
+  name: "wrongQuestions",
   initialState,
   reducers: {
     addWrongQuestions: (state, action) => {
@@ -20,10 +20,8 @@ export const wrongQueCounterSlice = createSlice({
   },
 });
 
-export const {
-  addWrongQuestions,
-  resetWrongQuestions,
-} = wrongQueCounterSlice.actions;
+export const { addWrongQuestions, resetWrongQuestions } =
+  wrongQueCounterSlice.actions;
 
 export const selectWrongQuestions = (state) => state.wrongQuestions.value;
 

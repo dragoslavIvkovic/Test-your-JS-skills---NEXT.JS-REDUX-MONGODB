@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const scoreStateSlice = createSlice({
-  name: 'showScoreState',
+  name: "showScoreState",
   initialState: {
     value: false,
   },

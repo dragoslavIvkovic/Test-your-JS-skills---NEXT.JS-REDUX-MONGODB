@@ -36,14 +36,14 @@ body {
   box-sizing: border-box;
 }
 
-p {
+/* p {
   margin: 0.2em;
   padding: 0.2em;
-}
+} */
 
 input {
   line-height: 2em;
-  width: 20vw;
+   
   border-radius: 5px;
   background: var(--main-bg-white);
   box-shadow: inset 12px 12px 29px #e0e0e0, inset -12px -12px 29px var(--main-bg-white);
@@ -58,13 +58,15 @@ a {
 
 
 p{
+  margin: 0.2em;
+  padding: 0.2em;
   text-transform: uppercase;
   font-weight:700;
-  font-size:2em;color:var(--main-bg-black);
+ color:var(--main-bg-black);
   clear: both;
     display: inline-block;
     overflow: hidden;
-    white-space: nowrap;
+  
 }
 
 @media (max-width: 600px) {
