@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-     "lint": "tsc && eslint \"src/**/*.{js,ts,tsx}\" --quiet --fix",
+    "lint": "tsc && eslint \"src/**/*.{js,ts,tsx}\" --quiet --fix",
     "format": "prettier ./**/*.{js,jsx,ts,tsx,css,scss,md,json} --config ./.prettierrc --write",
     "formatmd": "prettier --write",
     "success-message": "echo \n\n\n🚀  Everything is awesome. 🚀\n\n🖥️  Auto checking completed, ready to deploy.🖥️\n\n☁️  Run: git push ☁️"
@@ -51,7 +51,7 @@
   },
   "husky": {
     "hooks": {
-       "pre-commit": "npm run lint",
+      "pre-commit": "npm run lint",
       "post-commit": "npm run success-message",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
