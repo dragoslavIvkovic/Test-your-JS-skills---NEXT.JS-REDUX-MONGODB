@@ -47,6 +47,8 @@ function Answers() {
           wrapLines
           language="javascript"
           style={dracula}
+          className={styles.highlighter}
+           
         >
           {wrongQ[currentQuestions]?.code}
         </SyntaxHighlighter>

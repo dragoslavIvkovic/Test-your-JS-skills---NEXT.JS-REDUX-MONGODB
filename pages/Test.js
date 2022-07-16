@@ -72,7 +72,7 @@ export default function Questions({ data }) {
   };
 
   const countDownBarWith = {
-    width: totalTime * 10,
+    width:  (totalTime * 10) +"%",
   };
 
   useEffect(() => {
@@ -155,6 +155,7 @@ export default function Questions({ data }) {
           wrapLines
           language="javascript"
           style={dracula}
+          className={styles.highlighter}
         >
           {questions[currentQuestion].code.replace(
             /(^"|"$)/g,
@@ -180,7 +181,7 @@ export default function Questions({ data }) {
               {answerOption.answerText}
               {console.log("render")}
             </button>
-          ))}
+          ))}  
         </div>
         <ProgressBar />
       </div>
