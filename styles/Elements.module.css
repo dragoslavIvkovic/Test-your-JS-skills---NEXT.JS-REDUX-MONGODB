@@ -11,27 +11,17 @@
 }
  
 
-@media (max-width:600px) {
-  .block{
-     width:  30rem;
-  }
+ 
   
-  
-}
-@media (max-width:600px) {
-  
-  .highlighter {
-  width: 25rem;
-  }
-  
-}
+ 
 
 
 .block {
   border-radius: 25px;
   background: var(--main-bg-purple);
   box-shadow: 2px 2px 60px #3d319b, -2px -2px 60px #5343d1;
-  width:  30rem;
+  width: 35rem;
+  width: calc(35rem - 100px);
   height: max-content;
   padding: 2rem;
   margin: 2rem; 
@@ -236,3 +226,59 @@ user-select: none;
   width: calc(100% - 700px);
  
  }
+
+
+ /* Report */
+
+ 
+.reportContainer {
+  display: grid;
+  place-items: center;
+}
+
+.reportFormContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 20px;
+  justify-items: center;
+  align-items: center;
+ margin-top: 4vw;
+  width:20rem;
+ min-width: 10rem;
+  
+}
+
+.label {
+  white-space: wrap;
+    font-weight: 900;
+  font-size:1.2em;
+    align-items: center;
+  justify-items: center;
+  color: var(--main-bg-black);
+  padding:0;
+  margin: 0;
+}
+.warning {
+  white-space: wrap;
+  text-transform: none;
+  text-align: center;
+    font-size:1em;
+   
+  align-items: center;
+  justify-items: center;
+  color: var(--main-bg-red);
+}
+
+.reportInputMessage {
+  line-height: 4em;width:20rem; min-width: 10rem;
+}
+.reportInput {
+ width:20rem; min-width: 10rem;
+}
+
+
+.correctAnswer{
+  display: flex;
+  flex-direction: column;
+ 
+}

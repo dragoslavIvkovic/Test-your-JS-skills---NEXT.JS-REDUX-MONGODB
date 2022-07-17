@@ -39,13 +39,13 @@ export default function Report() {
   console.log(handleSubmit);
 
   return (
-    <div className={styles.reportContainer2}>
+    <div className={styles.reportContainer}>
       {sent ? (
         <p className={styles.nextBtn}>Thank you for your feedback</p>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className={styles.reportContainer}
+          className={styles.reportFormContainer}
         >
           <p className={styles.label}>Title</p>
           <input
@@ -59,7 +59,7 @@ export default function Report() {
 
           <p className={styles.label}>Message</p>
           <input
-            className={styles.reportInput}
+            className={styles.reportInputMessage}
             type="text"
             {...register("message", { required: true, minLength: 10 })}
           />
