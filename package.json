@@ -7,15 +7,12 @@
     "test": "jest",
     "build": "next build",
     "start": "next start",
-    "prepare": "husky install",
-    "pre-commit": "next lint",
-    "lint": "eslint '*/**/*.{js,jsx}' --quiet --fix"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@next/eslint-plugin-next": "^12.2.2",
     "@reduxjs/toolkit": "^1.8.3",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "highlight.js": "^11.6.0",
     "mongo": "^0.1.0",
     "mongodb": "^4.8.0",
@@ -34,29 +31,9 @@
     "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.2.2",
     "eslint": "^8.20.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jsx-a11y": "^6.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.30.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-security": "^1.5.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-sonarjs": "^0.13.0",
-    "eslint-plugin-unicorn": "^43.0.1",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint '*/**/*.{js,jsx}' --fix"
-    ]
+    "eslint-config-next": "12.2.2",
+    "eslint-config-prettier": "^8.5.0"
   }
 }
