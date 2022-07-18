@@ -60,11 +60,26 @@ export default function Questions({ data }) {
       setWrongQuestions();
       isActive.current = true;
       setTotalTime(10);
+  
+    } else if (!isCorrect && nextQuestion === questions.length) {
+       
+      setWrongQuestions();
+      isActive.current = false;
+      setGame("score");
+      setCurrentQuestion(0);
     } else if (
-      (totalTime === 0 && nextQuestion === questions.length) ||
-      (!isCorrect && nextQuestion === questions.length) ||
+      
       (isCorrect && nextQuestion === questions.length)
     ) {
+       dispatch(increment());
+      isActive.current = false;
+      setGame("score");
+      setCurrentQuestion(0);
+    
+    } else if (
+      (totalTime === 0 && nextQuestion === questions.length) 
+    ) {
+      setWrongQuestions();
       isActive.current = false;
       setGame("score");
       setCurrentQuestion(0);
