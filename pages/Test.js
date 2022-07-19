@@ -23,8 +23,9 @@ export default function Questions({ data }) {
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
   const loading = useRef(false);
-  const isActive = useRef(false);
+  const isTimeActive = useRef(false);
   const [totalTime, setTotalTime] = useState(10);
+  const [endTimer, setEndTimer] = useState(false)
   const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function Questions({ data }) {
   const fetchQuestions = () => {
     setQuestions(data);
     loading.current = true;
-    isActive.current = true;
+    isTimeActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     setGame("test");
@@ -54,17 +55,17 @@ export default function Questions({ data }) {
       setTotalTime(10);
       setCurrentQuestion(nextQuestion);
       dispatch(increment());
-      isActive.current = true;
+      isTimeActive.current = true;
     } else if (!isCorrect && nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       setWrongQuestions();
-      isActive.current = true;
+      isTimeActive.current = true;
       setTotalTime(10);
   
     } else if (!isCorrect && nextQuestion === questions.length) {
        
       setWrongQuestions();
-      isActive.current = false;
+      isTimeActive.current = false;
       setGame("score");
       setCurrentQuestion(0);
     } else if (
@@ -72,7 +73,7 @@ export default function Questions({ data }) {
       (isCorrect && nextQuestion === questions.length)
     ) {
        dispatch(increment());
-      isActive.current = false;
+      isTimeActive.current = false;
       setGame("score");
       setCurrentQuestion(0);
     
@@ -80,7 +81,7 @@ export default function Questions({ data }) {
       (totalTime === 0 && nextQuestion === questions.length) 
     ) {
       setWrongQuestions();
-      isActive.current = false;
+      isTimeActive.current = false;
       setGame("score");
       setCurrentQuestion(0);
     }
@@ -90,9 +91,15 @@ export default function Questions({ data }) {
     width:  (totalTime * 10) +"%",
   };
 
+  const EndOfCountDown = () => {
+    if (totalTime === 0) {
+      setEndTimer(true)
+    }
+  }
+
   useEffect(() => {
     let interval = null;
-    if (isActive.current) {
+    if (isTimeActive.current) {
       interval = setInterval(() => {
         totalTime === 0
           ? handleAnswerOptionClick()
@@ -106,7 +113,7 @@ export default function Questions({ data }) {
     }
 
     return () => clearInterval(interval);
-  }, [isActive.current, totalTime]);
+  }, [isTimeActive.current, totalTime]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
