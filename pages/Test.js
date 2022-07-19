@@ -15,7 +15,7 @@ import {
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
 
-import uudiv from "../util/uuidv";
+ 
 import SaveComponent from "./SaveComponent";
 
 export default function Questions({ data }) {
@@ -23,8 +23,9 @@ export default function Questions({ data }) {
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
   const loading = useRef(false);
-  const isActive = useRef(false);
+  const isTimeActive = useRef(false);
   const [totalTime, setTotalTime] = useState(10);
+  const [endTimer, setEndTimer] = useState(false)
   const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function Questions({ data }) {
   const fetchQuestions = () => {
     setQuestions(data);
     loading.current = true;
-    isActive.current = true;
+    isTimeActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     setGame("test");
@@ -54,18 +55,33 @@ export default function Questions({ data }) {
       setTotalTime(10);
       setCurrentQuestion(nextQuestion);
       dispatch(increment());
-      isActive.current = true;
+      isTimeActive.current = true;
     } else if (!isCorrect && nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
       setWrongQuestions();
-      isActive.current = true;
+      isTimeActive.current = true;
       setTotalTime(10);
+  
+    } else if (!isCorrect && nextQuestion === questions.length) {
+       
+      setWrongQuestions();
+      isTimeActive.current = false;
+      setGame("score");
+      setCurrentQuestion(0);
     } else if (
-      (totalTime === 0 && nextQuestion === questions.length) ||
-      (!isCorrect && nextQuestion === questions.length) ||
+      
       (isCorrect && nextQuestion === questions.length)
     ) {
-      isActive.current = false;
+       dispatch(increment());
+      isTimeActive.current = false;
+      setGame("score");
+      setCurrentQuestion(0);
+    
+    } else if (
+      (totalTime === 0 && nextQuestion === questions.length) 
+    ) {
+      setWrongQuestions();
+      isTimeActive.current = false;
       setGame("score");
       setCurrentQuestion(0);
     }
@@ -75,9 +91,15 @@ export default function Questions({ data }) {
     width:  (totalTime * 10) +"%",
   };
 
+  const EndOfCountDown = () => {
+    if (totalTime === 0) {
+      setEndTimer(true)
+    }
+  }
+
   useEffect(() => {
     let interval = null;
-    if (isActive.current) {
+    if (isTimeActive.current) {
       interval = setInterval(() => {
         totalTime === 0
           ? handleAnswerOptionClick()
@@ -91,7 +113,7 @@ export default function Questions({ data }) {
     }
 
     return () => clearInterval(interval);
-  }, [isActive.current, totalTime]);
+  }, [isTimeActive.current, totalTime]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -165,21 +187,23 @@ export default function Questions({ data }) {
         </SyntaxHighlighter>
 
         <div className={styles.answer_section}>
-          {questions[currentQuestion].answerOptions.map((answerOption) => (
+           {console.log("render")}
+          {questions[currentQuestion].answerOptions.map((answer) => (
             <button
               type="button"
               className={styles.answer}
-              key={uudiv()}
+              key={answer.answerText}  
               onClick={() =>
                 handleAnswerOptionClick(
-                  answerOption.isCorrect,
+                  answer.isCorrect,
                   questions,
                   currentQuestion
                 )
               }
             >
-              {answerOption.answerText}
-              {console.log("render")}
+              {answer.answerText}
+             
+            
             </button>
           ))}  
         </div>
