@@ -15,7 +15,7 @@ import {
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
 
-import uudiv from "../util/uuidv";
+ 
 import SaveComponent from "./SaveComponent";
 
 export default function Questions({ data }) {
@@ -180,21 +180,23 @@ export default function Questions({ data }) {
         </SyntaxHighlighter>
 
         <div className={styles.answer_section}>
-          {questions[currentQuestion].answerOptions.map((answerOption) => (
+           {console.log("render")}
+          {questions[currentQuestion].answerOptions.map((answer) => (
             <button
               type="button"
               className={styles.answer}
-              key={uudiv()}
+              key={answer.answerText}  
               onClick={() =>
                 handleAnswerOptionClick(
-                  answerOption.isCorrect,
+                  answer.isCorrect,
                   questions,
                   currentQuestion
                 )
               }
             >
-              {answerOption.answerText}
-              {console.log("render")}
+              {answer.answerText}
+             
+            
             </button>
           ))}  
         </div>
