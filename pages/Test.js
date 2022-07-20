@@ -199,10 +199,10 @@ export default function Questions({ data }) {
   function ProgressBar() {
     return (
       <div style={countDownBarWith} className={styles.bar}>
-        <span>
+        
           {totalTime.toFixed(0)}
           sec
-        </span>
+         
       </div>
     );
   }
