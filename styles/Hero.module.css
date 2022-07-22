@@ -1,0 +1,18 @@
+.hero {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+   border: 2px inset var(--main-bg-white);
+   width:30vw;
+ padding: 1em;
+  font-size: 1em;
+}
+ 

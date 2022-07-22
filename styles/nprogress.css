@@ -6,6 +6,7 @@
 
 
  #nprogress {
+  overflow: hidden;
   font-size: 10px;
   margin: 50px auto;
   text-indent: -9999em;

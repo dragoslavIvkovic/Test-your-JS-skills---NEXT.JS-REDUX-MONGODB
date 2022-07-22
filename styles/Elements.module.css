@@ -39,8 +39,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-   word-break: break-all;
-  margin: 0.5vh 0;
+  word-break: break-all;
+  margin: 1vh 0;
   padding: 0.3em 0.7em;
   border-radius: 0.5em;
   color: var(--main-bg-white);
@@ -48,11 +48,11 @@
   transition: var(--transition);
   background: var(--main-bg-background);
   box-shadow: var(--boxShadow-one);
-  font-size: 1em;
+  font-size: 1em;cursor: pointer;
 }
 
-.answer:hover {
-    background:var(--main-bg-hover);
+/* .answer:hover {
+    border:1px solid var(--main-bg-hover);
    word-break: break-all;
 }
 
@@ -60,7 +60,7 @@
  background:var(--main-bg-hover);
    word-break: break-all;
   
-}
+} */
 .bar {
   border-radius: 0.5em;
   margin-top: 1rem;
