@@ -4,8 +4,6 @@
   white-space: nowrap;
 }
 
- 
-
 .link {
   float: left;
   margin: 0.5rem;
@@ -15,7 +13,7 @@
   text-decoration: none;
   border-radius: 10px;
   background: var(--main-bg-background);
-  box-shadow: var(--boxShadow-one)
+  box-shadow: var(--boxShadow-one);
 }
 
 .link:hover {
@@ -24,7 +22,7 @@
 
 .link:active {
   font-weight: bold;
-  box-shadow:  var(--boxShadow-one);
+  box-shadow: var(--boxShadow-one);
 }
 
 .topNavRight {

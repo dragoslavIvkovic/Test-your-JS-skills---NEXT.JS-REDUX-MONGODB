@@ -17,7 +17,7 @@ export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
-   const width = useRef(100);
+  const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
   const [game, setGame] = useState("levels");
@@ -35,7 +35,7 @@ export default function Questions({ data }) {
 
   const fetchQuestions = () => {
     setQuestions(data);
-       dispatch(reset());
+    dispatch(reset());
     dispatch(resetWrongQuestions(0));
     setGame("test");
     handleStart();

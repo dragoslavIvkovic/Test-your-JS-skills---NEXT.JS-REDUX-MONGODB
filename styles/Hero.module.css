@@ -1,18 +1,96 @@
-.hero {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
-}
-
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  height: fit-content;
-   border: 2px inset var(--main-bg-white);
+ .heroContainer {
+ display: grid;
+   place-items: center;
    width:30vw;
- padding: 1em;
-  font-size: 1em;
+   text-align: center;
 }
  
+ 
+ .paragraph {
+ 
+  padding: 2rem;
+}
+
+
+
+@keyframes animate {
+  0% {
+    content: "Test your programming knowledge";
+    color: white;
+  }
+  20% {
+    content: "The application works like a quiz";
+    color: #40DFEF;
+  }
+  40% {
+    content: " Solving coding challenges every day";
+    color: #FD5D5D;
+  }
+  60% {
+    content: "as well as reviewing code";
+    color: gold;
+  }
+  80% {
+    content: "makes you a better programmer";
+    color: palevioletred;
+  }
+}
+
+ 
+
+.paragraph::before {
+  color: white;
+  content: "THIS";
+  font-size: 64px;
+  font-size: 2em;
+  letter-spacing: 10px;
+  font-weight: 900;
+  animation: animate 10s steps(1, end) infinite;
+}
+
+/* .text{
+  color: #FF6363;
+} */
+
+.text:nth-child(2),.text:nth-child(4) {
+  color: #84DFFF;
+}
+.text:nth-child(3) {
+ color: #FF6363;
+}
+
+.nextBtn {
+  align-items: center;
+  border: 0;
+  border-radius: 15px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  margin: 0.5em;
+  color: var(--main-bg-white);
+  font-size: 1rem;
+  padding: 0.8em 1.2em;
+  background: var(--main-bg-background);
+  box-shadow: var(--boxShadow-one);
+  transition: var(--transition);
+}
+
+.nextBtn:hover {
+  font-size: 1.2rem;
+}

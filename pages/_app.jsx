@@ -12,26 +12,25 @@ import "normalize.css";
 import Loading from "../components/Loading";
 import NextProgress from "next-progress";
 const persistor = persistStore(store);
-import "../styles/nprogress.css"
+import "../styles/nprogress.css";
 
 export default function MyApp({ Component, pageProps }) {
-  
   const router = useRouter();
   // const [isReady, setReady] = useState(false);
   // const URL = process.env.NEXT_URL
   // const URLtest = `${URL}/Test?collection=undefined`
 
-//   useEffect(() => {
-//     const handleStart = (url) => {
-//       url !== router.pathname ? setReady(true) : setReady(false);
-// //  url !== router.asPath ? setReady(true) : setReady(false);
-//     };
-//     const handleComplete = (url) => setReady(false);
+  //   useEffect(() => {
+  //     const handleStart = (url) => {
+  //       url !== router.pathname ? setReady(true) : setReady(false);
+  // //  url !== router.asPath ? setReady(true) : setReady(false);
+  //     };
+  //     const handleComplete = (url) => setReady(false);
 
-//     const handleRouteChangeError = (err, url) => {
-//       console.log(`Loading: ${url}`);
-//       setReady(true);
-//     };
+  //     const handleRouteChangeError = (err, url) => {
+  //       console.log(`Loading: ${url}`);
+  //       setReady(true);
+  //     };
 
   //   router.events.on("routeChangeStart", handleStart);
   //   router.events.on("routeChangeComplete", handleComplete);
@@ -49,8 +48,8 @@ export default function MyApp({ Component, pageProps }) {
           />
         </Head>
         {/* {isReady ? <Loading /> : <Component {...pageProps} />} */}
-          <NextProgress delay={300} options={{ showSpinner: false }} />
-         <Component {...pageProps} /> 
+        <NextProgress delay={300} options={{ showSpinner: false }} />
+        <Component {...pageProps} />
       </PersistGate>
     </Provider>
   );
