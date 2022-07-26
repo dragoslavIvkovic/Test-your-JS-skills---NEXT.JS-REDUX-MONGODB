@@ -10,7 +10,6 @@ export default async function handler(req, res) {
       const questions = await db.collection(collection).find({}).toArray();
       res.json(questions);
       break;
-
     default:
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "next-authentication",
-  "version": "0.1.0",
+  "name": "js-test",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,18 +17,19 @@
     "mongo": "^0.1.0",
     "mongodb": "^4.8.0",
     "next": "^12.2.2",
+    "next-progress": "^2.2.0",
     "next-redux-wrapper": "^7.0.5",
     "nodemailer": "^6.7.7",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
-    "react-code-blocks": "^0.0.9-0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.1",
     "react-redux": "^8.0.2",
     "react-syntax-highlighter": "^15.5.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.2.2",

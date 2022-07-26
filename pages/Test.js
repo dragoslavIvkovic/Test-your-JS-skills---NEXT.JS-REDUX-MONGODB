@@ -1,7 +1,4 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/prop-types */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -11,109 +8,112 @@ import {
   addWrongQuestions,
   resetWrongQuestions,
 } from "../store/reducers/wrongQueCounterSlice";
-
+import { v4 as uuid } from "uuid";
 import clientPromise from "../lib/mongodb";
 import styles from "../styles/Elements.module.css";
-
- 
 import SaveComponent from "./SaveComponent";
 
 export default function Questions({ data }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [questions, setQuestions] = useState({});
   const [collection, setCollection] = useState();
-  const loading = useRef(false);
-  const isTimeActive = useRef(false);
-  const [totalTime, setTotalTime] = useState(10);
-  const [endTimer, setEndTimer] = useState(false)
   const width = useRef(100);
   const router = useRouter();
   const dispatch = useDispatch();
   const [game, setGame] = useState("levels");
+  const initCount = 6;
+  const [totalTime, setTotalTime] = useState(initCount);
+  const timerId = useRef();
 
   const handleClick = (gameState) => {
     setGame(gameState);
   };
 
-  function setWrongQuestions() {
+  const setWrongQuestions = useCallback(() => {
     dispatch(addWrongQuestions(questions[currentQuestion]));
-  }
+  }, [currentQuestion, dispatch, questions]);
 
   const fetchQuestions = () => {
     setQuestions(data);
-    loading.current = true;
-    isTimeActive.current = true;
     dispatch(reset());
     dispatch(resetWrongQuestions(0));
     setGame("test");
+    handleStart();
   };
 
   const nextQuestion = currentQuestion + 1;
 
   const handleAnswerOptionClick = (isCorrect) => {
     if (isCorrect && nextQuestion < questions.length) {
-      setTotalTime(10);
-      setCurrentQuestion(nextQuestion);
       dispatch(increment());
-      isTimeActive.current = true;
+      handleReset();
     } else if (!isCorrect && nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
       setWrongQuestions();
-      isTimeActive.current = true;
-      setTotalTime(10);
-  
+      handleReset();
     } else if (!isCorrect && nextQuestion === questions.length) {
-       
-      setWrongQuestions();
-      isTimeActive.current = false;
-      setGame("score");
-      setCurrentQuestion(0);
-    } else if (
-      
-      (isCorrect && nextQuestion === questions.length)
-    ) {
-       dispatch(increment());
-      isTimeActive.current = false;
-      setGame("score");
-      setCurrentQuestion(0);
-    
-    } else if (
-      (totalTime === 0 && nextQuestion === questions.length) 
-    ) {
-      setWrongQuestions();
-      isTimeActive.current = false;
-      setGame("score");
-      setCurrentQuestion(0);
+      handleStop();
+    } else if (isCorrect && nextQuestion === questions.length) {
+      handleStop();
     }
   };
 
+  useEffect(() => {
+    return () => clearInterval(timerId.current);
+  }, []);
+
+  useEffect(() => {
+    if (totalTime === -1) {
+      setWrongQuestions();
+      setCurrentQuestion(nextQuestion);
+      handleReset();
+    } else if (totalTime === 0 && nextQuestion === questions.length) {
+      handleStop();
+    }
+  }, [
+    handleReset,
+    handleStop,
+    nextQuestion,
+    questions.length,
+    setWrongQuestions,
+    totalTime,
+  ]);
+
   const countDownBarWith = {
-    width:  (totalTime * 10) +"%",
+    width: totalTime * 10 + "%",
   };
 
-  const EndOfCountDown = () => {
-    if (totalTime === 0) {
-      setEndTimer(true)
+  function handleStart() {
+    if (!timerId.current) {
+      timerId.current = setInterval(() => {
+        setTotalTime((pre) => pre - 1);
+        width.current = width - 10;
+      }, 1000);
+    } else if (totalTime === 0 && nextQuestion === questions.length) {
+      handleStop();
     }
   }
 
-  useEffect(() => {
-    let interval = null;
-    if (isTimeActive.current) {
-      interval = setInterval(() => {
-        totalTime === 0
-          ? handleAnswerOptionClick()
-          : setTotalTime(totalTime - 1);
-        width.current = width - 10;
-      }, 1000);
-    } else if (nextQuestion === questions.length) {
-      setWrongQuestions();
-      () => handleClick("score");
-      setCurrentQuestion(0);
-    }
+  const handleStop = useCallback(
+    (isCorrect) => {
+      clearInterval(timerId.current);
+      timerId.current = null;
+      if (!isCorrect && nextQuestion === questions.length) {
+        setWrongQuestions();
+        setGame("score");
+        setCurrentQuestion(0);
+      } else if (isCorrect && nextQuestion === questions.length) {
+        dispatch(increment());
+        setGame("score");
+        setCurrentQuestion(0);
+      }
+    },
+    [dispatch, nextQuestion, questions.length, setWrongQuestions]
+  );
 
-    return () => clearInterval(interval);
-  }, [isTimeActive.current, totalTime]);
+  const handleReset = useCallback(() => {
+    setTotalTime(initCount);
+    setCurrentQuestion(nextQuestion);
+  }, [nextQuestion]);
 
   useEffect(() => {
     if (collection !== router.query.collection) {
@@ -123,16 +123,16 @@ export default function Questions({ data }) {
 
   function SelectContent() {
     switch (game) {
-    case "levels":
-      return <LevelOptions handleClick={handleClick} />;
-    case "start":
-      return <FetchQuestions handleClick={handleClick} />;
-    case "test":
-      return <TestLogic handleClick={handleClick} />;
-    case "score":
-      return <SaveComponent handleClick={handleClick} />;
-    default:
-      return null;
+      case "levels":
+        return <LevelOptions handleClick={handleClick} />;
+      case "start":
+        return <FetchQuestions handleClick={handleClick} />;
+      case "test":
+        return <TestLogic handleClick={handleClick} />;
+      case "score":
+        return <SaveComponent handleClick={handleClick} />;
+      default:
+        return null;
     }
   }
 
@@ -140,7 +140,7 @@ export default function Questions({ data }) {
   const LevelOptions = () =>
     Levels.map((x) => (
       <button
-        key={x}
+        key={uuid()}
         className={styles.nextBtn}
         type="button"
         onClick={() => {
@@ -187,12 +187,12 @@ export default function Questions({ data }) {
         </SyntaxHighlighter>
 
         <div className={styles.answer_section}>
-           {console.log("render")}
+          {console.log("render")}
           {questions[currentQuestion].answerOptions.map((answer) => (
             <button
               type="button"
               className={styles.answer}
-              key={answer.answerText}  
+              key={uuid()}
               onClick={() =>
                 handleAnswerOptionClick(
                   answer.isCorrect,
@@ -202,10 +202,8 @@ export default function Questions({ data }) {
               }
             >
               {answer.answerText}
-             
-            
             </button>
-          ))}  
+          ))}
         </div>
         <ProgressBar />
       </div>
@@ -215,10 +213,8 @@ export default function Questions({ data }) {
   function ProgressBar() {
     return (
       <div style={countDownBarWith} className={styles.bar}>
-        <span>
-          {totalTime.toFixed(0)}
-          sec
-        </span>
+        {totalTime.toFixed(0)}
+        sec
       </div>
     );
   }

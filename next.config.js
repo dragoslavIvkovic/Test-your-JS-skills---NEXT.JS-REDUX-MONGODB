@@ -7,8 +7,5 @@ module.exports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  extends: [
-  
-    'plugin:@next/next/recommended',
-  ],
-}
+  extends: ["plugin:@next/next/recommended"],
+};
